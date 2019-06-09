@@ -1,0 +1,39 @@
+{
+  "name": "@gengjiawen/os-init",
+  "private": true,
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "lerna exec --parallel yarn run start",
+    "dudu": "prettier --write \"packages/**/*.{ts,js}\" \"*.yml\" \"*.md\" ",
+    "build": "lerna exec yarn run build",
+    "publish": "npm run build && lerna publish",
+    "test": "jest"
+  },
+  "workspaces": {
+    "packages": [
+      "packages/*"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx,md,css,html,yml}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "lerna": "^3.10.5",
+    "husky": "^2.4.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "1.18.2"
+  }
+}
