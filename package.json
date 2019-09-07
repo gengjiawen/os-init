@@ -7,9 +7,10 @@
   "scripts": {
     "start": "lerna exec --parallel yarn run start",
     "dudu": "prettier --write \"packages/**/*.{ts,js}\" \"*.yml\" \"*.md\" ",
+    "format-check": "prettier --list-different \"packages/**/*.{ts,js}\" \"*.yml\" \"*.md\" ",
     "build": "lerna exec yarn run build",
     "publish": "npm run build && lerna publish",
-    "test": "jest"
+    "test": "lerna exec --parallel yarn test"
   },
   "workspaces": {
     "packages": [
@@ -37,6 +38,6 @@
     "prettier": "1.18.2"
   },
   "dependencies": {
-    "typescript": "^3.6.2"
+    "typescript": "3.6.2"
   }
 }
