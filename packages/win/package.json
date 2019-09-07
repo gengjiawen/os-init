@@ -1,6 +1,6 @@
 {
   "name": "@gengjiawen/win",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "my groovy project",
   "author": "gengjiawen <technicalcute@gmail.com>",
   "bin": {

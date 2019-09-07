@@ -1,3 +1,5 @@
-it('add more test', () => {
-  expect(1 + 1).toBe(2)
+import { list } from "../libs"
+
+test('packages', () => {
+  expect(() => list()).not.toThrow()
 })

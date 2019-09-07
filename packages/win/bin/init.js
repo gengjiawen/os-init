@@ -1,5 +1,20 @@
 #!/usr/bin/env node
 
-const { init } =  require('../build')
+const program = require('commander');
 
-init()
+const { init, list } =  require('../build')
+
+program.version(require('../package.json').version)
+.command('init')
+.action(() => {
+    init()
+})
+
+program.version(require('../package.json').version)
+.command('list')
+.action(() => {
+    list()
+})
+
+program.parse(process.argv);
+
