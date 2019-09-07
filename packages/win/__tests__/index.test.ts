@@ -1,4 +1,4 @@
-import { list } from "../libs"
+import { list } from '../libs'
 
 test('packages', () => {
   expect(() => list()).not.toThrow()
