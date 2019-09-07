@@ -1,12 +1,11 @@
 {
   "name": "@gengjiawen/win",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "my groovy project",
   "author": "gengjiawen <technicalcute@gmail.com>",
   "bin": {
     "init": "bin/init.js"
   },
-  "os": [ "win32" ],
   "scripts": {
     "start": "tsc -w",
     "clean": "rimraf build",
@@ -22,6 +21,9 @@
     "jest": "24.8.0",
     "ts-jest": "24.0.2",
     "ts-node": "8.2.0"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "jest": {
     "testEnvironment": "node",
