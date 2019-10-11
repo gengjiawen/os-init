@@ -16,9 +16,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         version: 12.x
+    - name: Envinfo
+      run: npx envinfo
     - name: npm install, build, and test
       run: |
-        npx envinfo
         yarn
         yarn build
         yarn format-check
