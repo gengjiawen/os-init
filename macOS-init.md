@@ -6,6 +6,8 @@ brew update
 brew tap caskroom/versions
 brew install node
 brew install fish
+brew install go
+brew install rustup-init
 brew cask install visual-studio-code
 brew cask install google-chrome
 brew cask install java8
