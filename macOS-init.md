@@ -1,7 +1,11 @@
 macOS init script
 
+## For developer
+```
 sudo spctl --master-disable
+```
 
+## Basic software
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update
@@ -12,7 +16,8 @@ brew install go
 brew install rustup-init
 brew cask install visual-studio-code
 brew cask install google-chrome
-brew cask install java8
+brew tap AdoptOpenJDK/openjdk
+brew cask install adoptopenjdk8
 brew cask install android-studio
 brew cask install jetbrains-toolbox
 brew cask install docker
