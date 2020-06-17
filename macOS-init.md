@@ -3,6 +3,7 @@ macOS init script
 ## For developer
 ```
 sudo spctl --master-disable
+sudo /usr/sbin/DevToolsSecurity -enable
 ```
 
 ## Basic software
