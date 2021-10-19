@@ -5,6 +5,3 @@ node_modules
 dist/
 build/
 temp
-
-# don't like lock :)
-yarn.lock

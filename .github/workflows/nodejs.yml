@@ -4,25 +4,20 @@ on: [push]
 
 jobs:
   build:
-
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
         operating-system: [ubuntu-latest, windows-latest, macOS-latest]
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
-      with:
-        node-version: 12.x
-    - name: Envinfo
-      run: npx envinfo
-    - name: npm install, build, and test
-      run: |
-        yarn
-        yarn build
-        yarn format-check
-        yarn test
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+      - name: Envinfo
+        run: npx envinfo
+      - name: npm install, build, and test
+        run: |
+          yarn
+          yarn build
+          yarn format-check
+          yarn test
+        env:
+          CI: true

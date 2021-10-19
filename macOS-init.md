@@ -1,12 +1,14 @@
 macOS init script
 
 ## For developer
+
 ```
 sudo spctl --master-disable
 sudo /usr/sbin/DevToolsSecurity -enable
 ```
 
 ## Basic software
+
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 brew update
