@@ -13,13 +13,12 @@
     "build": "npm run clean && tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "commander": "^3.0.1"
+    "commander": "^8.2.0"
   },
   "devDependencies": {
-    "@types/jest": "24.0.13",
-    "jest": "24.8.0",
-    "ts-jest": "24.0.2",
-    "ts-node": "8.2.0"
+    "@types/jest": "27.0.2",
+    "jest": "27.3.0",
+    "ts-jest": "27.0.7"
   },
   "publishConfig": {
     "access": "public"
