@@ -1,6 +1,6 @@
 {
   "name": "@gengjiawen/win",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "my groovy project",
   "author": "gengjiawen <technicalcute@gmail.com>",
   "bin": {
@@ -13,7 +13,8 @@
     "build": "npm run clean && tsc -p ./tsconfig.json"
   },
   "dependencies": {
-    "commander": "^8.2.0"
+    "commander": "^8.2.0",
+    "execa": "^5.1.1"
   },
   "devDependencies": {
     "@types/jest": "27.0.2",

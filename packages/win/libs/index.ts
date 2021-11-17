@@ -1,13 +1,13 @@
-import { spawn } from 'child_process'
 import { packages } from './packages'
+import * as execa from 'execa'
 
-export function init() {
-  const cmd = `@"%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe" -NoProfile -InputFormat None -ExecutionPolicy Bypass -Command "[System.Net.ServicePointManager]::SecurityProtocol = 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))" && SET "PATH=%PATH%;%ALLUSERSPROFILE%\chocolatey\bin"`
-  const s = spawn(cmd, {
-    shell: true,
-  })
-  s.stdout.pipe(process.stdout)
-  s.stderr.pipe(process.stdout)
+export const psPolicy = `Set-ExecutionPolicy -ExecutionPolicy ByPass`
+
+export async function init() {
+  const cmd = `Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072; iex ((New-Object System.Net.WebClient).DownloadString('https://community.chocolatey.org/install.ps1'))`
+  console.log(`need to ${psPolicy} if you are not`)
+  console.log(cmd)
+  await execa.command(cmd, { shell: 'powershell', stdio: 'inherit' })
 }
 
 export function list() {
