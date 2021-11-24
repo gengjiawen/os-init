@@ -11,23 +11,21 @@ sudo /usr/sbin/DevToolsSecurity -enable
 
 ```bash
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-brew update
-brew tap caskroom/versions
 brew install git
 brew install node
 brew install fish
 brew install go
 brew install rustup-init
-brew cask install visual-studio-code
-brew cask install google-chrome
-brew tap AdoptOpenJDK/openjdk
-brew cask install adoptopenjdk8
-brew cask install android-studio
-brew cask install jetbrains-toolbox
-brew cask install docker
-brew cask install charles
-brew cask install shadowsocksx-ng
-brew cask install omnidisksweeper
+brew install visual-studio-code
+brew install google-chrome
+brew install jetbrains-toolbox
+brew install docker
+brew install shadowsocksx-ng
+brew install omnidisksweeper
 brew install git-lfs
 sudo git lfs install --system
+brew tap AdoptOpenJDK/openjdk
+brew install adoptopenjdk8
+brew install android-studio
+brew install charles
 ```
