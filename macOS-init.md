@@ -20,7 +20,6 @@ brew install visual-studio-code
 brew install google-chrome
 brew install jetbrains-toolbox
 brew install docker
-brew install shadowsocksx-ng
 brew install omnidisksweeper
 brew install git-lfs
 sudo git lfs install --system
