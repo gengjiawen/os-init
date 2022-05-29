@@ -33,8 +33,8 @@ brew install charles
 Fish config
 ```
 egrep "^export " ~/.bash_profile | while read e
-	set var (echo $e | sed -E "s/^export ([A-Z_]+)=(.*)\$/\1/")
-	set value (echo $e | sed -E "s/^export ([A-Z_]+)=(.*)\$/\2/")
+	set var (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\$/\1/")
+	set value (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\$/\2/")
 
 	# remove surrounding quotes if existing
 	set value (echo $value | sed -E "s/^\"(.*)\"\$/\1/")
@@ -55,6 +55,9 @@ egrep "^export " ~/.bash_profile | while read e
 	#echo "set -xg '$var' '$value' (via '$e')"
 	set -xg $var $value
 end
-set -g fish_user_paths "/usr/local/opt/curl/bin" $fish_user_paths
-set -g fish_user_paths "/usr/local/opt/sqlite/bin" $fish_user_paths
+```
+
+make homebrew path first
+```bash
+fish_add_path /opt/homebrew/opt
 ```
