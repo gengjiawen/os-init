@@ -25,7 +25,7 @@ brew install omnidisksweeper
 brew install git-lfs
 sudo git lfs install --system
 brew tap AdoptOpenJDK/openjdk
-brew install adoptopenjdk8
+brew install adoptopenjdk11
 brew install android-studio
 brew install charles
 ```
