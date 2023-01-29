@@ -23,10 +23,17 @@ brew install docker
 brew install omnidisksweeper
 brew install git-lfs
 sudo git lfs install --system
-brew tap AdoptOpenJDK/openjdk
-brew install adoptopenjdk11
+
+brew install --cask temurin
+brew install --cask temurin111
+
 brew install android-studio
 brew install charles
+```
+
+bash_profile
+```
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/
 ```
 
 Fish config
