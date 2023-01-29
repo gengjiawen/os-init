@@ -23,10 +23,8 @@ brew install docker
 brew install omnidisksweeper
 brew install git-lfs
 sudo git lfs install --system
-
 brew install --cask temurin
-brew install --cask temurin111
-
+brew install --cask temurin11
 brew install android-studio
 brew install charles
 ```
