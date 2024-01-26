@@ -19,20 +19,11 @@ brew install rustup-init
 brew install visual-studio-code
 brew install google-chrome
 brew install jetbrains-toolbox
-brew install docker
 brew install omnidisksweeper
 brew install git-lfs
 sudo git lfs install --system
-brew install --cask temurin
-brew install --cask temurin11
-brew install android-studio
-brew install charles
 ```
 
-bash_profile
-```
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/temurin-11.jdk/Contents/Home/
-```
 
 Fish config
 ```
