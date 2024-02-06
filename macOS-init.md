@@ -10,7 +10,7 @@ sudo /usr/sbin/DevToolsSecurity -enable
 ## Basic software
 
 ```bash
-/usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew install git
 brew install node
 brew install fish
