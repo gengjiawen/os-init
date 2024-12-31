@@ -21,6 +21,7 @@ brew install google-chrome
 brew install jetbrains-toolbox
 brew install omnidisksweeper
 brew install git-lfs
+brew install jordanbaird-ice
 sudo git lfs install --system
 ```
 
