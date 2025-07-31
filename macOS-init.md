@@ -28,7 +28,7 @@ sudo git lfs install --system
 
 Fish config
 ```
-egrep "^export " ~/.bash_profile | while read e
+egrep "^export " ~/.bashrc | while read e
 	set var (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\$/\1/")
 	set value (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\$/\2/")
 
