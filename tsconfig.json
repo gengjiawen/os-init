@@ -3,7 +3,7 @@
     "target": "es2020",
     "module": "commonjs",
     "moduleResolution": "node",
-    "sourceMap": true,
+    "sourceMap": false,
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "removeComments": true,
@@ -22,6 +22,7 @@
   "exclude": [
     "node_modules",
     "build",
+    "packages",
     "test",
     "**/*.test.ts"
   ]
