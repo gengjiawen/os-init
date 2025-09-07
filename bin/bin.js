@@ -24,6 +24,7 @@ program
       console.error('Failed to complete setup:', err.message)
       process.exit(1)
     }
+    console.log('use `ccr code` in terminal to start building')
   })
 
 program.parse(process.argv)
