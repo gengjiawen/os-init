@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const { Command } = require('commander')
-const { writeConfig, installDeps } = require('../build')
+const { writeConfig, installDeps, writeCodexConfig, installCodexDeps } = require('../build')
 
 const program = new Command()
 
@@ -25,6 +25,28 @@ program
       process.exit(1)
     }
     console.log('use `ccr code` in terminal to start building')
+  })
+
+program
+  .command('set-codex')
+  .description('setup codex cli config and auth')
+  .argument('<apiKey>', 'API key to set for Codex')
+  .action(async (apiKey) => {
+    if (!apiKey || String(apiKey).trim().length === 0) {
+      console.error('Missing required argument: <apiKey>')
+      program.help({ error: true })
+      return
+    }
+    try {
+      const { configPath, authPath } = writeCodexConfig(apiKey)
+      console.log(`Codex config written to: ${configPath}`)
+      console.log(`Codex auth written to: ${authPath}`)
+      await installCodexDeps()
+    } catch (err) {
+      console.error('Failed to setup Codex:', err.message)
+      process.exit(1)
+    }
+    console.log('Codex is ready. use `codex` in terminal to start building')
   })
 
 program.parse(process.argv)
