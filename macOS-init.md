@@ -23,6 +23,9 @@ brew install omnidisksweeper
 brew install git-lfs
 brew install jordanbaird-ice
 sudo git lfs install --system
+npm i -g pnpm yarn && pnpm setup
+pnpm i -g vite 7zip-bin-full
+sudo ln -s "$(NODE_PATH="$(pnpm root -g)" node -p "require('7zip-bin-full').path7za")" /usr/local/bin/7z
 ```
 
 
