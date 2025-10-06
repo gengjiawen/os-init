@@ -17,7 +17,7 @@ jobs:
         run: |
           yarn
           yarn build
-          yarn format-check
+          yarn format:check
           yarn test
         env:
           CI: true
