@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
 const { Command } = require('commander')
-const { writeConfig, installDeps, writeCodexConfig, installCodexDeps } = require('../build')
+const {
+  writeConfig,
+  installDeps,
+  writeCodexConfig,
+  installCodexDeps,
+} = require('../build')
 
 const program = new Command()
 

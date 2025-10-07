@@ -48,7 +48,10 @@ export function writeConfig(apiKey: string): string {
 async function commandExists(command: string): Promise<boolean> {
   try {
     // execa with reject: false will not throw on non-zero exit codes.
-    const { failed } = await execa(command, ['--version'], { stdio: 'ignore', reject: false })
+    const { failed } = await execa(command, ['--version'], {
+      stdio: 'ignore',
+      reject: false,
+    })
     return !failed
   } catch (error) {
     // Catch errors for commands that don't support --version or other issues
@@ -58,7 +61,10 @@ async function commandExists(command: string): Promise<boolean> {
 
 /** Install global dependencies */
 export async function installDeps(): Promise<void> {
-  const packages = ['@anthropic-ai/claude-code', '@musistudio/claude-code-router']
+  const packages = [
+    '@anthropic-ai/claude-code',
+    '@musistudio/claude-code-router',
+  ]
   const usePnpm = await commandExists('pnpm')
 
   if (usePnpm) {
@@ -70,7 +76,6 @@ export async function installDeps(): Promise<void> {
   }
   console.log('Dependencies installed successfully.')
 }
-
 
 /** Return Codex configuration directory path */
 function getCodexConfigDir(): string {
@@ -91,7 +96,10 @@ wire_api = "responses"
 `
 
 /** Write Codex config.toml and auth.json */
-export function writeCodexConfig(apiKey: string): { configPath: string; authPath: string } {
+export function writeCodexConfig(apiKey: string): {
+  configPath: string
+  authPath: string
+} {
   const configDir = getCodexConfigDir()
   ensureDir(configDir)
 
@@ -119,4 +127,3 @@ export async function installCodexDeps(): Promise<void> {
   }
   console.log('Codex dependency installed successfully.')
 }
-
