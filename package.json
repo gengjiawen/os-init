@@ -25,6 +25,9 @@
   "publishConfig": {
     "access": "public"
   },
+  "engines": {
+    "node": ">22.12.0"
+  },
   "devDependencies": {
     "@types/jest": "29.5.12",
     "@types/node": "24.1.0",
