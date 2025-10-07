@@ -15,14 +15,18 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 'lts/*'
-          cache: 'yarn'
+          cache: 'pnpm'
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
       - name: Envinfo
         run: npx envinfo
-      - name: npm install, build, and test
+      - name: Install, build, and test (pnpm)
         run: |
-          yarn
-          yarn build
-          yarn format:check
-          yarn test
+          pnpm install --frozen-lockfile=false
+          pnpm build
+          pnpm format:check
+          pnpm test
         env:
           CI: true
