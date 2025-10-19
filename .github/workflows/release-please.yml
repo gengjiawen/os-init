@@ -5,12 +5,19 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
 jobs:
   release-please:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/release-please-action@v4
+      - id: release
+        uses: googleapis/release-please-action@v4
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           release-type: node
 
       - name: Checkout
@@ -24,14 +31,17 @@ jobs:
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
+        if: ${{ steps.release.outputs.release_created }}
         with:
           version: 9
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile=false
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: Build
         run: pnpm run build
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: Publish
         env:
