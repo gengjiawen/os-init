@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.3.1](https://github.com/gengjiawen/os-init/compare/v1.3.0...v1.3.1) (2025-10-19)
+
+
+### Bug Fixes
+
+* release process ([a833c10](https://github.com/gengjiawen/os-init/commit/a833c1046247bb033a286d6173f493c1984f1150))
+
 ## 1.3.0 (2025-10-19)
 
 
