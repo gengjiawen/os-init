@@ -2,7 +2,7 @@
 
 const { Command } = require('commander')
 const {
-  writeConfig,
+  writeClaudeConfig,
   installDeps,
   writeCodexConfig,
   installCodexDeps,
@@ -22,8 +22,9 @@ program
       return
     }
     try {
-      const configPath = writeConfig(apiKey)
-      console.log(`Config written to: ${configPath}`)
+      const { routerConfigPath, settingsPath } = writeClaudeConfig(apiKey)
+      console.log(`Claude router config written to: ${routerConfigPath}`)
+      console.log(`Claude settings written to: ${settingsPath}`)
       await installDeps()
     } catch (err) {
       console.error('Failed to complete setup:', err.message)

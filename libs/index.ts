@@ -20,7 +20,7 @@ const DEFAULT_TEMPLATE = `{
       "name": "jw",
       "api_base_url": "https://ai.gengjiawen.com/api/openai/v1/chat/completions",
       "api_key": "API_KEY_PLACEHOLDER",
-      "models": ["code", "free", "free-thinking"],
+      "models": ["code", "free"],
       "transformer": {
         "use": ["openrouter"]
       }
@@ -34,14 +34,51 @@ const DEFAULT_TEMPLATE = `{
   }
 }`
 
-/** Write config by simple string replacement */
-export function writeConfig(apiKey: string): string {
-  const configDir = getDefaultConfigDir()
-  const configPath = path.join(configDir, 'config.json')
-  ensureDir(configDir)
-  const content = DEFAULT_TEMPLATE.replace('API_KEY_PLACEHOLDER', apiKey)
-  fs.writeFileSync(configPath, content)
-  return configPath
+/** Return Claude settings directory path */
+function getClaudeSettingsDir(): string {
+  return path.join(os.homedir(), '.claude')
+}
+
+/** Template for Claude settings.json */
+const CLAUDE_SETTINGS_TEMPLATE = `{
+  "env": {
+    "DISABLE_TELEMETRY": "1",
+    "OTEL_METRICS_EXPORTER": "otlp",
+    "ANTHROPIC_API_KEY": "API_KEY_PLACEHOLDER",
+    "ANTHROPIC_BASE_URL": "https://ai.gengjiawen.com/api/claude/",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  },
+  "includeCoAuthoredBy": false,
+  "apiKeyHelper": "echo 'API_KEY_PLACEHOLDER'",
+  "permissions": {
+    "allow": [],
+    "deny": []
+  }
+}`
+
+/** Write Claude config files (both router config and settings) */
+export function writeClaudeConfig(apiKey: string): {
+  routerConfigPath: string
+  settingsPath: string
+} {
+  // Write claude-code-router config
+  const routerConfigDir = getDefaultConfigDir()
+  const routerConfigPath = path.join(routerConfigDir, 'config.json')
+  ensureDir(routerConfigDir)
+  const routerContent = DEFAULT_TEMPLATE.replace('API_KEY_PLACEHOLDER', apiKey)
+  fs.writeFileSync(routerConfigPath, routerContent)
+
+  // Write Claude settings
+  const settingsDir = getClaudeSettingsDir()
+  const settingsPath = path.join(settingsDir, 'settings.json')
+  ensureDir(settingsDir)
+  const settingsContent = CLAUDE_SETTINGS_TEMPLATE.replace(
+    /API_KEY_PLACEHOLDER/g,
+    apiKey
+  )
+  fs.writeFileSync(settingsPath, settingsContent)
+
+  return { routerConfigPath, settingsPath }
 }
 
 /** Check if a command exists */
