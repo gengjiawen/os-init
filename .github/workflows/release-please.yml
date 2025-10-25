@@ -6,6 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
+  id-token: write  # Required for OIDC
   contents: write
   issues: write
   pull-requests: write
@@ -44,7 +45,5 @@ jobs:
         if: ${{ steps.release.outputs.release_created }}
 
       - name: Publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: npm publish
         if: ${{ steps.release.outputs.release_created }}
