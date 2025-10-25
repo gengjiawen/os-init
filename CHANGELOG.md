@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.5.1](https://github.com/gengjiawen/os-init/compare/v1.5.0...v1.5.1) (2025-10-25)
+
+
+### Bug Fixes
+
+* add 'ip' dependency to package.json ([195b0d0](https://github.com/gengjiawen/os-init/commit/195b0d06b158962d57060336629e0666b726b9d9))
+* add repository information to package.json ([441f752](https://github.com/gengjiawen/os-init/commit/441f7525a44af7a96b0f2916e2228439e89bb1d7))
+
 ## [1.5.0](https://github.com/gengjiawen/os-init/compare/v1.4.0...v1.5.0) (2025-10-25)
 
 
