@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/gengjiawen/os-init/compare/v1.3.2...v1.4.0) (2025-10-25)
+
+
+### Features
+
+* add Raycast AI configuration setup and command ([b5d64d4](https://github.com/gengjiawen/os-init/commit/b5d64d4fa65dddf739b7b3b6e50ce3f94346538a))
+
+
+### Bug Fixes
+
+* format ([ad7cc79](https://github.com/gengjiawen/os-init/commit/ad7cc791efb1437c2eaae916fe3ba43bc545b355))
+
 ## [1.3.2](https://github.com/gengjiawen/os-init/compare/v1.3.1...v1.3.2) (2025-10-19)
 
 
