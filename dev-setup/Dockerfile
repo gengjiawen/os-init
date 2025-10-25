@@ -15,6 +15,6 @@ RUN set -eux; \
 
 # Run sshd in foreground
 USER root
-EXPOSE 22
+EXPOSE 22 3000 5173
 CMD ["/usr/sbin/sshd", "-D", "-e"]
 

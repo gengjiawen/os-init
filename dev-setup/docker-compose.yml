@@ -8,6 +8,8 @@ services:
     tty: true
     ports:
       - '2222:22'
+      - '3000:3000'
+      - '5173:5173'
     cap_add:
       - SYS_PTRACE
     volumes:
