@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "commander": "^12.1.0",
+    "ip": "^2.0.1",
     "execa": "^8.0.1"
   },
   "publishConfig": {
@@ -38,7 +39,6 @@
     "@types/node": "24.1.0",
     "cpy-cli": "^4.2.0",
     "husky": "9.1.6",
-    "ip": "^2.0.1",
     "jest": "29.7.0",
     "lint-staged": "^15.2.2",
     "nodemon": "3.1.4",
