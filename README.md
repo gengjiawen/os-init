@@ -1,5 +1,7 @@
 ## os-init CLI
 
+[![npm version](https://img.shields.io/npm/v/%40gengjiawen%2Fos-init)](https://www.npmjs.com/package/@gengjiawen/os-init)
+
 A CLI tool to quickly configure AI development tools and environments.
 
 ## Usage
