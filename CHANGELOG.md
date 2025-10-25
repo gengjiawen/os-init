@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/gengjiawen/os-init/compare/v1.5.1...v1.6.0) (2025-10-25)
+
+
+### Features
+
+* update Docker configuration to expose additional ports for development ([c1f0be1](https://github.com/gengjiawen/os-init/commit/c1f0be1f5f7559a32cbb2e5f1a829fd79f85d910))
+
+
+### Bug Fixes
+
+* set-dev build issues ([728c0e9](https://github.com/gengjiawen/os-init/commit/728c0e9964d19cdd7624a7e9c5f2e68efaf4858f))
+
 ## [1.5.1](https://github.com/gengjiawen/os-init/compare/v1.5.0...v1.5.1) (2025-10-25)
 
 
