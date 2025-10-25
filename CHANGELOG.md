@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.5.0](https://github.com/gengjiawen/os-init/compare/v1.4.0...v1.5.0) (2025-10-25)
+
+
+### Features
+
+* add dev environment setup command and update dependencies ([3bd05ae](https://github.com/gengjiawen/os-init/commit/3bd05aec3ba20c55e0b2323fb0da390eb4de539d))
+
 ## [1.4.0](https://github.com/gengjiawen/os-init/compare/v1.3.2...v1.4.0) (2025-10-25)
 
 
