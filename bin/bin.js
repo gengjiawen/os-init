@@ -7,6 +7,7 @@ const {
   writeCodexConfig,
   installCodexDeps,
   writeRaycastConfig,
+  setupDevEnvironment,
 } = require('../build')
 
 const program = new Command()
@@ -76,6 +77,29 @@ program
       process.exit(1)
     }
     console.log('Raycast AI is ready to use')
+  })
+
+program
+  .command('set-dev')
+  .description('setup dev environment with SSH access')
+  .argument('<sshPublicKey>', 'SSH public key to set')
+  .option('-t, --target <dir>', 'Target directory for dev-setup')
+  .action(async (sshPublicKey, options) => {
+    if (!sshPublicKey || String(sshPublicKey).trim().length === 0) {
+      console.error('Missing required argument: <sshPublicKey>')
+      program.help({ error: true })
+      return
+    }
+    try {
+      const { targetPath } = await setupDevEnvironment(
+        sshPublicKey,
+        options.target
+      )
+      console.log(`\n✅ Dev environment setup completed at: ${targetPath}`)
+    } catch (err) {
+      console.error('Failed to setup dev environment:', err.message)
+      process.exit(1)
+    }
   })
 
 program.parse(process.argv)

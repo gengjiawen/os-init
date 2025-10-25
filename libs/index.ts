@@ -207,3 +207,6 @@ export function writeRaycastConfig(apiKey: string): { configPath: string } {
 
   return { configPath }
 }
+
+// Re-export dev-setup functionality
+export { setupDevEnvironment } from './dev-setup'

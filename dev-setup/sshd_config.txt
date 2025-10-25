@@ -1,0 +1,31 @@
+Port 22
+Protocol 2
+
+# Host keys are generated at runtime with `ssh-keygen -A`
+HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key
+
+SyslogFacility AUTHPRIV
+LogLevel VERBOSE
+
+# Disallow root login; use non-root user (e.g., gitpod)
+PermitRootLogin no
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+ChallengeResponseAuthentication no
+PubkeyAuthentication yes
+
+# Use per-user authorized_keys in each home directory
+AuthorizedKeysFile .ssh/authorized_keys
+
+PermitEmptyPasswords no
+X11Forwarding no
+AllowAgentForwarding yes
+AllowTcpForwarding yes
+ClientAliveInterval 120
+ClientAliveCountMax 3
+PrintMotd no
+AcceptEnv LANG LC_*
+
+# SFTP Subsystem
+Subsystem sftp /usr/lib/openssh/sftp-server
