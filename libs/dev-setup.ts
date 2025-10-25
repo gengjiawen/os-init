@@ -57,15 +57,15 @@ export async function setupDevEnvironment(
   console.log(`Copying dev-setup to: ${targetPath}`)
   copyDirSync(sourceDir, targetPath)
 
-  // Replace SSH_PUBLIC_KEY placeholder in Dockerfile.txt
-  const dockerfilePath = path.join(targetPath, 'Dockerfile.txt')
+  // Replace SSH_PUBLIC_KEY placeholder in Dockerfile
+  const dockerfilePath = path.join(targetPath, 'Dockerfile')
   if (fs.existsSync(dockerfilePath)) {
     let content = fs.readFileSync(dockerfilePath, 'utf-8')
     content = content.replace('ssh-public-key-placeholder', sshPublicKey)
     fs.writeFileSync(dockerfilePath, content)
-    console.log('SSH public key has been configured in Dockerfile.txt')
+    console.log('SSH public key has been configured in Dockerfile')
   } else {
-    throw new Error(`Dockerfile.txt not found in ${targetPath}`)
+    throw new Error(`Dockerfile not found in ${targetPath}`)
   }
 
   // Check if docker-compose is available
@@ -109,7 +109,7 @@ export async function setupDevEnvironment(
 
   // Display SSH connection instructions
   const localIp = ip.address()
-  console.log('\n📡 SSH Connection:')
+  console.log('\n SSH Connection:')
   console.log(`  ssh gitpod@${localIp} -p 2222`)
   console.log('\nOr use localhost if connecting from the same machine:')
   console.log('  ssh gitpod@localhost -p 2222')
