@@ -30,7 +30,9 @@ program
       console.error('Failed to complete setup:', err.message)
       process.exit(1)
     }
-    console.log('Claude code is ready, use `claude` in terminal to start building')
+    console.log(
+      'Claude code is ready, use `claude` in terminal to start building'
+    )
   })
 
 program
