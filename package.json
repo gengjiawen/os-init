@@ -25,6 +25,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gengjiawen/os-init"
+  },
   "engines": {
     "node": ">22.12.0"
   },
