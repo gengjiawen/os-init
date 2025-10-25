@@ -164,3 +164,46 @@ export async function installCodexDeps(): Promise<void> {
   }
   console.log('Codex dependency installed successfully.')
 }
+
+/** Return Raycast AI configuration directory path */
+function getRaycastAIConfigDir(): string {
+  return path.join(os.homedir(), '.config', 'raycast', 'ai')
+}
+
+/** Template for Raycast AI providers.yaml */
+const RAYCAST_PROVIDERS_YAML_TEMPLATE = `providers:
+  - id: my_provider
+    name: gengjiawen AI
+    base_url: https://ai.gengjiawen.com/api/openai/v1/
+    api_keys:
+      openai: API_KEY_PLACEHOLDER
+    models:
+      - id: sota
+        name: "sota"
+        context: 200000
+        provider: openai
+        abilities:
+          temperature:
+            supported: true
+          vision:
+            supported: true
+          system_message:
+            supported: true
+          tools:
+            supported: true
+`
+
+/** Write Raycast AI providers.yaml */
+export function writeRaycastConfig(apiKey: string): { configPath: string } {
+  const configDir = getRaycastAIConfigDir()
+  ensureDir(configDir)
+
+  const configPath = path.join(configDir, 'providers.yaml')
+  const content = RAYCAST_PROVIDERS_YAML_TEMPLATE.replace(
+    'API_KEY_PLACEHOLDER',
+    apiKey
+  )
+  fs.writeFileSync(configPath, content)
+
+  return { configPath }
+}
