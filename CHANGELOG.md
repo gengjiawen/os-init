@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/gengjiawen/os-init/compare/v1.7.0...v1.7.1) (2025-11-09)
+
+
+### Bug Fixes
+
+* android CI ([#12](https://github.com/gengjiawen/os-init/issues/12)) ([535b011](https://github.com/gengjiawen/os-init/commit/535b0115b513902ceb6fd9ef98bcb8338ac9972e))
+
 ## [1.7.0](https://github.com/gengjiawen/os-init/compare/v1.6.0...v1.7.0) (2025-11-09)
 
 
