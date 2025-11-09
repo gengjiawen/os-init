@@ -19,7 +19,7 @@
     "postbuild": "cpy '**/*' '!**/*.ts' ../build/ --cwd=libs --parents"
   },
   "dependencies": {
-    "@compilets/unzip-url": "^1.0.0",
+    "@compilets/unzip-url": "^1.0.5",
     "commander": "^12.1.0",
     "ip": "^2.0.1",
     "execa": "^8.0.1"

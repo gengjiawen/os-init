@@ -39,7 +39,7 @@ function getAndroidEnvVars(androidHome: string, ndkVersion: string): string {
 export ANDROID_HOME=${androidHome}
 export ANDROID_SDK_ROOT=\${ANDROID_HOME}
 export ANDROID_NDK_HOME=\${ANDROID_HOME}/ndk/${ndkVersion}
-export PATH=\${ANDROID_HOME}/cmdline-tools/latest/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
+export PATH=\${ANDROID_HOME}/cmdline-tools/latest/bin:\${ANDROID_HOME}/cmdline-tools/cmdline-tools/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
 `
 }
 
@@ -124,23 +124,9 @@ export async function setupAndroidEnvironment(options?: {
   const sdkUrl = getSdkDownloadUrl(sdkVersion)
 
   try {
-    // Create cmdline-tools directory
-    const cmdlineToolsPath = path.join(androidHome, 'cmdline-tools')
-    if (!fs.existsSync(cmdlineToolsPath)) {
-      fs.mkdirSync(cmdlineToolsPath, { recursive: true })
-    }
-
     // Download and extract SDK using unzip-url
-    console.log(`Downloading and extracting from: ${sdkUrl}`)
-    await unzip(sdkUrl, cmdlineToolsPath)
-
-    // Move cmdline-tools to latest
-    const tempToolsPath = path.join(cmdlineToolsPath, 'cmdline-tools')
-    const latestToolsPath = path.join(cmdlineToolsPath, 'latest')
-    if (fs.existsSync(tempToolsPath)) {
-      fs.renameSync(tempToolsPath, latestToolsPath)
-    }
-
+    console.log(`Downloading and extracting from: ${sdkUrl} to ${androidHome}`)
+    await unzip(sdkUrl, androidHome)
     console.log('Android SDK extracted successfully')
   } catch (error) {
     throw new Error(
@@ -148,18 +134,22 @@ export async function setupAndroidEnvironment(options?: {
     )
   }
 
-  // Set environment variables for sdkmanager
+  const cmdlineToolsPath = path.join(androidHome, 'cmdline-tools')
+  const latestBin = path.join(cmdlineToolsPath, 'bin')
+  const nestedBin = path.join(cmdlineToolsPath, 'cmdline-tools', 'bin')
+  const sdkmanagerBinDir = fs.existsSync(latestBin) ? latestBin : nestedBin
+  const sdkmanagerBinary = path.join(sdkmanagerBinDir, 'sdkmanager')
   const sdkmanagerEnv = {
     ...process.env,
     ANDROID_HOME: androidHome,
     ANDROID_SDK_ROOT: androidHome,
-    PATH: `${androidHome}/cmdline-tools/latest/bin:${process.env.PATH}`,
+    PATH: `${sdkmanagerBinDir}:${process.env.PATH}`,
   }
 
   // Accept licenses
   console.log('\nAccepting Android SDK licenses...')
   try {
-    await execa('bash', ['-c', 'yes | sdkmanager --licenses'], {
+    await execa('bash', ['-c', `yes | "${sdkmanagerBinary}" --licenses`], {
       env: sdkmanagerEnv,
       stdio: 'inherit',
     })
@@ -180,8 +170,7 @@ export async function setupAndroidEnvironment(options?: {
   ]
 
   try {
-    const componentsList = components.join(' ')
-    await execa('bash', ['-c', `yes | sdkmanager ${componentsList}`], {
+    await execa(sdkmanagerBinary, components, {
       env: sdkmanagerEnv,
       stdio: 'inherit',
     })

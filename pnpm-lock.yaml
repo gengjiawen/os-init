@@ -9,7 +9,7 @@ importers:
   .:
     dependencies:
       '@compilets/unzip-url':
-        specifier: ^1.0.0
+        specifier: ^1.0.5
         version: 1.0.5
       commander:
         specifier: ^12.1.0
