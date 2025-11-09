@@ -2,7 +2,8 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
-import { unzip } from '@compilets/unzip-url'
+import { unzip } from '@gengjiawen/unzip-url'
+import { appendFishImportScript } from './fish-shell-utils'
 
 /** Android SDK configuration */
 const ANDROID_CONFIG = {
@@ -35,11 +36,12 @@ function getSdkDownloadUrl(sdkVersion: string): string {
 /** Get Android environment variables */
 function getAndroidEnvVars(androidHome: string, ndkVersion: string): string {
   return `
-# Android development environment
+# ===== Android development environment - START (2025-11-09) =====
 export ANDROID_HOME=${androidHome}
 export ANDROID_SDK_ROOT=\${ANDROID_HOME}
 export ANDROID_NDK_HOME=\${ANDROID_HOME}/ndk/${ndkVersion}
-export PATH=\${ANDROID_HOME}/cmdline-tools/latest/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
+export PATH=\${ANDROID_HOME}/cmdline-tools/bin:\${ANDROID_HOME}/cmdline-tools/latest/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
+# ===== Android development environment - END =====
 `
 }
 
@@ -68,13 +70,25 @@ function hasAndroidEnvVars(rcFile: string): boolean {
 
 /** Append Android environment variables to shell config */
 function appendEnvVarsToShellConfig(rcFile: string, envVars: string): void {
-  const dir = path.dirname(rcFile)
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
+  const shell = process.env.SHELL || ''
+  const homeDir = os.homedir()
+  const bashrcFile = path.join(homeDir, '.bashrc')
+
+  // Write to bashrc
+  if (
+    !fs.existsSync(bashrcFile) ||
+    !fs.readFileSync(bashrcFile, 'utf-8').includes('ANDROID_HOME')
+  ) {
+    fs.appendFileSync(bashrcFile, envVars)
+    console.log(`Environment variables added to: ${bashrcFile}`)
+  } else {
+    console.log(`Environment variables already exist in: ${bashrcFile}`)
   }
 
-  fs.appendFileSync(rcFile, envVars)
-  console.log(`Environment variables added to: ${rcFile}`)
+  // For fish shell, always write to bashrc first, then add import script to fish config
+  if (shell.includes('fish')) {
+    appendFishImportScript(rcFile)
+  }
 }
 
 /** Setup Android development environment */
@@ -123,46 +137,49 @@ export async function setupAndroidEnvironment(options?: {
   console.log('\nDownloading and setting up Android SDK...')
   const sdkUrl = getSdkDownloadUrl(sdkVersion)
 
+  const cmdlineToolsPath = path.join(androidHome, 'cmdline-tools')
+  const latestPath = path.join(cmdlineToolsPath, 'latest')
+  const latestBin = path.join(latestPath, 'bin')
+
   try {
-    // Create cmdline-tools directory
-    const cmdlineToolsPath = path.join(androidHome, 'cmdline-tools')
-    if (!fs.existsSync(cmdlineToolsPath)) {
-      fs.mkdirSync(cmdlineToolsPath, { recursive: true })
-    }
-
     // Download and extract SDK using unzip-url
-    console.log(`Downloading and extracting from: ${sdkUrl}`)
-    await unzip(sdkUrl, cmdlineToolsPath)
-
-    // Move cmdline-tools to latest
-    const tempToolsPath = path.join(cmdlineToolsPath, 'cmdline-tools')
-    const latestToolsPath = path.join(cmdlineToolsPath, 'latest')
-    if (fs.existsSync(tempToolsPath)) {
-      fs.renameSync(tempToolsPath, latestToolsPath)
+    if (!fs.existsSync(latestBin)) {
+      console.log(
+        `Downloading and extracting from: ${sdkUrl} to ${androidHome}`
+      )
+      await unzip(sdkUrl, cmdlineToolsPath)
+      const tmp_toolchain = path.join(cmdlineToolsPath, 'cmdline-tools')
+      fs.renameSync(tmp_toolchain, latestPath)
+      console.log('Android SDK extracted successfully')
     }
-
-    console.log('Android SDK extracted successfully')
   } catch (error) {
     throw new Error(
       `Failed to download/extract Android SDK: ${error instanceof Error ? error.message : String(error)}`
     )
   }
+  const sdkmanagerBinary = path.join(latestBin, 'sdkmanager')
 
-  // Set environment variables for sdkmanager
   const sdkmanagerEnv = {
     ...process.env,
     ANDROID_HOME: androidHome,
     ANDROID_SDK_ROOT: androidHome,
-    PATH: `${androidHome}/cmdline-tools/latest/bin:${process.env.PATH}`,
+    PATH: `${latestBin}:${process.env.PATH}`,
   }
 
   // Accept licenses
   console.log('\nAccepting Android SDK licenses...')
   try {
-    await execa('bash', ['-c', 'yes | sdkmanager --licenses'], {
-      env: sdkmanagerEnv,
-      stdio: 'inherit',
-    })
+    await execa(
+      'bash',
+      [
+        '-c',
+        `yes | "${sdkmanagerBinary}" --sdk_root=${androidHome} --licenses`,
+      ],
+      {
+        env: sdkmanagerEnv,
+        stdio: 'inherit',
+      }
+    )
   } catch (error) {
     console.warn(
       'Warning: License acceptance may have failed, but continuing...'
@@ -180,11 +197,14 @@ export async function setupAndroidEnvironment(options?: {
   ]
 
   try {
-    const componentsList = components.join(' ')
-    await execa('bash', ['-c', `yes | sdkmanager ${componentsList}`], {
-      env: sdkmanagerEnv,
-      stdio: 'inherit',
-    })
+    await execa(
+      sdkmanagerBinary,
+      [`--sdk_root=${androidHome}`, ...components],
+      {
+        env: sdkmanagerEnv,
+        stdio: 'inherit',
+      }
+    )
     console.log('Android SDK components installed successfully')
   } catch (error) {
     throw new Error(
