@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.0](https://github.com/gengjiawen/os-init/compare/v1.6.0...v1.7.0) (2025-11-09)
+
+
+### Features
+
+* add setup android sdk ([cb18d40](https://github.com/gengjiawen/os-init/commit/cb18d40e53e312b0aedc66a9cde6738bc2f4f1ba))
+
 ## [1.6.0](https://github.com/gengjiawen/os-init/compare/v1.5.1...v1.6.0) (2025-10-25)
 
 
