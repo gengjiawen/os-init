@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
 import { unzip } from '@gengjiawen/unzip-url'
-import { getFishImportBashExports } from './fish-shell-utils'
+import { appendFishImportScript } from './fish-shell-utils'
 
 /** Android SDK configuration */
 const ANDROID_CONFIG = {
@@ -36,11 +36,12 @@ function getSdkDownloadUrl(sdkVersion: string): string {
 /** Get Android environment variables */
 function getAndroidEnvVars(androidHome: string, ndkVersion: string): string {
   return `
-# Android development environment
+# ===== Android development environment - START (2025-11-09) =====
 export ANDROID_HOME=${androidHome}
 export ANDROID_SDK_ROOT=\${ANDROID_HOME}
 export ANDROID_NDK_HOME=\${ANDROID_HOME}/ndk/${ndkVersion}
 export PATH=\${ANDROID_HOME}/cmdline-tools/bin:\${ANDROID_HOME}/cmdline-tools/latest/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
+# ===== Android development environment - END =====
 `
 }
 
@@ -71,45 +72,22 @@ function hasAndroidEnvVars(rcFile: string): boolean {
 function appendEnvVarsToShellConfig(rcFile: string, envVars: string): void {
   const shell = process.env.SHELL || ''
   const homeDir = os.homedir()
+  const bashrcFile = path.join(homeDir, '.bashrc')
+
+  // Write to bashrc
+  if (
+    !fs.existsSync(bashrcFile) ||
+    !fs.readFileSync(bashrcFile, 'utf-8').includes('ANDROID_HOME')
+  ) {
+    fs.appendFileSync(bashrcFile, envVars)
+    console.log(`Environment variables added to: ${bashrcFile}`)
+  } else {
+    console.log(`Environment variables already exist in: ${bashrcFile}`)
+  }
 
   // For fish shell, always write to bashrc first, then add import script to fish config
   if (shell.includes('fish')) {
-    const bashrcFile = path.join(homeDir, '.bashrc')
-
-    // Write to bashrc
-    if (
-      !fs.existsSync(bashrcFile) ||
-      !fs.readFileSync(bashrcFile, 'utf-8').includes('ANDROID_HOME')
-    ) {
-      fs.appendFileSync(bashrcFile, envVars)
-      console.log(`Environment variables added to: ${bashrcFile}`)
-    } else {
-      console.log(`Environment variables already exist in: ${bashrcFile}`)
-    }
-
-    // Write fish import script to config.fish
-    const dir = path.dirname(rcFile)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
-    }
-
-    const fishContent = fs.existsSync(rcFile)
-      ? fs.readFileSync(rcFile, 'utf-8')
-      : ''
-    if (!fishContent.includes('Import environment variables from .bashrc')) {
-      const fishScript = getFishImportBashExports()
-      fs.appendFileSync(rcFile, fishScript)
-      console.log(`Fish import script added to: ${rcFile}`)
-    }
-  } else {
-    // For bash/zsh, write directly to their rc files
-    const dir = path.dirname(rcFile)
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true })
-    }
-
-    fs.appendFileSync(rcFile, envVars)
-    console.log(`Environment variables added to: ${rcFile}`)
+    appendFishImportScript(rcFile)
   }
 }
 
