@@ -3,6 +3,7 @@ import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
 import { unzip } from '@compilets/unzip-url'
+import { getFishImportBashExports } from './fish-shell-utils'
 
 /** Android SDK configuration */
 const ANDROID_CONFIG = {
@@ -68,13 +69,48 @@ function hasAndroidEnvVars(rcFile: string): boolean {
 
 /** Append Android environment variables to shell config */
 function appendEnvVarsToShellConfig(rcFile: string, envVars: string): void {
-  const dir = path.dirname(rcFile)
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
+  const shell = process.env.SHELL || ''
+  const homeDir = os.homedir()
 
-  fs.appendFileSync(rcFile, envVars)
-  console.log(`Environment variables added to: ${rcFile}`)
+  // For fish shell, always write to bashrc first, then add import script to fish config
+  if (shell.includes('fish')) {
+    const bashrcFile = path.join(homeDir, '.bashrc')
+
+    // Write to bashrc
+    if (
+      !fs.existsSync(bashrcFile) ||
+      !fs.readFileSync(bashrcFile, 'utf-8').includes('ANDROID_HOME')
+    ) {
+      fs.appendFileSync(bashrcFile, envVars)
+      console.log(`Environment variables added to: ${bashrcFile}`)
+    } else {
+      console.log(`Environment variables already exist in: ${bashrcFile}`)
+    }
+
+    // Write fish import script to config.fish
+    const dir = path.dirname(rcFile)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+
+    const fishContent = fs.existsSync(rcFile)
+      ? fs.readFileSync(rcFile, 'utf-8')
+      : ''
+    if (!fishContent.includes('Import environment variables from .bashrc')) {
+      const fishScript = getFishImportBashExports()
+      fs.appendFileSync(rcFile, fishScript)
+      console.log(`Fish import script added to: ${rcFile}`)
+    }
+  } else {
+    // For bash/zsh, write directly to their rc files
+    const dir = path.dirname(rcFile)
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true })
+    }
+
+    fs.appendFileSync(rcFile, envVars)
+    console.log(`Environment variables added to: ${rcFile}`)
+  }
 }
 
 /** Setup Android development environment */
