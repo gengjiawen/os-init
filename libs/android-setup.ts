@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
-import { unzip } from '@compilets/unzip-url'
+import { unzip } from '@gengjiawen/unzip-url'
 import { getFishImportBashExports } from './fish-shell-utils'
 
 /** Android SDK configuration */

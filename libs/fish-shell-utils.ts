@@ -3,8 +3,8 @@ export function getFishImportBashExports(): string {
   return `
 # Import environment variables from .bashrc
 egrep "^export " ~/.bashrc | while read e
-	set var (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\$/\\1/")
-	set value (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\$/\\2/")
+	set var (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\\$/\\1/")
+	set value (echo $e | sed -E "s/^export ([A-Za-z_0-9]+)=(.*)\\$/\\2/")
 
 	# remove surrounding quotes if existing
 	set value (echo $value | sed -E "s/^\\"(.*)\\"\\$/\\1/")
