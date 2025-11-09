@@ -8,12 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@compilets/unzip-url':
+        specifier: ^1.0.0
+        version: 1.0.5
       commander:
         specifier: ^12.1.0
         version: 12.1.0
       execa:
         specifier: ^8.0.1
         version: 8.0.1
+      ip:
+        specifier: ^2.0.1
+        version: 2.0.1
     devDependencies:
       '@types/ip':
         specifier: ^1.1.3
@@ -30,9 +36,6 @@ importers:
       husky:
         specifier: 9.1.6
         version: 9.1.6
-      ip:
-        specifier: ^2.0.1
-        version: 2.0.1
       jest:
         specifier: 29.7.0
         version: 29.7.0(@types/node@24.1.0)(ts-node@10.9.2(@types/node@24.1.0)(typescript@5.6.3))
@@ -225,9 +228,16 @@ packages:
   '@bcoe/v8-coverage@0.2.3':
     resolution: {integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==}
 
+  '@compilets/unzip-url@1.0.5':
+    resolution: {integrity: sha512-d3rJhBvdj7ZgRQGnl1xiEgEaXLgiTudpdmitNZ1Lj/UxuOj+943KfchIstVIKAlHMbz0x2GOxhCW1zvB+KYz3A==}
+    hasBin: true
+
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
+
+  '@henrygd/queue@1.0.6':
+    resolution: {integrity: sha512-RUfPEvF7u52ZNRHBXmKXobm5BhPTCTcBoryF9jklTelb92eVHwHiFSZx2UCcMn7PH9+CcdH+0TF7vqUZUSckRg==}
 
   '@isaacs/cliui@8.0.2':
     resolution: {integrity: sha512-O8jcjabXaleOG9DQ0+ARXWZBTfnP4WNAqzuiJK7ll44AmxGKv/J2M4TPjxjY3znBCfvBXFzucm1twdyFybFqEA==}
@@ -1992,9 +2002,15 @@ snapshots:
 
   '@bcoe/v8-coverage@0.2.3': {}
 
+  '@compilets/unzip-url@1.0.5':
+    dependencies:
+      '@henrygd/queue': 1.0.6
+
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
+
+  '@henrygd/queue@1.0.6': {}
 
   '@isaacs/cliui@8.0.2':
     dependencies:

@@ -8,6 +8,7 @@ const {
   installCodexDeps,
   writeRaycastConfig,
   setupDevEnvironment,
+  setupAndroidEnvironment,
 } = require('../build')
 
 const program = new Command()
@@ -98,6 +99,28 @@ program
       console.log(`\n✅ Dev environment setup completed at: ${targetPath}`)
     } catch (err) {
       console.error('Failed to setup dev environment:', err.message)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('set-android')
+  .description('setup Android development environment (macOS and Linux)')
+  .option('--android-home <path>', 'Custom Android SDK installation path')
+  .option('--skip-env-vars', 'Skip adding environment variables to shell config')
+  .action(async (options) => {
+    try {
+      const { androidHome, envVarsAdded, shellRcFile } =
+        await setupAndroidEnvironment({
+          androidHome: options.androidHome,
+          skipEnvVars: options.skipEnvVars,
+        })
+      console.log(`\n✅ Android SDK installed at: ${androidHome}`)
+      if (envVarsAdded && shellRcFile) {
+        console.log(`✅ Environment variables added to: ${shellRcFile}`)
+      }
+    } catch (err) {
+      console.error('Failed to setup Android environment:', err.message)
       process.exit(1)
     }
   })

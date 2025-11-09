@@ -210,3 +210,6 @@ export function writeRaycastConfig(apiKey: string): { configPath: string } {
 
 // Re-export dev-setup functionality
 export { setupDevEnvironment } from './dev-setup'
+
+// Re-export android-setup functionality
+export { setupAndroidEnvironment } from './android-setup'
