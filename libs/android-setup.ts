@@ -149,10 +149,17 @@ export async function setupAndroidEnvironment(options?: {
   // Accept licenses
   console.log('\nAccepting Android SDK licenses...')
   try {
-    await execa('bash', ['-c', `yes | "${sdkmanagerBinary}" --licenses`], {
-      env: sdkmanagerEnv,
-      stdio: 'inherit',
-    })
+    await execa(
+      'bash',
+      [
+        '-c',
+        `yes | "${sdkmanagerBinary}" --sdk_root=${androidHome} --licenses`,
+      ],
+      {
+        env: sdkmanagerEnv,
+        stdio: 'inherit',
+      }
+    )
   } catch (error) {
     console.warn(
       'Warning: License acceptance may have failed, but continuing...'
@@ -170,10 +177,14 @@ export async function setupAndroidEnvironment(options?: {
   ]
 
   try {
-    await execa(sdkmanagerBinary, components, {
-      env: sdkmanagerEnv,
-      stdio: 'inherit',
-    })
+    await execa(
+      sdkmanagerBinary,
+      [`--sdk_root=${androidHome}`, ...components],
+      {
+        env: sdkmanagerEnv,
+        stdio: 'inherit',
+      }
+    )
     console.log('Android SDK components installed successfully')
   } catch (error) {
     throw new Error(
