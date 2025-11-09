@@ -107,7 +107,10 @@ program
   .command('set-android')
   .description('setup Android development environment (macOS and Linux)')
   .option('--android-home <path>', 'Custom Android SDK installation path')
-  .option('--skip-env-vars', 'Skip adding environment variables to shell config')
+  .option(
+    '--skip-env-vars',
+    'Skip adding environment variables to shell config'
+  )
   .action(async (options) => {
     try {
       const { androidHome, envVarsAdded, shellRcFile } =

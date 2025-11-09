@@ -26,7 +26,9 @@ function getSdkDownloadUrl(sdkVersion: string): string {
   } else if (platform === 'linux') {
     return `https://dl.google.com/android/repository/commandlinetools-linux-${sdkVersion}_latest.zip`
   } else {
-    throw new Error(`Unsupported platform: ${platform}. Only macOS and Linux are supported.`)
+    throw new Error(
+      `Unsupported platform: ${platform}. Only macOS and Linux are supported.`
+    )
   }
 }
 
@@ -157,14 +159,10 @@ export async function setupAndroidEnvironment(options?: {
   // Accept licenses
   console.log('\nAccepting Android SDK licenses...')
   try {
-    await execa(
-      'bash',
-      ['-c', 'yes | sdkmanager --licenses'],
-      {
-        env: sdkmanagerEnv,
-        stdio: 'inherit',
-      }
-    )
+    await execa('bash', ['-c', 'yes | sdkmanager --licenses'], {
+      env: sdkmanagerEnv,
+      stdio: 'inherit',
+    })
   } catch (error) {
     console.warn(
       'Warning: License acceptance may have failed, but continuing...'
@@ -183,14 +181,10 @@ export async function setupAndroidEnvironment(options?: {
 
   try {
     const componentsList = components.join(' ')
-    await execa(
-      'bash',
-      ['-c', `yes | sdkmanager ${componentsList}`],
-      {
-        env: sdkmanagerEnv,
-        stdio: 'inherit',
-      }
-    )
+    await execa('bash', ['-c', `yes | sdkmanager ${componentsList}`], {
+      env: sdkmanagerEnv,
+      stdio: 'inherit',
+    })
     console.log('Android SDK components installed successfully')
   } catch (error) {
     throw new Error(
@@ -237,7 +231,9 @@ export async function setupAndroidEnvironment(options?: {
     console.log(`  source ${shellRcFile}`)
   }
 
-  console.log('\n✅ Android development environment setup completed successfully!')
+  console.log(
+    '\n✅ Android development environment setup completed successfully!'
+  )
 
   return {
     androidHome,
@@ -245,4 +241,3 @@ export async function setupAndroidEnvironment(options?: {
     shellRcFile,
   }
 }
-
