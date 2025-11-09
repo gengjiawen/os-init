@@ -57,7 +57,7 @@ pnpx @gengjiawen/os-init set-dev "ssh-rsa AAAAB3NzaC1yc2..."
 ### Setup Android Development Environment
 
 ```bash
-pnpx @gengjiawen/os-init set-android [options]
+pnpx @gengjiawen/os-init set-android
 ```
 
 Sets up a complete Android development environment on macOS and Linux. This command will:
@@ -70,9 +70,6 @@ Sets up a complete Android development environment on macOS and Linux. This comm
 
 Example:
 ```bash
-# Basic installation
-pnpx @gengjiawen/os-init set-android
-
 # Custom installation path
 pnpx @gengjiawen/os-init set-android --android-home ~/my-android-sdk
 
