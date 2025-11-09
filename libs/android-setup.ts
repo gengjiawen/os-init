@@ -40,7 +40,7 @@ function getAndroidEnvVars(androidHome: string, ndkVersion: string): string {
 export ANDROID_HOME=${androidHome}
 export ANDROID_SDK_ROOT=\${ANDROID_HOME}
 export ANDROID_NDK_HOME=\${ANDROID_HOME}/ndk/${ndkVersion}
-export PATH=\${ANDROID_HOME}/cmdline-tools/bin:\${ANDROID_HOME}/latest/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
+export PATH=\${ANDROID_HOME}/cmdline-tools/bin:\${ANDROID_HOME}/cmdline-tools/latest/bin:\${ANDROID_HOME}/emulator:\${ANDROID_HOME}/platform-tools:\${ANDROID_HOME}/tools:\${ANDROID_HOME}/tools/bin:\${PATH}
 `
 }
 
@@ -160,8 +160,8 @@ export async function setupAndroidEnvironment(options?: {
   const sdkUrl = getSdkDownloadUrl(sdkVersion)
 
   const cmdlineToolsPath = path.join(androidHome, 'cmdline-tools')
-  const latestBin = path.join(cmdlineToolsPath, 'bin')
-  const nestedBin = path.join(cmdlineToolsPath, 'latest', 'bin')
+  const latestPath = path.join(cmdlineToolsPath, 'latest')
+  const latestBin = path.join(latestPath, 'bin')
 
   try {
     // Download and extract SDK using unzip-url
@@ -169,7 +169,9 @@ export async function setupAndroidEnvironment(options?: {
       console.log(
         `Downloading and extracting from: ${sdkUrl} to ${androidHome}`
       )
-      await unzip(sdkUrl, androidHome)
+      await unzip(sdkUrl, cmdlineToolsPath)
+      const tmp_toolchain = path.join(cmdlineToolsPath, 'cmdline-tools')
+      fs.renameSync(tmp_toolchain, latestPath)
       console.log('Android SDK extracted successfully')
     }
   } catch (error) {
@@ -177,23 +179,29 @@ export async function setupAndroidEnvironment(options?: {
       `Failed to download/extract Android SDK: ${error instanceof Error ? error.message : String(error)}`
     )
   }
-  const sdkmanagerBinDir = fs.existsSync(latestBin) ? latestBin : nestedBin
-  const sdkmanagerBinary = path.join(sdkmanagerBinDir, 'sdkmanager')
+  const sdkmanagerBinary = path.join(latestBin, 'sdkmanager')
 
   const sdkmanagerEnv = {
     ...process.env,
     ANDROID_HOME: androidHome,
     ANDROID_SDK_ROOT: androidHome,
-    PATH: `${sdkmanagerBinDir}:${process.env.PATH}`,
+    PATH: `${latestBin}:${process.env.PATH}`,
   }
 
   // Accept licenses
   console.log('\nAccepting Android SDK licenses...')
   try {
-    await execa('bash', ['-c', `yes | "${sdkmanagerBinary}" --licenses`], {
-      env: sdkmanagerEnv,
-      stdio: 'inherit',
-    })
+    await execa(
+      'bash',
+      [
+        '-c',
+        `yes | "${sdkmanagerBinary}" --sdk_root=${androidHome} --licenses`,
+      ],
+      {
+        env: sdkmanagerEnv,
+        stdio: 'inherit',
+      }
+    )
   } catch (error) {
     console.warn(
       'Warning: License acceptance may have failed, but continuing...'
