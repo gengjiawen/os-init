@@ -1,5 +1,6 @@
 import * as fs from 'fs'
 import * as path from 'path'
+import * as os from 'os'
 
 /** Get Fish shell script to import bash exports */
 export function getFishImportBashExports(): string {
@@ -39,8 +40,18 @@ end
  * Append bash import script to Fish shell config file
  * This function adds the import script to fish config.fish to automatically
  * source environment variables from .bashrc
+ * It detects fish shell by checking if ~/.config/fish/config.fish exists
  */
-export function appendFishImportScript(fishConfigPath: string): void {
+export function appendFishImportScript(): void {
+  const homeDir = os.homedir()
+  const fishConfigPath = path.join(homeDir, '.config', 'fish', 'config.fish')
+
+  // Detect if fish shell exists by checking config file
+  if (!fs.existsSync(fishConfigPath)) {
+    console.log('Fish shell config not found, skipping fish setup')
+    return
+  }
+
   // Ensure fish config directory exists
   const configDir = path.dirname(fishConfigPath)
   if (!fs.existsSync(configDir)) {

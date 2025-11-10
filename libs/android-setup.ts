@@ -105,7 +105,7 @@ function appendEnvVarsToShellConfig(rcFile: string, envVars: string): void {
 
   // For fish shell, always write to bashrc first, then add import script to fish config
   if (shell.includes('fish')) {
-    appendFishImportScript(rcFile)
+    appendFishImportScript()
   }
 }
 
