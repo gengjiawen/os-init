@@ -9,8 +9,8 @@ import { appendFishImportScript } from './fish-shell-utils'
 const ANDROID_CONFIG = {
   sdkVersion: '11076708',
   platformVersion: 'android-36',
-  buildToolsVersion: '36.0.0',
-  cmakeVersion: '3.30.5',
+  buildToolsVersion: '36.1.0',
+  cmakeVersion: '4.1.2',
   ndkVersion: '29.0.14206865',
 } as const
 
