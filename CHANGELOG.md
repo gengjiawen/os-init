@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.8.0](https://github.com/gengjiawen/os-init/compare/v1.7.1...v1.8.0) (2025-11-10)
+
+
+### Features
+
+* bump andoid tool version ([e54ef83](https://github.com/gengjiawen/os-init/commit/e54ef835b9a4baa03f89cfca651b0d032364734b))
+* refine default sdk home ([690d4ef](https://github.com/gengjiawen/os-init/commit/690d4efdeec1b96da2296e1275cfa2898382fea2))
+
 ## [1.7.1](https://github.com/gengjiawen/os-init/compare/v1.7.0...v1.7.1) (2025-11-09)
 
 
