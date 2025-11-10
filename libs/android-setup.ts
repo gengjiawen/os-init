@@ -16,7 +16,25 @@ const ANDROID_CONFIG = {
 
 /** Get default Android home directory */
 function getDefaultAndroidHome(): string {
-  return path.join(os.homedir(), 'Android')
+  const { ANDROID_SDK_ROOT, ANDROID_HOME, LOCALAPPDATA } = process.env
+
+  if (ANDROID_SDK_ROOT && ANDROID_SDK_ROOT.trim()) return ANDROID_SDK_ROOT
+  if (ANDROID_HOME && ANDROID_HOME.trim()) return ANDROID_HOME
+
+  const home = os.homedir()
+  switch (process.platform) {
+    case 'darwin':
+      return path.join(home, 'Library', 'Android', 'sdk')
+    case 'linux':
+      return path.join(home, 'Android', 'Sdk')
+    case 'win32':
+      return LOCALAPPDATA
+        ? path.join(LOCALAPPDATA, 'Android', 'Sdk')
+        : path.join(home, 'AppData', 'Local', 'Android', 'Sdk')
+    default:
+      // Reasonable fallback for other POSIX-like environments
+      return path.join(home, 'Android', 'Sdk')
+  }
 }
 
 /** Get SDK download URL based on platform */
