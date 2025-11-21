@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.0](https://github.com/gengjiawen/os-init/compare/v1.8.0...v1.9.0) (2025-11-21)
+
+
+### Features
+
+* bump codex base model ([498bcc3](https://github.com/gengjiawen/os-init/commit/498bcc3b1e8a787ee61531b314c792127cd6c80b))
+
 ## [1.8.0](https://github.com/gengjiawen/os-init/compare/v1.7.1...v1.8.0) (2025-11-10)
 
 
