@@ -58,7 +58,7 @@ os-init set-android --skip-env-vars
 - Internet connection to download Android SDK
 - Node.js 22.12.0 or higher
 
-The script uses `@compilets/unzip-url` package to download and extract the Android SDK, so no external `curl` or `unzip` tools are required. No sudo access is needed as the SDK is installed in your home directory.
+The script uses `@gengjiawen/unzip-url` package to download and extract the Android SDK, so no external `curl` or `unzip` tools are required. No sudo access is needed as the SDK is installed in your home directory.
 
 ## Environment Variables
 
@@ -93,11 +93,13 @@ sdkmanager --list
 ## Platform-Specific Notes
 
 ### macOS
+
 - The SDK is downloaded from Google's macOS-specific distribution
 - Works on both Intel and Apple Silicon Macs
 - No sudo permissions required
 
 ### Linux
+
 - The SDK is downloaded from Google's Linux-specific distribution
 - Tested on Ubuntu and Debian-based systems
 - No sudo permissions required when installing to home directory
@@ -124,5 +126,3 @@ If the Android SDK download fails, check your internet connection and try again.
 - **Build Tools 36.0.0** - Tools for building Android apps
 - **CMake 3.30.5** - For native code compilation
 - **NDK 29.0.14206865** - Native Development Kit for C/C++ code
-
-

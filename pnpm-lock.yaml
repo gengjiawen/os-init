@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@gengjiawen/unzip-url':
-        specifier: ^1.0.0
-        version: 1.0.0
+        specifier: ^1.1.0
+        version: 1.1.0
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -232,8 +232,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@gengjiawen/unzip-url@1.0.0':
-    resolution: {integrity: sha512-MjxHhrYkK9QWeos5loPyEVx8j09QqL3b7P5dc0a0qnKDz5JBi2kpINKIe6TWPGGPRAAXLddwPqlbL5Ijb0YT/A==}
+  '@gengjiawen/unzip-url@1.1.0':
+    resolution: {integrity: sha512-0WA1ymYWsDRGuDoABJ0A9HpeT6qJRfhWht+k5X4TMm0fE5TizQ3ImdHnlsPVZZAzzbnjNMBASxOynnxydPiv0g==}
     hasBin: true
 
   '@henrygd/queue@1.0.6':
@@ -1831,7 +1831,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@gengjiawen/unzip-url@1.0.0':
+  '@gengjiawen/unzip-url@1.1.0':
     dependencies:
       '@henrygd/queue': 1.0.6
 
