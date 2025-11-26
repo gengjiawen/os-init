@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.9.1](https://github.com/gengjiawen/os-init/compare/v1.9.0...v1.9.1) (2025-11-26)
+
+
+### Bug Fixes
+
+* update unzip-url package version to 1.1.0 in package.json and pnpm-lock.yaml ([e800522](https://github.com/gengjiawen/os-init/commit/e8005229e0a4d28a91e0c82aceec4e41150ec8dc))
+
 ## [1.9.0](https://github.com/gengjiawen/os-init/compare/v1.8.0...v1.9.0) (2025-11-21)
 
 
