@@ -88,7 +88,6 @@ function hasAndroidEnvVars(rcFile: string): boolean {
 
 /** Append Android environment variables to shell config */
 function appendEnvVarsToShellConfig(rcFile: string, envVars: string): void {
-  const shell = process.env.SHELL || ''
   const homeDir = os.homedir()
   const bashrcFile = path.join(homeDir, '.bashrc')
 
@@ -104,9 +103,7 @@ function appendEnvVarsToShellConfig(rcFile: string, envVars: string): void {
   }
 
   // For fish shell, always write to bashrc first, then add import script to fish config
-  if (shell.includes('fish')) {
-    appendFishImportScript()
-  }
+  appendFishImportScript()
 }
 
 /** Setup Android development environment */
@@ -264,6 +261,10 @@ export async function setupAndroidEnvironment(options?: {
       appendEnvVarsToShellConfig(shellRcFile, envVars)
       envVarsAdded = true
     }
+
+    // Always check and add fish import script if fish shell exists
+    // This ensures fish users get the import script even if current shell is not fish
+    appendFishImportScript()
 
     console.log('\n📋 To activate the environment in your current shell, run:')
     console.log(`  source ${shellRcFile}`)
