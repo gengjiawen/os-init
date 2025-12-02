@@ -2,6 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import { execa } from 'execa'
 import * as ip from 'ip'
+import * as yaml from 'yaml'
 
 /** Ensure directory exists */
 function ensureDir(dirPath: string): void {
@@ -66,6 +67,30 @@ export async function setupDevEnvironment(
     console.log('SSH public key has been configured in Dockerfile')
   } else {
     throw new Error(`Dockerfile not found in ${targetPath}`)
+  }
+
+  // Check if /dev/net/tun exists and add devices to docker-compose.yml
+  const tunDevicePath = '/dev/net/tun'
+  const dockerComposePath = path.join(targetPath, 'docker-compose.yml')
+  if (fs.existsSync(tunDevicePath) && fs.existsSync(dockerComposePath)) {
+    const content = fs.readFileSync(dockerComposePath, 'utf-8')
+    const doc = yaml.parse(content) as {
+      services?: { [key: string]: { devices?: string[] } }
+    }
+
+    // Find the first service and add devices
+    if (doc.services) {
+      const serviceName = Object.keys(doc.services)[0]
+      const service = doc.services[serviceName]
+
+      // Check if devices already contains /dev/net/tun
+      if (!service.devices?.includes('/dev/net/tun:/dev/net/tun')) {
+        service.devices = service.devices || []
+        service.devices.push('/dev/net/tun:/dev/net/tun')
+        fs.writeFileSync(dockerComposePath, yaml.stringify(doc))
+        console.log('Added /dev/net/tun device to docker-compose.yml')
+      }
+    }
   }
 
   // Check if docker-compose is available
