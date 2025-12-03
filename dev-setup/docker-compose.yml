@@ -12,5 +12,6 @@ services:
       - '5173:5173'
     cap_add:
       - SYS_PTRACE
+      - NET_ADMIN
     volumes:
       - .:/pwd
