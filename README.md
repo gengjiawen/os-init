@@ -50,6 +50,28 @@ pnpx @gengjiawen/os-init set-android --android-home ~/my-android-sdk
 pnpx @gengjiawen/os-init set-android --skip-env-vars
 ```
 
+### Setup Fish Shell Import Script
+
+```bash
+pnpx @gengjiawen/os-init set-fish
+```
+
+Sets up Fish shell to automatically import environment variables from `.bashrc`. This command will:
+
+- Detect if Fish shell is installed (by checking for `~/.config/fish/config.fish`)
+- Add an import script to `~/.config/fish/config.fish` that reads environment variables from `~/.bashrc`
+- Automatically convert Bash-style environment variable syntax to Fish shell syntax
+- Handle PATH variables correctly (converting `:` separators to spaces)
+- Skip if the import script already exists
+
+This is useful when you have environment variables configured in `.bashrc` but want to use them in Fish shell without duplicating configuration.
+
+Example:
+
+```bash
+pnpx @gengjiawen/os-init set-fish
+```
+
 ---
 
 ### Configure Claude Code

@@ -46,22 +46,19 @@ export function appendFishImportScript(): void {
   const homeDir = os.homedir()
   const fishConfigPath = path.join(homeDir, '.config', 'fish', 'config.fish')
 
-  // Detect if fish shell exists by checking config file
-  if (!fs.existsSync(fishConfigPath)) {
-    console.log('Fish shell config not found, skipping fish setup')
-    return
-  }
-
   // Ensure fish config directory exists
   const configDir = path.dirname(fishConfigPath)
   if (!fs.existsSync(configDir)) {
     fs.mkdirSync(configDir, { recursive: true })
   }
 
+  // Create fish config file if it doesn't exist
+  if (!fs.existsSync(fishConfigPath)) {
+    fs.writeFileSync(fishConfigPath, '', 'utf-8')
+  }
+
   // Check if import script already exists
-  const fishContent = fs.existsSync(fishConfigPath)
-    ? fs.readFileSync(fishConfigPath, 'utf-8')
-    : ''
+  const fishContent = fs.readFileSync(fishConfigPath, 'utf-8')
 
   if (
     !fishContent.includes('Import environment variables from .bashrc - START')

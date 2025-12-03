@@ -10,6 +10,7 @@ const {
   setupDevEnvironment,
   setupAndroidEnvironment,
 } = require('../build')
+const { appendFishImportScript } = require('../build/fish-shell-utils')
 
 const program = new Command()
 
@@ -124,6 +125,19 @@ program
       }
     } catch (err) {
       console.error('Failed to setup Android environment:', err.message)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('set-fish')
+  .description('setup Fish shell to import environment variables from .bashrc')
+  .action(async () => {
+    try {
+      appendFishImportScript()
+      console.log('\n✅ Fish shell import script setup completed!')
+    } catch (err) {
+      console.error('Failed to setup Fish shell:', err.message)
       process.exit(1)
     }
   })
