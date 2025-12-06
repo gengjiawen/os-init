@@ -15,3 +15,6 @@ services:
       - NET_ADMIN
     volumes:
       - .:/pwd
+      - ./.ssh_host_keys:/etc/ssh/host_keys
+      - ~/.gitconfig:/home/gitpod/.gitconfig:ro
+    command: ['/usr/local/bin/init.sh']

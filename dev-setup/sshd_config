@@ -1,9 +1,9 @@
 Port 22
 Protocol 2
 
-# Host keys are generated at runtime with `ssh-keygen -A`
-HostKey /etc/ssh/ssh_host_rsa_key
-HostKey /etc/ssh/ssh_host_ed25519_key
+# Host keys are persisted in mounted volume to keep fingerprints stable
+HostKey /etc/ssh/host_keys/ssh_host_rsa_key
+HostKey /etc/ssh/host_keys/ssh_host_ed25519_key
 
 SyslogFacility AUTHPRIV
 LogLevel VERBOSE

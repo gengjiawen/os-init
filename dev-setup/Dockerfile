@@ -2,6 +2,8 @@ FROM gengjiawen/node-build
 
 # SSHD configuration
 COPY sshd_config /etc/ssh/sshd_config
+COPY init.sh /usr/local/bin/init.sh
+RUN chmod +x /usr/local/bin/init.sh
 
 ENV SSH_PUBLIC_KEY="ssh-public-key-placeholder"
 RUN set -eux; \
