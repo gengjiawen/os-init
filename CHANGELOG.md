@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.10.0](https://github.com/gengjiawen/os-init/compare/v1.9.1...v1.10.0) (2025-12-06)
+
+
+### Features
+
+* add command to set up Fish shell import script ([8418406](https://github.com/gengjiawen/os-init/commit/841840694783a1264733b7b8415cdb12d2bb21fa))
+* add dev tun to setup ([a373417](https://github.com/gengjiawen/os-init/commit/a373417ca60f0f1554c85c06d73c017bc722fdf3))
+* add ownership fix for gitpod user config and cache in init script ([dd3720c](https://github.com/gengjiawen/os-init/commit/dd3720cd0a57b603d1cc74179187669e3659ae82))
+* persist ssh host keys via init script and mount gitconfig ([dbaabe9](https://github.com/gengjiawen/os-init/commit/dbaabe98ca44aa3e1cdb29deb12f700a4b559fb5))
+
 ## [1.9.1](https://github.com/gengjiawen/os-init/compare/v1.9.0...v1.9.1) (2025-11-26)
 
 
