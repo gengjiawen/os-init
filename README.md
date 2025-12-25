@@ -80,11 +80,10 @@ pnpx @gengjiawen/os-init set-fish
 pnpx @gengjiawen/os-init set-cc <API_KEY>
 ```
 
-Configures Claude Code Router with your API key. This command will:
+Configures Claude Code with your API key. This command will:
 
-- Write `~/.claude-code-router/config.json`
 - Write `~/.claude/settings.json`
-- Install global tools: `@anthropic-ai/claude-code`, `@musistudio/claude-code-router`
+- Install global tool: `@anthropic-ai/claude-code`
 
 ### Configure Codex CLI
 

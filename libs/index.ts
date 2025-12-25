@@ -3,36 +3,10 @@ import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
 
-/** Return default configuration directory path */
-function getDefaultConfigDir(): string {
-  return path.join(os.homedir(), '.claude-code-router')
-}
-
 /** Ensure directory exists */
 function ensureDir(dirPath: string): void {
   fs.mkdirSync(dirPath, { recursive: true })
 }
-
-/** Template string used for simple string replacement */
-const DEFAULT_TEMPLATE = `{
-  "Providers": [
-    {
-      "name": "jw",
-      "api_base_url": "https://ai.gengjiawen.com/api/openai/v1/chat/completions",
-      "api_key": "API_KEY_PLACEHOLDER",
-      "models": ["code", "free"],
-      "transformer": {
-        "use": ["openrouter"]
-      }
-    }
-  ],
-  "Router": {
-    "default": "jw,code",
-    "background": "jw,code",
-    "think": "jw,code",
-    "longContext": "jw,code"
-  }
-}`
 
 /** Return Claude settings directory path */
 function getClaudeSettingsDir(): string {
@@ -56,18 +30,10 @@ const CLAUDE_SETTINGS_TEMPLATE = `{
   }
 }`
 
-/** Write Claude config files (both router config and settings) */
+/** Write Claude config files */
 export function writeClaudeConfig(apiKey: string): {
-  routerConfigPath: string
   settingsPath: string
 } {
-  // Write claude-code-router config
-  const routerConfigDir = getDefaultConfigDir()
-  const routerConfigPath = path.join(routerConfigDir, 'config.json')
-  ensureDir(routerConfigDir)
-  const routerContent = DEFAULT_TEMPLATE.replace('API_KEY_PLACEHOLDER', apiKey)
-  fs.writeFileSync(routerConfigPath, routerContent)
-
   // Write Claude settings
   const settingsDir = getClaudeSettingsDir()
   const settingsPath = path.join(settingsDir, 'settings.json')
@@ -78,7 +44,7 @@ export function writeClaudeConfig(apiKey: string): {
   )
   fs.writeFileSync(settingsPath, settingsContent)
 
-  return { routerConfigPath, settingsPath }
+  return { settingsPath }
 }
 
 /** Check if a command exists */
@@ -98,10 +64,7 @@ async function commandExists(command: string): Promise<boolean> {
 
 /** Install global dependencies */
 export async function installDeps(): Promise<void> {
-  const packages = [
-    '@anthropic-ai/claude-code',
-    '@musistudio/claude-code-router',
-  ]
+  const packages = ['@anthropic-ai/claude-code']
   const usePnpm = await commandExists('pnpm')
 
   if (usePnpm) {

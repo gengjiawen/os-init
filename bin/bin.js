@@ -16,7 +16,7 @@ const program = new Command()
 
 program
   .command('set-cc')
-  .description('setup claude-code-router')
+  .description('setup Claude Code')
   .argument('<apiKey>', 'API key to set')
   .action(async (apiKey) => {
     // Ensure apiKey is provided
@@ -26,8 +26,7 @@ program
       return
     }
     try {
-      const { routerConfigPath, settingsPath } = writeClaudeConfig(apiKey)
-      console.log(`Claude router config written to: ${routerConfigPath}`)
+      const { settingsPath } = writeClaudeConfig(apiKey)
       console.log(`Claude settings written to: ${settingsPath}`)
       await installDeps()
     } catch (err) {
@@ -35,7 +34,7 @@ program
       process.exit(1)
     }
     console.log(
-      'Claude code is ready, use `claude` in terminal to start building'
+      'Claude Code is ready, use `claude` in terminal to start building'
     )
   })
 
