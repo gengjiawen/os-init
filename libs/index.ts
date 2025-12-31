@@ -84,7 +84,7 @@ function getCodexConfigDir(): string {
 
 /** Template for Codex config.toml */
 const CODEX_CONFIG_TOML_TEMPLATE = `model_provider = "jw"
-model = "gpt-5.1"
+model = "gpt-5.2"
 model_reasoning_effort = "high"
 disable_response_storage = true
 preferred_auth_method = "apikey"
