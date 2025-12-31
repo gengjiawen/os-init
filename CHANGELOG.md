@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.11.0](https://github.com/gengjiawen/os-init/compare/v1.10.0...v1.11.0) (2025-12-31)
+
+
+### Features
+
+* update model version in Codex config template from gpt-5.1 to gpt-5.2 ([56c36d3](https://github.com/gengjiawen/os-init/commit/56c36d3da5c3732100c090c4df3318b5cdd003cf))
+
 ## [1.10.0](https://github.com/gengjiawen/os-init/compare/v1.9.1...v1.10.0) (2025-12-06)
 
 
