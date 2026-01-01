@@ -6,6 +6,8 @@ const {
   installDeps,
   writeCodexConfig,
   installCodexDeps,
+  writeGeminiConfig,
+  installGeminiDeps,
   writeRaycastConfig,
   setupDevEnvironment,
   setupAndroidEnvironment,
@@ -58,6 +60,30 @@ program
       process.exit(1)
     }
     console.log('Codex is ready. use `codex` in terminal to start building')
+  })
+
+program
+  .command('set-gemini')
+  .description('setup Gemini CLI config and auth')
+  .argument('<apiKey>', 'API key to set for Gemini CLI')
+  .action(async (apiKey) => {
+    if (!apiKey || String(apiKey).trim().length === 0) {
+      console.error('Missing required argument: <apiKey>')
+      program.help({ error: true })
+      return
+    }
+    try {
+      const { envPath, settingsPath } = writeGeminiConfig(apiKey)
+      console.log(`Gemini CLI env written to: ${envPath}`)
+      console.log(`Gemini CLI settings written to: ${settingsPath}`)
+      await installGeminiDeps()
+    } catch (err) {
+      console.error('Failed to setup Gemini CLI:', err.message)
+      process.exit(1)
+    }
+    console.log(
+      'Gemini CLI is ready. use `gemini` in terminal to start building'
+    )
   })
 
 program
