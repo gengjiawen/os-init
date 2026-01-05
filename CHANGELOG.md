@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.12.0](https://github.com/gengjiawen/os-init/compare/v1.11.0...v1.12.0) (2026-01-05)
+
+
+### Features
+
+* add command to setup all AI agents with configuration and dependency installation ([122973e](https://github.com/gengjiawen/os-init/commit/122973e87767713ac6f9a36d0197e53f98f0b323))
+* add Gemini CLI setup command and configuration management ([9d8400a](https://github.com/gengjiawen/os-init/commit/9d8400acb48a4da3e0688b60d69f9ed1b1353b8d))
+
 ## [1.11.0](https://github.com/gengjiawen/os-init/compare/v1.10.0...v1.11.0) (2025-12-31)
 
 
