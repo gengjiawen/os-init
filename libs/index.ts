@@ -55,6 +55,9 @@ export { writeCodexConfig, installCodexDeps } from './codex'
 // Re-export gemini-cli functionality
 export { writeGeminiConfig, installGeminiDeps } from './gemini-cli'
 
+// Re-export all-agents functionality
+export { writeAllAgentsConfig, installAllAgentsDeps } from './all-agents'
+
 // Re-export dev-setup functionality
 export { setupDevEnvironment } from './dev-setup'
 

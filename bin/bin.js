@@ -8,6 +8,8 @@ const {
   installCodexDeps,
   writeGeminiConfig,
   installGeminiDeps,
+  writeAllAgentsConfig,
+  installAllAgentsDeps,
   writeRaycastConfig,
   setupDevEnvironment,
   setupAndroidEnvironment,
@@ -84,6 +86,44 @@ program
     console.log(
       'Gemini CLI is ready. use `gemini` in terminal to start building'
     )
+  })
+
+program
+  .command('set-agents')
+  .description('setup all AI agents (Claude Code, Codex, Gemini CLI) at once')
+  .argument('<apiKey>', 'API key to set for all agents')
+  .action(async (apiKey) => {
+    if (!apiKey || String(apiKey).trim().length === 0) {
+      console.error('Missing required argument: <apiKey>')
+      program.help({ error: true })
+      return
+    }
+    try {
+      console.log('Setting up all AI agents...\n')
+
+      const result = writeAllAgentsConfig(apiKey)
+
+      console.log('Claude Code:')
+      console.log(`  Settings written to: ${result.claude.settingsPath}`)
+
+      console.log('\nCodex:')
+      console.log(`  Config written to: ${result.codex.configPath}`)
+      console.log(`  Auth written to: ${result.codex.authPath}`)
+
+      console.log('\nGemini CLI:')
+      console.log(`  Env written to: ${result.gemini.envPath}`)
+      console.log(`  Settings written to: ${result.gemini.settingsPath}`)
+
+      console.log('\nInstalling dependencies...')
+      await installAllAgentsDeps()
+    } catch (err) {
+      console.error('Failed to setup agents:', err.message)
+      process.exit(1)
+    }
+    console.log('\nAll agents are ready!')
+    console.log('  - Use `claude` for Claude Code')
+    console.log('  - Use `codex` for Codex')
+    console.log('  - Use `gemini` for Gemini CLI')
   })
 
 program
