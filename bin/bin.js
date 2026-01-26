@@ -90,18 +90,28 @@ program
 
 program
   .command('set-agents')
-  .description('setup all AI agents (Claude Code, Codex, Gemini CLI) at once')
-  .argument('<apiKey>', 'API key to set for all agents')
-  .action(async (apiKey) => {
+  .description(
+    'setup Claude Code and Codex at once (use --full to include Gemini CLI)'
+  )
+  .argument('<apiKey>', 'API key to set for agents')
+  .option('--full', 'Also setup Gemini CLI')
+  .action(async (apiKey, options) => {
     if (!apiKey || String(apiKey).trim().length === 0) {
       console.error('Missing required argument: <apiKey>')
       program.help({ error: true })
       return
     }
-    try {
-      console.log('Setting up all AI agents...\n')
 
-      const result = writeAllAgentsConfig(apiKey)
+    const full = Boolean(options.full)
+
+    try {
+      console.log(
+        full
+          ? 'Setting up Claude Code + Codex + Gemini CLI...\n'
+          : 'Setting up Claude Code + Codex...\n'
+      )
+
+      const result = writeAllAgentsConfig(apiKey, { full })
 
       console.log('Claude Code:')
       console.log(`  Settings written to: ${result.claude.settingsPath}`)
@@ -110,20 +120,23 @@ program
       console.log(`  Config written to: ${result.codex.configPath}`)
       console.log(`  Auth written to: ${result.codex.authPath}`)
 
-      console.log('\nGemini CLI:')
-      console.log(`  Env written to: ${result.gemini.envPath}`)
-      console.log(`  Settings written to: ${result.gemini.settingsPath}`)
+      if (result.gemini) {
+        console.log('\nGemini CLI:')
+        console.log(`  Env written to: ${result.gemini.envPath}`)
+        console.log(`  Settings written to: ${result.gemini.settingsPath}`)
+      }
 
       console.log('\nInstalling dependencies...')
-      await installAllAgentsDeps()
+      await installAllAgentsDeps({ full })
     } catch (err) {
       console.error('Failed to setup agents:', err.message)
       process.exit(1)
     }
-    console.log('\nAll agents are ready!')
+
+    console.log('\nSetup complete!')
     console.log('  - Use `claude` for Claude Code')
     console.log('  - Use `codex` for Codex')
-    console.log('  - Use `gemini` for Gemini CLI')
+    if (full) console.log('  - Use `gemini` for Gemini CLI')
   })
 
 program
