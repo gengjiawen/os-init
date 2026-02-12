@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.13.1](https://github.com/gengjiawen/os-init/compare/v1.13.0...v1.13.1) (2026-02-12)
+
+
+### Bug Fixes
+
+* update Codex model version in config template from gpt-5.2 to gpt-5.3-codex ([e5fca74](https://github.com/gengjiawen/os-init/commit/e5fca74bf8e18d97f1d70eb75b07c964804816e5))
+
 ## [1.13.0](https://github.com/gengjiawen/os-init/compare/v1.12.0...v1.13.0) (2026-01-26)
 
 
