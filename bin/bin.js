@@ -30,8 +30,11 @@ program
       return
     }
     try {
-      const { settingsPath } = writeClaudeConfig(apiKey)
+      const { settingsPath, vscodeSettingsPath } = writeClaudeConfig(apiKey)
       console.log(`Claude settings written to: ${settingsPath}`)
+      console.log(
+        `VSCode Claude plugin settings written to: ${vscodeSettingsPath}`
+      )
       await installDeps()
     } catch (err) {
       console.error('Failed to complete setup:', err.message)
@@ -115,6 +118,9 @@ program
 
       console.log('Claude Code:')
       console.log(`  Settings written to: ${result.claude.settingsPath}`)
+      console.log(
+        `  VSCode plugin settings written to: ${result.claude.vscodeSettingsPath}`
+      )
 
       console.log('\nCodex:')
       console.log(`  Config written to: ${result.codex.configPath}`)

@@ -83,6 +83,7 @@ pnpx @gengjiawen/os-init set-cc <API_KEY>
 Configures Claude Code with your API key. This command will:
 
 - Write `~/.claude/settings.json`
+- Write VSCode Claude extension config in user `settings.json`
 - Install global tool: `@anthropic-ai/claude-code`
 
 ### Configure Codex CLI
