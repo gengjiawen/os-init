@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.14.0](https://github.com/gengjiawen/os-init/compare/v1.13.1...v1.14.0) (2026-02-26)
+
+
+### Features
+
+* configure vscode claude plugin during set-cc ([f3a6743](https://github.com/gengjiawen/os-init/commit/f3a67431ada64a806960f7727d227937386fb02d))
+
 ## [1.13.1](https://github.com/gengjiawen/os-init/compare/v1.13.0...v1.13.1) (2026-02-12)
 
 
