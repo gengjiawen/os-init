@@ -21,14 +21,9 @@ function getVSCodeUserSettingsPath(homeDir: string): string {
   }
 
   if (process.platform === 'win32') {
-    return path.join(
-      homeDir,
-      'AppData',
-      'Roaming',
-      'Code',
-      'User',
-      'settings.json'
-    )
+    const appData =
+      process.env.APPDATA ?? path.join(homeDir, 'AppData', 'Roaming')
+    return path.join(appData, 'Code', 'User', 'settings.json')
   }
 
   return path.join(homeDir, '.config', 'Code', 'User', 'settings.json')
@@ -37,14 +32,22 @@ function getVSCodeUserSettingsPath(homeDir: string): string {
 describe('writeClaudeConfig', () => {
   let tempHome: string
   let homedirSpy: jest.SpiedFunction<typeof os.homedir>
+  let originalAppData: string | undefined
 
   beforeEach(() => {
     tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-claude-'))
     homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tempHome)
+    originalAppData = process.env.APPDATA
+    process.env.APPDATA = path.join(tempHome, 'AppData', 'Roaming')
   })
 
   afterEach(() => {
     homedirSpy.mockRestore()
+    if (originalAppData === undefined) {
+      delete process.env.APPDATA
+    } else {
+      process.env.APPDATA = originalAppData
+    }
     fs.rmSync(tempHome, { recursive: true, force: true })
   })
 
