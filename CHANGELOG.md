@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.14.1](https://github.com/gengjiawen/os-init/compare/v1.14.0...v1.14.1) (2026-02-28)
+
+
+### Bug Fixes
+
+* stabilize claude config tests on windows ([49e72ac](https://github.com/gengjiawen/os-init/commit/49e72ac4750629df0b915fff04ea481d8787ffa9))
+* update Codex reasoning effort from high to xhigh ([459659f](https://github.com/gengjiawen/os-init/commit/459659f455b99de5f6b662a19a9b2dccdc482ec2))
+
 ## [1.14.0](https://github.com/gengjiawen/os-init/compare/v1.13.1...v1.14.0) (2026-02-26)
 
 
