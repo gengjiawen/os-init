@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.15.0](https://github.com/gengjiawen/os-init/compare/v1.14.1...v1.15.0) (2026-03-04)
+
+
+### Features
+
+* add glm and kimi models to opencode template ([597379d](https://github.com/gengjiawen/os-init/commit/597379db82169f068b4732e71ccba4631e58c951))
+* add opencode setup and update agents installer ([b62d83d](https://github.com/gengjiawen/os-init/commit/b62d83d925cb11bd2fff1465a3936c17706b1267))
+
 ## [1.14.1](https://github.com/gengjiawen/os-init/compare/v1.14.0...v1.14.1) (2026-02-28)
 
 
