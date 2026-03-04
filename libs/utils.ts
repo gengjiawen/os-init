@@ -1,6 +1,10 @@
 import * as fs from 'fs'
 import { execa } from 'execa'
 
+export const PNPM_INSTALL_ENV = {
+  PNPM_CONFIG_ENABLE_PRE_POST_SCRIPTS: 'true',
+}
+
 /** Ensure directory exists */
 export function ensureDir(dirPath: string): void {
   fs.mkdirSync(dirPath, { recursive: true })

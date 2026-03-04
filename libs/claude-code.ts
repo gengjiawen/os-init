@@ -3,7 +3,7 @@ import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
 import { ParseError, applyEdits, modify, parse } from 'jsonc-parser'
-import { ensureDir, commandExists } from './utils'
+import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
 
 const CLAUDE_BASE_URL = 'https://ai.gengjiawen.com/api/claude/'
 
@@ -139,7 +139,10 @@ export async function installDeps(): Promise<void> {
 
   if (usePnpm) {
     console.log('pnpm detected. Installing dependencies with pnpm...')
-    await execa('pnpm', ['add', '-g', ...packages], { stdio: 'inherit' })
+    await execa('pnpm', ['add', '-g', ...packages], {
+      stdio: 'inherit',
+      env: PNPM_INSTALL_ENV,
+    })
   } else {
     console.log('pnpm not found. Falling back to npm...')
     await execa('npm', ['install', '-g', ...packages], { stdio: 'inherit' })

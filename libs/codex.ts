@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
-import { ensureDir, commandExists } from './utils'
+import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
 
 /** Return Codex configuration directory path */
 function getCodexConfigDir(): string {
@@ -47,7 +47,10 @@ export async function installCodexDeps(): Promise<void> {
 
   if (usePnpm) {
     console.log('pnpm detected. Installing Codex dependency with pnpm...')
-    await execa('pnpm', ['add', '-g', ...packages], { stdio: 'inherit' })
+    await execa('pnpm', ['add', '-g', ...packages], {
+      stdio: 'inherit',
+      env: PNPM_INSTALL_ENV,
+    })
   } else {
     console.log('pnpm not found. Falling back to npm...')
     await execa('npm', ['install', '-g', ...packages], { stdio: 'inherit' })

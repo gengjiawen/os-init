@@ -2,7 +2,7 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
-import { ensureDir, commandExists } from './utils'
+import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
 
 /** Return Gemini CLI configuration directory path */
 function getGeminiConfigDir(): string {
@@ -57,7 +57,10 @@ export async function installGeminiDeps(): Promise<void> {
 
   if (usePnpm) {
     console.log('pnpm detected. Installing Gemini CLI with pnpm...')
-    await execa('pnpm', ['add', '-g', geminiPackage], { stdio: 'inherit' })
+    await execa('pnpm', ['add', '-g', geminiPackage], {
+      stdio: 'inherit',
+      env: PNPM_INSTALL_ENV,
+    })
   } else {
     console.log('pnpm not found. Falling back to npm...')
     await execa('npm', ['install', '-g', geminiPackage], { stdio: 'inherit' })

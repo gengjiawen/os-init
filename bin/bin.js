@@ -8,6 +8,8 @@ const {
   installCodexDeps,
   writeGeminiConfig,
   installGeminiDeps,
+  writeOpencodeConfig,
+  installOpencodeDeps,
   writeAllAgentsConfig,
   installAllAgentsDeps,
   writeRaycastConfig,
@@ -92,9 +94,32 @@ program
   })
 
 program
+  .command('set-opencode')
+  .description('setup OpenCode CLI config and auth')
+  .argument('<apiKey>', 'API key to set for OpenCode')
+  .action(async (apiKey) => {
+    if (!apiKey || String(apiKey).trim().length === 0) {
+      console.error('Missing required argument: <apiKey>')
+      program.help({ error: true })
+      return
+    }
+    try {
+      const { configPath } = writeOpencodeConfig(apiKey)
+      console.log(`OpenCode config written to: ${configPath}`)
+      await installOpencodeDeps()
+    } catch (err) {
+      console.error('Failed to setup OpenCode:', err.message)
+      process.exit(1)
+    }
+    console.log(
+      'OpenCode is ready. use `opencode` in terminal to start building'
+    )
+  })
+
+program
   .command('set-agents')
   .description(
-    'setup Claude Code and Codex at once (use --full to include Gemini CLI)'
+    'setup Claude Code, Codex, and OpenCode at once (use --full to include Gemini CLI)'
   )
   .argument('<apiKey>', 'API key to set for agents')
   .option('--full', 'Also setup Gemini CLI')
@@ -110,8 +135,8 @@ program
     try {
       console.log(
         full
-          ? 'Setting up Claude Code + Codex + Gemini CLI...\n'
-          : 'Setting up Claude Code + Codex...\n'
+          ? 'Setting up Claude Code + Codex + OpenCode + Gemini CLI...\n'
+          : 'Setting up Claude Code + Codex + OpenCode...\n'
       )
 
       const result = writeAllAgentsConfig(apiKey, { full })
@@ -125,6 +150,9 @@ program
       console.log('\nCodex:')
       console.log(`  Config written to: ${result.codex.configPath}`)
       console.log(`  Auth written to: ${result.codex.authPath}`)
+
+      console.log('\nOpenCode:')
+      console.log(`  Config written to: ${result.opencode.configPath}`)
 
       if (result.gemini) {
         console.log('\nGemini CLI:')
@@ -142,6 +170,7 @@ program
     console.log('\nSetup complete!')
     console.log('  - Use `claude` for Claude Code')
     console.log('  - Use `codex` for Codex')
+    console.log('  - Use `opencode` for OpenCode')
     if (full) console.log('  - Use `gemini` for Gemini CLI')
   })
 
