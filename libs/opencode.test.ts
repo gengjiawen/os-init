@@ -43,6 +43,12 @@ describe('writeOpencodeConfig', () => {
     expect(config.provider.MyCustomProvider.models.code).toEqual({
       name: 'code',
     })
+    expect(config.provider.MyCustomProvider.models.glm).toEqual({
+      name: 'glm',
+    })
+    expect(config.provider.MyCustomProvider.models.kimi).toEqual({
+      name: 'kimi',
+    })
     expect(config.model).toBe('MyCustomProvider/code')
     expect(config.small_model).toBe('MyCustomProvider/code')
   })

@@ -6,6 +6,8 @@ import { commandExists, ensureDir, PNPM_INSTALL_ENV } from './utils'
 
 const OPENCODE_PROVIDER_ID = 'MyCustomProvider'
 const OPENCODE_MODEL_ID = 'code'
+const OPENCODE_GLM_MODEL_ID = 'glm'
+const OPENCODE_KIMI_MODEL_ID = 'kimi'
 const OPENCODE_BASE_URL = 'https://ai.gengjiawen.com/api/openai/v1'
 
 /** Return OpenCode configuration directory path */
@@ -31,6 +33,12 @@ export function writeOpencodeConfig(apiKey: string): { configPath: string } {
         models: {
           [OPENCODE_MODEL_ID]: {
             name: OPENCODE_MODEL_ID,
+          },
+          [OPENCODE_GLM_MODEL_ID]: {
+            name: OPENCODE_GLM_MODEL_ID,
+          },
+          [OPENCODE_KIMI_MODEL_ID]: {
+            name: OPENCODE_KIMI_MODEL_ID,
           },
         },
       },
