@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.16.0](https://github.com/gengjiawen/os-init/compare/v1.15.0...v1.16.0) (2026-03-06)
+
+
+### Features
+
+* update Codex default model to gpt-5.4 ([e9a17c2](https://github.com/gengjiawen/os-init/commit/e9a17c27883782fa85495fa14f0df7b90cf4c04d))
+
 ## [1.15.0](https://github.com/gengjiawen/os-init/compare/v1.14.1...v1.15.0) (2026-03-04)
 
 
