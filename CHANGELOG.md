@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.17.0](https://github.com/gengjiawen/os-init/compare/v1.16.0...v1.17.0) (2026-03-07)
+
+
+### Features
+
+* add plan_mode_reasoning_effort to Codex config template ([e2b8192](https://github.com/gengjiawen/os-init/commit/e2b8192fe88b64dcd0b43a7026befe6ffd87ca52))
+
 ## [1.16.0](https://github.com/gengjiawen/os-init/compare/v1.15.0...v1.16.0) (2026-03-06)
 
 
