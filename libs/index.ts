@@ -68,4 +68,4 @@ export { setupDevEnvironment } from './dev-setup'
 export { setupAndroidEnvironment } from './android-setup'
 
 // Re-export mihomo functionality
-export { writeMihomoConfig } from './mihomo'
+export { writeMihomoConfig, downloadMihomoBinary } from './mihomo'

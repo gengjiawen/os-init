@@ -76,19 +76,15 @@ pnpx @gengjiawen/os-init set-fish
 
 ```bash
 pnpx @gengjiawen/os-init set-clash
+pnpx @gengjiawen/os-init set-clash --download
+pnpx @gengjiawen/os-init set-clash --target ~/mihomo/config.yml
 ```
 
 Generates a Mihomo `config.yml` from the built-in template. This command will:
 
 - Write `./config.yml` in the current directory by default
+- Download the Mihomo binary to the config directory when `--download` is set
 - Support a custom output path with `-t, --target <path>`
-
-Example:
-
-```bash
-pnpx @gengjiawen/os-init set-clash
-pnpx @gengjiawen/os-init set-clash --target ~/mihomo/config.yml
-```
 
 After generating the config, you can keep Mihomo running with pm2:
 

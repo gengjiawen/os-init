@@ -17,6 +17,7 @@ const {
   setupDevEnvironment,
   setupAndroidEnvironment,
   writeMihomoConfig,
+  downloadMihomoBinary,
 } = require('../build')
 const { appendFishImportScript } = require('../build/fish-shell-utils')
 
@@ -265,11 +266,24 @@ program
   .command('set-clash')
   .description('generate clash/mihomo config.yml in current directory')
   .option('-t, --target <path>', 'Target path for mihomo config.yml')
-  .action((options) => {
+  .option('--download', 'Download Mihomo binary to the config directory')
+  .action(async (options) => {
     try {
       const { configPath } = writeMihomoConfig(options.target)
       const resolvedConfigPath = path.resolve(configPath)
-      const pm2Command = `pm2 start mihomo --name mihomo -- -f ${shellEscape(resolvedConfigPath)} && pm2 save`
+      let mihomoCommand = 'mihomo'
+
+      if (options.download) {
+        const { binaryPath, downloadUrl, version } = await downloadMihomoBinary(
+          path.dirname(resolvedConfigPath)
+        )
+        mihomoCommand = path.resolve(binaryPath)
+        console.log(`Mihomo download URL: ${downloadUrl}`)
+        console.log(`Mihomo version: ${version}`)
+        console.log(`Mihomo binary downloaded to: ${binaryPath}`)
+      }
+
+      const pm2Command = `pm2 start ${shellEscape(mihomoCommand)} --name mihomo -- -f ${shellEscape(resolvedConfigPath)} && pm2 save`
       console.log(`Clash config written to: ${configPath}`)
       console.log('Run Mihomo with pm2:')
       console.log(`  ${pm2Command}`)
