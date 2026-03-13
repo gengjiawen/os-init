@@ -18,6 +18,8 @@ describe('writeMihomoConfig', () => {
   let tempCwd: string
   let homedirSpy: jest.SpiedFunction<typeof os.homedir>
   let cwdSpy: jest.SpiedFunction<typeof process.cwd>
+  let originalPlatformDescriptor: PropertyDescriptor | undefined
+  let originalArchDescriptor: PropertyDescriptor | undefined
   let originalFetch: typeof global.fetch | undefined
   let originalAppData: string | undefined
 
@@ -26,6 +28,11 @@ describe('writeMihomoConfig', () => {
     tempCwd = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-mihomo-cwd-'))
     homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tempHome)
     cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue(tempCwd)
+    originalPlatformDescriptor = Object.getOwnPropertyDescriptor(
+      process,
+      'platform'
+    )
+    originalArchDescriptor = Object.getOwnPropertyDescriptor(process, 'arch')
     originalFetch = global.fetch
     originalAppData = process.env.APPDATA
     process.env.APPDATA = path.join(tempHome, 'AppData', 'Roaming')
@@ -38,6 +45,12 @@ describe('writeMihomoConfig', () => {
       delete process.env.APPDATA
     } else {
       process.env.APPDATA = originalAppData
+    }
+    if (originalPlatformDescriptor) {
+      Object.defineProperty(process, 'platform', originalPlatformDescriptor)
+    }
+    if (originalArchDescriptor) {
+      Object.defineProperty(process, 'arch', originalArchDescriptor)
     }
     if (originalFetch === undefined) {
       global.fetch = undefined as unknown as typeof global.fetch
@@ -90,6 +103,15 @@ describe('writeMihomoConfig', () => {
     const targetDir = path.join(tempCwd, 'mihomo-bin')
     const fetchMock = jest.fn()
     const binaryContent = Buffer.from('#!/bin/sh\necho mihomo\n', 'utf8')
+
+    Object.defineProperty(process, 'platform', {
+      configurable: true,
+      value: 'linux',
+    })
+    Object.defineProperty(process, 'arch', {
+      configurable: true,
+      value: 'x64',
+    })
 
     fetchMock
       .mockResolvedValueOnce({
