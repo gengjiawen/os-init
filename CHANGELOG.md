@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.18.0](https://github.com/gengjiawen/os-init/compare/v1.17.0...v1.18.0) (2026-03-13)
+
+
+### Features
+
+* add clash config generator ([b9f46b4](https://github.com/gengjiawen/os-init/commit/b9f46b4366955a0cfb8c6337a9956d3461d673f6))
+* add optional mihomo downloader ([632d502](https://github.com/gengjiawen/os-init/commit/632d50234c2a6119f989dd39feb89b3d4d542514))
+* print pm2 command for clash setup ([c4a3a81](https://github.com/gengjiawen/os-init/commit/c4a3a81eaa992816d1d54fdd019e7479bccbc2fb))
+
+
+### Bug Fixes
+
+* stabilize mihomo download test across platforms ([#28](https://github.com/gengjiawen/os-init/issues/28)) ([006b748](https://github.com/gengjiawen/os-init/commit/006b7481fe5c0e60628547bb22bfa357c8502bea))
+
 ## [1.17.0](https://github.com/gengjiawen/os-init/compare/v1.16.0...v1.17.0) (2026-03-07)
 
 
