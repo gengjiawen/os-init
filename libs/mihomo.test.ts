@@ -46,7 +46,7 @@ describe('writeMihomoConfig', () => {
     expect(content).toContain('mode: rule')
     expect(content).toContain('type: socks5')
     expect(content).toContain('name: socks5-proxy')
-    expect(content).toContain('server: 172.25.40.123')
+    expect(content).toContain('server: your.ip')
     expect(content).toContain('port: 6153')
     expect(content).toContain('proxy-groups:')
     expect(content).toContain('- name: PROXY')

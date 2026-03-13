@@ -90,6 +90,12 @@ pnpx @gengjiawen/os-init set-clash
 pnpx @gengjiawen/os-init set-clash --target ~/mihomo/config.yml
 ```
 
+After generating the config, you can keep Mihomo running with pm2:
+
+```bash
+pm2 start mihomo --name mihomo -- -f /absolute/path/to/config.yml && pm2 save
+```
+
 ---
 
 ### Configure Claude Code

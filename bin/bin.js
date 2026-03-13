@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const { Command } = require('commander')
+const path = require('path')
 const {
   writeClaudeConfig,
   installDeps,
@@ -20,6 +21,10 @@ const {
 const { appendFishImportScript } = require('../build/fish-shell-utils')
 
 const program = new Command()
+
+function shellEscape(value) {
+  return `'${String(value).replace(/'/g, `'\\''`)}'`
+}
 
 program
   .command('set-cc')
@@ -263,7 +268,11 @@ program
   .action((options) => {
     try {
       const { configPath } = writeMihomoConfig(options.target)
+      const resolvedConfigPath = path.resolve(configPath)
+      const pm2Command = `pm2 start mihomo --name mihomo -- -f ${shellEscape(resolvedConfigPath)} && pm2 save`
       console.log(`Clash config written to: ${configPath}`)
+      console.log('Run Mihomo with pm2:')
+      console.log(`  ${pm2Command}`)
     } catch (err) {
       console.error('Failed to generate Clash config:', err.message)
       process.exit(1)
