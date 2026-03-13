@@ -72,6 +72,24 @@ Example:
 pnpx @gengjiawen/os-init set-fish
 ```
 
+### Generate Mihomo Config
+
+```bash
+pnpx @gengjiawen/os-init set-clash
+```
+
+Generates a Mihomo `config.yml` from the built-in template. This command will:
+
+- Write `./config.yml` in the current directory by default
+- Support a custom output path with `-t, --target <path>`
+
+Example:
+
+```bash
+pnpx @gengjiawen/os-init set-clash
+pnpx @gengjiawen/os-init set-clash --target ~/mihomo/config.yml
+```
+
 ---
 
 ### Configure Claude Code

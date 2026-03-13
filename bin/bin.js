@@ -15,6 +15,7 @@ const {
   writeRaycastConfig,
   setupDevEnvironment,
   setupAndroidEnvironment,
+  writeMihomoConfig,
 } = require('../build')
 const { appendFishImportScript } = require('../build/fish-shell-utils')
 
@@ -251,6 +252,20 @@ program
       console.log('\n✅ Fish shell import script setup completed!')
     } catch (err) {
       console.error('Failed to setup Fish shell:', err.message)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('set-clash')
+  .description('generate clash/mihomo config.yml in current directory')
+  .option('-t, --target <path>', 'Target path for mihomo config.yml')
+  .action((options) => {
+    try {
+      const { configPath } = writeMihomoConfig(options.target)
+      console.log(`Clash config written to: ${configPath}`)
+    } catch (err) {
+      console.error('Failed to generate Clash config:', err.message)
       process.exit(1)
     }
   })
