@@ -14,6 +14,7 @@ const CODEX_CONFIG_TOML_TEMPLATE = `model_provider = "jw"
 model = "gpt-5.4"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "xhigh"
+model_auto_compact_token_limit = 131072
 disable_response_storage = true
 preferred_auth_method = "apikey"
 service_tier = "fast"
