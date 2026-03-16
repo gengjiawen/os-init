@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.18.1](https://github.com/gengjiawen/os-init/compare/v1.18.0...v1.18.1) (2026-03-16)
+
+
+### Bug Fixes
+
+* set codex compact threshold to 128k ([634e5c2](https://github.com/gengjiawen/os-init/commit/634e5c2fef634aeca50f882108857be3f1298219))
+
 ## [1.18.0](https://github.com/gengjiawen/os-init/compare/v1.17.0...v1.18.0) (2026-03-13)
 
 
