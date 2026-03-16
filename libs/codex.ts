@@ -1,8 +1,11 @@
 import * as fs from 'fs'
 import * as path from 'path'
 import * as os from 'os'
+import * as TOML from '@iarna/toml'
 import { execa } from 'execa'
 import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
+
+type TomlTable = ReturnType<typeof TOML.parse>
 
 /** Return Codex configuration directory path */
 function getCodexConfigDir(): string {
@@ -25,6 +28,40 @@ base_url = "https://ai.gengjiawen.com/api/openai"
 wire_api = "responses"
 `
 
+function isTomlTable(value: unknown): value is TomlTable {
+  return (
+    value !== undefined &&
+    typeof value === 'object' &&
+    !Array.isArray(value) &&
+    !(value instanceof Date)
+  )
+}
+
+function mergeTomlTables(
+  existingConfig: TomlTable,
+  templateConfig: TomlTable
+): TomlTable {
+  const mergedConfig: TomlTable = { ...existingConfig }
+
+  for (const [key, templateValue] of Object.entries(templateConfig)) {
+    const existingValue = mergedConfig[key]
+
+    mergedConfig[key] =
+      isTomlTable(existingValue) && isTomlTable(templateValue)
+        ? mergeTomlTables(existingValue, templateValue)
+        : templateValue
+  }
+
+  return mergedConfig
+}
+
+function getMergedCodexConfig(existingContent: string): string {
+  const existingConfig = TOML.parse(existingContent) as TomlTable
+  const templateConfig = TOML.parse(CODEX_CONFIG_TOML_TEMPLATE) as TomlTable
+
+  return TOML.stringify(mergeTomlTables(existingConfig, templateConfig))
+}
+
 /** Write Codex config.toml and auth.json */
 export function writeCodexConfig(apiKey: string): {
   configPath: string
@@ -34,7 +71,10 @@ export function writeCodexConfig(apiKey: string): {
   ensureDir(configDir)
 
   const configPath = path.join(configDir, 'config.toml')
-  fs.writeFileSync(configPath, CODEX_CONFIG_TOML_TEMPLATE)
+  const configContent = fs.existsSync(configPath)
+    ? getMergedCodexConfig(fs.readFileSync(configPath, 'utf8'))
+    : CODEX_CONFIG_TOML_TEMPLATE
+  fs.writeFileSync(configPath, configContent)
 
   const authPath = path.join(configDir, 'auth.json')
   const authContent = JSON.stringify({ OPENAI_API_KEY: apiKey }, null, 2)

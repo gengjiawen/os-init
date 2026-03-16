@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@gengjiawen/unzip-url": "^1.1.0",
+    "@iarna/toml": "^2.2.5",
     "commander": "^12.1.0",
     "execa": "^8.0.1",
     "ip": "^2.0.1",
