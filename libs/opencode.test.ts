@@ -12,6 +12,15 @@ describe('writeOpencodeConfig', () => {
   let tempHome: string
   let homedirSpy: jest.SpiedFunction<typeof os.homedir>
 
+  const expectedModelConfig = (name: string) => ({
+    name,
+    attachment: true,
+    modalities: {
+      input: ['text', 'image'],
+      output: ['text'],
+    },
+  })
+
   beforeEach(() => {
     tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-opencode-'))
     homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tempHome)
@@ -40,15 +49,15 @@ describe('writeOpencodeConfig', () => {
       'https://ai.gengjiawen.com/api/openai/v1'
     )
     expect(config.provider.MyCustomProvider.options.apiKey).toBe('test-api-key')
-    expect(config.provider.MyCustomProvider.models.code).toEqual({
-      name: 'code',
-    })
-    expect(config.provider.MyCustomProvider.models.glm).toEqual({
-      name: 'glm',
-    })
-    expect(config.provider.MyCustomProvider.models.kimi).toEqual({
-      name: 'kimi',
-    })
+    expect(config.provider.MyCustomProvider.models.code).toEqual(
+      expectedModelConfig('code')
+    )
+    expect(config.provider.MyCustomProvider.models.glm).toEqual(
+      expectedModelConfig('glm')
+    )
+    expect(config.provider.MyCustomProvider.models.kimi).toEqual(
+      expectedModelConfig('kimi')
+    )
     expect(config.model).toBe('MyCustomProvider/code')
     expect(config.small_model).toBe('MyCustomProvider/code')
   })

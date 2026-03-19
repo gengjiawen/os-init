@@ -10,6 +10,17 @@ const OPENCODE_GLM_MODEL_ID = 'glm'
 const OPENCODE_KIMI_MODEL_ID = 'kimi'
 const OPENCODE_BASE_URL = 'https://ai.gengjiawen.com/api/openai/v1'
 
+function createOpencodeModelConfig(modelId: string) {
+  return {
+    name: modelId,
+    attachment: true,
+    modalities: {
+      input: ['text', 'image'],
+      output: ['text'],
+    },
+  }
+}
+
 /** Return OpenCode configuration directory path */
 function getOpencodeConfigDir(): string {
   return path.join(os.homedir(), '.config', 'opencode')
@@ -31,15 +42,13 @@ export function writeOpencodeConfig(apiKey: string): { configPath: string } {
           apiKey,
         },
         models: {
-          [OPENCODE_MODEL_ID]: {
-            name: OPENCODE_MODEL_ID,
-          },
-          [OPENCODE_GLM_MODEL_ID]: {
-            name: OPENCODE_GLM_MODEL_ID,
-          },
-          [OPENCODE_KIMI_MODEL_ID]: {
-            name: OPENCODE_KIMI_MODEL_ID,
-          },
+          [OPENCODE_MODEL_ID]: createOpencodeModelConfig(OPENCODE_MODEL_ID),
+          [OPENCODE_GLM_MODEL_ID]: createOpencodeModelConfig(
+            OPENCODE_GLM_MODEL_ID
+          ),
+          [OPENCODE_KIMI_MODEL_ID]: createOpencodeModelConfig(
+            OPENCODE_KIMI_MODEL_ID
+          ),
         },
       },
     },
