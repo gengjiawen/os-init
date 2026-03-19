@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.19.0](https://github.com/gengjiawen/os-init/compare/v1.18.1...v1.19.0) (2026-03-19)
+
+
+### Features
+
+* refresh codex model catalog during setup ([9ed724a](https://github.com/gengjiawen/os-init/commit/9ed724accda9901a813bb9265895db6879d406bb))
+
+
+### Bug Fixes
+
+* add model metadata to opencode config ([59ade2c](https://github.com/gengjiawen/os-init/commit/59ade2c9e9daa307de56d30968a1c3e8977ea945))
+
 ## [1.18.1](https://github.com/gengjiawen/os-init/compare/v1.18.0...v1.18.1) (2026-03-16)
 
 
