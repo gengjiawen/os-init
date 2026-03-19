@@ -6,14 +6,23 @@ import { execa } from 'execa'
 import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
 
 type TomlTable = ReturnType<typeof TOML.parse>
+type CodexModelCatalog = { models: unknown[] }
+
+const CODEX_BASE_URL = 'https://ai.gengjiawen.com/api/openai'
+const CODEX_MODEL_CATALOG_CONFIG_PATH = '~/.codex/remote-model-catalog.json'
+const CODEX_MODEL_CATALOG_FILENAME = 'remote-model-catalog.json'
 
 /** Return Codex configuration directory path */
 function getCodexConfigDir(): string {
   return path.join(os.homedir(), '.codex')
 }
 
-/** Template for Codex config.toml */
-const CODEX_CONFIG_TOML_TEMPLATE = `model_provider = "jw"
+function getCodexModelCatalogPath(): string {
+  return path.join(getCodexConfigDir(), CODEX_MODEL_CATALOG_FILENAME)
+}
+
+function getCodexConfigTomlTemplate(): string {
+  return `model_provider = "jw"
 model = "gpt-5.4"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "xhigh"
@@ -21,12 +30,14 @@ model_auto_compact_token_limit = 131072
 disable_response_storage = true
 preferred_auth_method = "apikey"
 service_tier = "fast"
+model_catalog_json = "${CODEX_MODEL_CATALOG_CONFIG_PATH}"
 
 [model_providers.jw]
 name = "jw"
-base_url = "https://ai.gengjiawen.com/api/openai"
+base_url = "${CODEX_BASE_URL}"
 wire_api = "responses"
 `
+}
 
 function isTomlTable(value: unknown): value is TomlTable {
   return (
@@ -57,30 +68,66 @@ function mergeTomlTables(
 
 function getMergedCodexConfig(existingContent: string): string {
   const existingConfig = TOML.parse(existingContent) as TomlTable
-  const templateConfig = TOML.parse(CODEX_CONFIG_TOML_TEMPLATE) as TomlTable
+  const templateConfig = TOML.parse(getCodexConfigTomlTemplate()) as TomlTable
 
   return TOML.stringify(mergeTomlTables(existingConfig, templateConfig))
 }
 
+async function refreshCodexModelCatalog(apiKey: string): Promise<string> {
+  if (typeof fetch !== 'function') {
+    throw new Error('Global fetch API is unavailable in this Node.js runtime.')
+  }
+
+  const response = await fetch(`${CODEX_BASE_URL}/models`, {
+    headers: {
+      Accept: 'application/json',
+      Authorization: `Bearer ${apiKey}`,
+      'User-Agent': '@gengjiawen/os-init',
+    },
+  })
+
+  if (!response.ok) {
+    throw new Error(
+      `Failed to refresh Codex model catalog: ${response.status} ${response.statusText}`
+    )
+  }
+
+  const catalog = (await response.json()) as CodexModelCatalog
+
+  if (!Array.isArray(catalog?.models) || catalog.models.length === 0) {
+    throw new Error(
+      'Failed to refresh Codex model catalog: response does not contain any models.'
+    )
+  }
+
+  const catalogPath = getCodexModelCatalogPath()
+  fs.writeFileSync(catalogPath, `${JSON.stringify(catalog, null, 2)}\n`)
+
+  return catalogPath
+}
+
 /** Write Codex config.toml and auth.json */
-export function writeCodexConfig(apiKey: string): {
+export async function writeCodexConfig(apiKey: string): Promise<{
   configPath: string
   authPath: string
-} {
+  catalogPath: string
+}> {
   const configDir = getCodexConfigDir()
   ensureDir(configDir)
+
+  const catalogPath = await refreshCodexModelCatalog(apiKey)
 
   const configPath = path.join(configDir, 'config.toml')
   const configContent = fs.existsSync(configPath)
     ? getMergedCodexConfig(fs.readFileSync(configPath, 'utf8'))
-    : CODEX_CONFIG_TOML_TEMPLATE
+    : getCodexConfigTomlTemplate()
   fs.writeFileSync(configPath, configContent)
 
   const authPath = path.join(configDir, 'auth.json')
   const authContent = JSON.stringify({ OPENAI_API_KEY: apiKey }, null, 2)
   fs.writeFileSync(authPath, authContent)
 
-  return { configPath, authPath }
+  return { configPath, authPath, catalogPath }
 }
 
 /** Install Codex dependency */

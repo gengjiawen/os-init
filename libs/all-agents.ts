@@ -10,18 +10,18 @@ export interface AllAgentsOptions {
 
 export interface AllAgentsResult {
   claude: { settingsPath: string; vscodeSettingsPath: string }
-  codex: { configPath: string; authPath: string }
+  codex: { configPath: string; authPath: string; catalogPath: string }
   opencode: { configPath: string }
   gemini?: { envPath: string; settingsPath: string }
 }
 
 /** Write configuration for the combined setup (Claude Code + Codex + OpenCode, optional Gemini CLI). */
-export function writeAllAgentsConfig(
+export async function writeAllAgentsConfig(
   apiKey: string,
   options: AllAgentsOptions = {}
-): AllAgentsResult {
+): Promise<AllAgentsResult> {
   const claudeResult = writeClaudeConfig(apiKey)
-  const codexResult = writeCodexConfig(apiKey)
+  const codexResult = await writeCodexConfig(apiKey)
   const opencodeResult = writeOpencodeConfig(apiKey)
 
   const result: AllAgentsResult = {
