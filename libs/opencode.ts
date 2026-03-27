@@ -6,8 +6,14 @@ import { commandExists, ensureDir, PNPM_INSTALL_ENV } from './utils'
 
 const OPENCODE_PROVIDER_ID = 'MyCustomProvider'
 const OPENCODE_MODEL_ID = 'code'
-const OPENCODE_GLM_MODEL_ID = 'glm'
-const OPENCODE_KIMI_MODEL_ID = 'kimi'
+const OPENCODE_MODEL_IDS = [
+  OPENCODE_MODEL_ID,
+  'glm',
+  'kimi',
+  'minimax',
+  'deepseek',
+  'gemini-flash',
+]
 const OPENCODE_BASE_URL = 'https://ai.gengjiawen.com/api/openai/v1'
 
 function createOpencodeModelConfig(modelId: string) {
@@ -19,6 +25,15 @@ function createOpencodeModelConfig(modelId: string) {
       output: ['text'],
     },
   }
+}
+
+function createOpencodeModelsConfig() {
+  return Object.fromEntries(
+    OPENCODE_MODEL_IDS.map((modelId) => [
+      modelId,
+      createOpencodeModelConfig(modelId),
+    ])
+  )
 }
 
 /** Return OpenCode configuration directory path */
@@ -41,15 +56,7 @@ export function writeOpencodeConfig(apiKey: string): { configPath: string } {
           baseURL: OPENCODE_BASE_URL,
           apiKey,
         },
-        models: {
-          [OPENCODE_MODEL_ID]: createOpencodeModelConfig(OPENCODE_MODEL_ID),
-          [OPENCODE_GLM_MODEL_ID]: createOpencodeModelConfig(
-            OPENCODE_GLM_MODEL_ID
-          ),
-          [OPENCODE_KIMI_MODEL_ID]: createOpencodeModelConfig(
-            OPENCODE_KIMI_MODEL_ID
-          ),
-        },
+        models: createOpencodeModelsConfig(),
       },
     },
     model: `${OPENCODE_PROVIDER_ID}/${OPENCODE_MODEL_ID}`,
