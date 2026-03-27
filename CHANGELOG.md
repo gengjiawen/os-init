@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.20.0](https://github.com/gengjiawen/os-init/compare/v1.19.0...v1.20.0) (2026-03-27)
+
+
+### Features
+
+* add more opencode models ([e04e0d1](https://github.com/gengjiawen/os-init/commit/e04e0d1fc52b7a93cf51436d23c82b1e725daff6))
+
+
+### Bug Fixes
+
+* add Claude nonessential traffic env ([9bf1bac](https://github.com/gengjiawen/os-init/commit/9bf1bac9f09e8c9a3e8c740834a1d5ad7986f1b9))
+* CI ([166259f](https://github.com/gengjiawen/os-init/commit/166259f104bdda2dc57cd4678d9e03d739c472a9))
+* use absolute codex model catalog path on windows ([fb8f19f](https://github.com/gengjiawen/os-init/commit/fb8f19f8f6b3de437b2192e57ec7e7fe1e48ee5a))
+
 ## [1.19.0](https://github.com/gengjiawen/os-init/compare/v1.18.1...v1.19.0) (2026-03-19)
 
 
