@@ -94,6 +94,7 @@ function writeVSCodeClaudePluginConfig(apiKey: string): {
     [
       { name: 'ANTHROPIC_BASE_URL', value: CLAUDE_BASE_URL },
       { name: 'ANTHROPIC_AUTH_TOKEN', value: apiKey },
+      { name: 'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC', value: '1' },
     ],
     {
       formattingOptions: {

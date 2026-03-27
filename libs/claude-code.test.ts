@@ -71,12 +71,19 @@ describe('writeClaudeConfig', () => {
     expect(claudeSettings).toContain(
       '"ANTHROPIC_BASE_URL": "https://ai.gengjiawen.com/api/claude/"'
     )
+    expect(claudeSettings).toContain(
+      '"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"'
+    )
 
     const vscodeSettings = fs.readFileSync(result.vscodeSettingsPath, 'utf8')
     expect(vscodeSettings).toContain('"editor.fontSize": 14')
     expect(vscodeSettings).toContain('"claudeCode.environmentVariables"')
     expect(vscodeSettings).toContain('"ANTHROPIC_BASE_URL"')
     expect(vscodeSettings).toContain('"ANTHROPIC_AUTH_TOKEN"')
+    expect(vscodeSettings).toContain(
+      '"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"'
+    )
+    expect(vscodeSettings).toContain('"1"')
     expect(vscodeSettings).toContain('"test-api-key"')
   })
 
