@@ -21,6 +21,12 @@ function getCodexModelCatalogPath(): string {
   return path.join(getCodexConfigDir(), CODEX_MODEL_CATALOG_FILENAME)
 }
 
+function getCodexModelCatalogConfigPath(): string {
+  return os.platform() === 'win32'
+    ? getCodexModelCatalogPath()
+    : CODEX_MODEL_CATALOG_CONFIG_PATH
+}
+
 function getCodexConfigTomlTemplate(): string {
   return `model_provider = "jw"
 model = "gpt-5.4"
@@ -30,7 +36,7 @@ model_auto_compact_token_limit = 131072
 disable_response_storage = true
 preferred_auth_method = "apikey"
 service_tier = "fast"
-model_catalog_json = "${CODEX_MODEL_CATALOG_CONFIG_PATH}"
+model_catalog_json = ${JSON.stringify(getCodexModelCatalogConfigPath())}
 
 [model_providers.jw]
 name = "jw"

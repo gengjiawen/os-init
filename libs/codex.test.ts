@@ -170,6 +170,23 @@ base_url = "https://example.com"
     })
   })
 
+  test('writes an absolute model catalog path on Windows', async () => {
+    const platformSpy = jest.spyOn(os, 'platform').mockReturnValue('win32')
+
+    try {
+      const result = await writeCodexConfig('test-api-key')
+      const config = TOML.parse(fs.readFileSync(result.configPath, 'utf8')) as {
+        model_catalog_json: string
+      }
+
+      expect(config.model_catalog_json).toBe(
+        path.join(tempHome, '.codex', 'remote-model-catalog.json')
+      )
+    } finally {
+      platformSpy.mockRestore()
+    }
+  })
+
   test('throws when refreshing the remote model catalog fails', async () => {
     global.fetch = jest.fn().mockResolvedValue({
       ok: false,
