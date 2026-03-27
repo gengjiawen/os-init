@@ -14,6 +14,12 @@ describe('writeCodexConfig', () => {
   let homedirSpy: jest.SpiedFunction<typeof os.homedir>
   let originalFetch: typeof global.fetch | undefined
 
+  function getExpectedModelCatalogConfigPath(): string {
+    return os.platform() === 'win32'
+      ? path.join(tempHome, '.codex', 'remote-model-catalog.json')
+      : '~/.codex/remote-model-catalog.json'
+  }
+
   function mockCatalogFetch(
     catalog: { models: Array<Record<string, unknown>> } = {
       models: [{ id: 'gpt-5.4' }],
@@ -52,7 +58,7 @@ describe('writeCodexConfig', () => {
     }
 
     expect(config.model_auto_compact_token_limit).toBe(131072)
-    expect(config.model_catalog_json).toBe('~/.codex/remote-model-catalog.json')
+    expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
     expect(fs.existsSync(result.catalogPath)).toBe(true)
   })
 
@@ -91,7 +97,7 @@ custom_model = "keep-me"
     expect(config.service_tier).toBe('fast')
     expect(config.custom_flag).toBe(true)
     expect(config.model).toBe('gpt-5.4')
-    expect(config.model_catalog_json).toBe('~/.codex/remote-model-catalog.json')
+    expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
     expect(config.preferred_auth_method).toBe('apikey')
     expect(config.model_providers.jw.base_url).toBe(
       'https://ai.gengjiawen.com/api/openai'
@@ -129,7 +135,7 @@ base_url = "https://example.com"
     }
 
     expect(config.model).toBe('gpt-5.4')
-    expect(config.model_catalog_json).toBe('~/.codex/remote-model-catalog.json')
+    expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
     expect(config.preferred_auth_method).toBe('apikey')
     expect(config.model_providers.jw.name).toBe('jw')
     expect(config.service_tier).toBe('fast')

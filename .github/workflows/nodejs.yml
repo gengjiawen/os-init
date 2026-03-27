@@ -21,11 +21,14 @@ jobs:
           version: 9
       - name: Envinfo
         run: npx envinfo
-      - name: Install, build, and test (pnpm)
+      - name: Install and build (pnpm)
         run: |
           pnpm install --frozen-lockfile=false
           pnpm build
-          pnpm format:check
-          pnpm test
+      - name: Check formatting (pnpm)
+        if: runner.os != 'Windows'
+        run: pnpm format:check
+      - name: Test (pnpm)
+        run: pnpm test
         env:
           CI: true
