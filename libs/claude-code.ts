@@ -6,6 +6,8 @@ import { ParseError, applyEdits, modify, parse } from 'jsonc-parser'
 import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
 
 const CLAUDE_BASE_URL = 'https://ai.gengjiawen.com/api/claude/'
+const CLAUDE_AUTO_COMPACT_WINDOW = '128000'
+const CLAUDE_DISABLE_1M_CONTEXT = '1'
 
 /** Return Claude settings directory path */
 function getClaudeSettingsDir(): string {
@@ -43,7 +45,9 @@ const CLAUDE_SETTINGS_TEMPLATE = `{
     "OTEL_METRICS_EXPORTER": "otlp",
     "ANTHROPIC_API_KEY": "API_KEY_PLACEHOLDER",
     "ANTHROPIC_BASE_URL": "${CLAUDE_BASE_URL}",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "${CLAUDE_AUTO_COMPACT_WINDOW}",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "${CLAUDE_DISABLE_1M_CONTEXT}"
   },
   "includeCoAuthoredBy": false,
   "apiKeyHelper": "echo 'API_KEY_PLACEHOLDER'",
@@ -95,6 +99,14 @@ function writeVSCodeClaudePluginConfig(apiKey: string): {
       { name: 'ANTHROPIC_BASE_URL', value: CLAUDE_BASE_URL },
       { name: 'ANTHROPIC_AUTH_TOKEN', value: apiKey },
       { name: 'CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC', value: '1' },
+      {
+        name: 'CLAUDE_CODE_AUTO_COMPACT_WINDOW',
+        value: CLAUDE_AUTO_COMPACT_WINDOW,
+      },
+      {
+        name: 'CLAUDE_CODE_DISABLE_1M_CONTEXT',
+        value: CLAUDE_DISABLE_1M_CONTEXT,
+      },
     ],
     {
       formattingOptions: {

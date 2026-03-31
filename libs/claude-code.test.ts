@@ -74,6 +74,10 @@ describe('writeClaudeConfig', () => {
     expect(claudeSettings).toContain(
       '"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"'
     )
+    expect(claudeSettings).toContain(
+      '"CLAUDE_CODE_AUTO_COMPACT_WINDOW": "128000"'
+    )
+    expect(claudeSettings).toContain('"CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"')
 
     const vscodeSettings = fs.readFileSync(result.vscodeSettingsPath, 'utf8')
     expect(vscodeSettings).toContain('"editor.fontSize": 14')
@@ -83,6 +87,9 @@ describe('writeClaudeConfig', () => {
     expect(vscodeSettings).toContain(
       '"CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC"'
     )
+    expect(vscodeSettings).toContain('"CLAUDE_CODE_AUTO_COMPACT_WINDOW"')
+    expect(vscodeSettings).toContain('"128000"')
+    expect(vscodeSettings).toContain('"CLAUDE_CODE_DISABLE_1M_CONTEXT"')
     expect(vscodeSettings).toContain('"1"')
     expect(vscodeSettings).toContain('"test-api-key"')
   })
