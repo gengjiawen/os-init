@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.21.0](https://github.com/gengjiawen/os-init/compare/v1.20.0...v1.21.0) (2026-03-31)
+
+
+### Features
+
+* limit claude code context defaults ([bc40196](https://github.com/gengjiawen/os-init/commit/bc40196bbb4be0187ebbd2ed6a695808636b3554))
+
 ## [1.20.0](https://github.com/gengjiawen/os-init/compare/v1.19.0...v1.20.0) (2026-03-27)
 
 
