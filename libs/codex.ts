@@ -35,7 +35,6 @@ plan_mode_reasoning_effort = "xhigh"
 model_auto_compact_token_limit = 131072
 disable_response_storage = true
 preferred_auth_method = "apikey"
-service_tier = "fast"
 model_catalog_json = ${JSON.stringify(getCodexModelCatalogConfigPath())}
 
 [model_providers.jw]
