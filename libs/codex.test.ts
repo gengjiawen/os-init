@@ -80,7 +80,6 @@ custom_model = "keep-me"
 
     await writeCodexConfig('test-api-key')
     const config = TOML.parse(fs.readFileSync(configPath, 'utf8')) as {
-      service_tier: string
       custom_flag: boolean
       model: string
       model_catalog_json: string
@@ -94,7 +93,7 @@ custom_model = "keep-me"
       }
     }
 
-    expect(config.service_tier).toBe('fast')
+    expect(config).not.toHaveProperty('service_tier')
     expect(config.custom_flag).toBe(true)
     expect(config.model).toBe('gpt-5.4')
     expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
@@ -125,7 +124,6 @@ base_url = "https://example.com"
       model: string
       model_catalog_json: string
       preferred_auth_method: string
-      service_tier: string
       model_providers: {
         jw: {
           name: string
@@ -138,7 +136,7 @@ base_url = "https://example.com"
     expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
     expect(config.preferred_auth_method).toBe('apikey')
     expect(config.model_providers.jw.name).toBe('jw')
-    expect(config.service_tier).toBe('fast')
+    expect(config).not.toHaveProperty('service_tier')
   })
 
   test('refreshes remote model catalog after writing config', async () => {

@@ -74,6 +74,7 @@ function mergeTomlTables(
 function getMergedCodexConfig(existingContent: string): string {
   const existingConfig = TOML.parse(existingContent) as TomlTable
   const templateConfig = TOML.parse(getCodexConfigTomlTemplate()) as TomlTable
+  delete existingConfig.service_tier
 
   return TOML.stringify(mergeTomlTables(existingConfig, templateConfig))
 }
