@@ -128,10 +128,10 @@ program
 program
   .command('set-agents')
   .description(
-    'setup Claude Code, Codex, and OpenCode at once (use --full to include Gemini CLI)'
+    'setup Claude Code and Codex at once (use --full to include OpenCode and Gemini CLI)'
   )
   .argument('<apiKey>', 'API key to set for agents')
-  .option('--full', 'Also setup Gemini CLI')
+  .option('--full', 'Also setup OpenCode and Gemini CLI')
   .action(async (apiKey, options) => {
     if (!apiKey || String(apiKey).trim().length === 0) {
       console.error('Missing required argument: <apiKey>')
@@ -145,7 +145,7 @@ program
       console.log(
         full
           ? 'Setting up Claude Code + Codex + OpenCode + Gemini CLI...\n'
-          : 'Setting up Claude Code + Codex + OpenCode...\n'
+          : 'Setting up Claude Code + Codex...\n'
       )
 
       const result = await writeAllAgentsConfig(apiKey, { full })
@@ -161,8 +161,10 @@ program
       console.log(`  Auth written to: ${result.codex.authPath}`)
       console.log(`  Model catalog written to: ${result.codex.catalogPath}`)
 
-      console.log('\nOpenCode:')
-      console.log(`  Config written to: ${result.opencode.configPath}`)
+      if (result.opencode) {
+        console.log('\nOpenCode:')
+        console.log(`  Config written to: ${result.opencode.configPath}`)
+      }
 
       if (result.gemini) {
         console.log('\nGemini CLI:')
@@ -180,8 +182,10 @@ program
     console.log('\nSetup complete!')
     console.log('  - Use `claude` for Claude Code')
     console.log('  - Use `codex` for Codex')
-    console.log('  - Use `opencode` for OpenCode')
-    if (full) console.log('  - Use `gemini` for Gemini CLI')
+    if (full) {
+      console.log('  - Use `opencode` for OpenCode')
+      console.log('  - Use `gemini` for Gemini CLI')
+    }
   })
 
 program

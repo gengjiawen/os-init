@@ -41,20 +41,22 @@ describe('writeAllAgentsConfig', () => {
     fs.rmSync(tempHome, { recursive: true, force: true })
   })
 
-  test('writes Claude, Codex and OpenCode config by default', async () => {
+  test('writes Claude and Codex config by default', async () => {
     const result = await writeAllAgentsConfig('test-api-key')
 
     expect(fs.existsSync(result.claude.settingsPath)).toBe(true)
     expect(fs.existsSync(result.codex.configPath)).toBe(true)
     expect(fs.existsSync(result.codex.authPath)).toBe(true)
     expect(fs.existsSync(result.codex.catalogPath)).toBe(true)
-    expect(fs.existsSync(result.opencode.configPath)).toBe(true)
+    expect(result.opencode).toBeUndefined()
     expect(result.gemini).toBeUndefined()
   })
 
-  test('includes Gemini config when full option is enabled', async () => {
+  test('includes OpenCode and Gemini config when full option is enabled', async () => {
     const result = await writeAllAgentsConfig('test-api-key', { full: true })
 
+    expect(result.opencode).toBeDefined()
+    expect(fs.existsSync(result.opencode!.configPath)).toBe(true)
     expect(result.gemini).toBeDefined()
     expect(fs.existsSync(result.gemini!.envPath)).toBe(true)
     expect(fs.existsSync(result.gemini!.settingsPath)).toBe(true)
