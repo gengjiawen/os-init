@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.22.0](https://github.com/gengjiawen/os-init/compare/v1.21.0...v1.22.0) (2026-04-17)
+
+
+### Features
+
+* **codex:** set model reasoning effort to xhigh ([41d1b75](https://github.com/gengjiawen/os-init/commit/41d1b75536646ccda8bb6b509de88cd2152be3b7))
+* **set-agents:** include OpenCode only with --full ([92e01b4](https://github.com/gengjiawen/os-init/commit/92e01b4aea467bcd42cc6ae922147b383e1fc4ad))
+
+
+### Bug Fixes
+
+* remove service tier from codex config ([f618abd](https://github.com/gengjiawen/os-init/commit/f618abd92a877d457006fae1765ed6f3fe323a29))
+* remove unused service_tier configuration from Codex TOML template ([bfa6f1a](https://github.com/gengjiawen/os-init/commit/bfa6f1a091e9e5bb2b733dacee2247fda457918b))
+
 ## [1.21.0](https://github.com/gengjiawen/os-init/compare/v1.20.0...v1.21.0) (2026-03-31)
 
 
