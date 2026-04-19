@@ -1,7 +1,9 @@
-import { writeClaudeConfig, installDeps } from './claude-code'
-import { writeCodexConfig, installCodexDeps } from './codex'
-import { writeGeminiConfig, installGeminiDeps } from './gemini-cli'
-import { writeOpencodeConfig, installOpencodeDeps } from './opencode'
+import { writeClaudeConfig } from './claude-code'
+import { writeCodexConfig } from './codex'
+import { writeGeminiConfig } from './gemini-cli'
+import { writeOpencodeConfig } from './opencode'
+import { execa } from 'execa'
+import { commandExists, PNPM_INSTALL_ENV } from './utils'
 
 export interface AllAgentsOptions {
   /** When true, also include OpenCode and Gemini CLI in the combined setup. */
@@ -40,9 +42,23 @@ export async function writeAllAgentsConfig(
 export async function installAllAgentsDeps(
   options: AllAgentsOptions = {}
 ): Promise<void> {
-  const installers = [installDeps(), installCodexDeps()]
+  const packages = ['@anthropic-ai/claude-code', '@openai/codex']
   if (options.full) {
-    installers.push(installOpencodeDeps(), installGeminiDeps())
+    packages.push('opencode-ai', '@google/gemini-cli')
   }
-  await Promise.all(installers)
+
+  const usePnpm = await commandExists('pnpm')
+
+  if (usePnpm) {
+    console.log('pnpm detected. Installing agent dependencies with pnpm...')
+    await execa('pnpm', ['add', '-g', ...packages], {
+      stdio: 'inherit',
+      env: PNPM_INSTALL_ENV,
+    })
+  } else {
+    console.log('pnpm not found. Falling back to npm...')
+    await execa('npm', ['install', '-g', ...packages], { stdio: 'inherit' })
+  }
+
+  console.log('Agent dependencies installed successfully.')
 }

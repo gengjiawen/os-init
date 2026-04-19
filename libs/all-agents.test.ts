@@ -6,15 +6,18 @@ jest.mock('execa', () => ({
   execa: jest.fn(),
 }))
 
-import { writeAllAgentsConfig } from './all-agents'
+import { execa } from 'execa'
+import { installAllAgentsDeps, writeAllAgentsConfig } from './all-agents'
 
 describe('writeAllAgentsConfig', () => {
   let tempHome: string
   let homedirSpy: jest.SpiedFunction<typeof os.homedir>
   let originalAppData: string | undefined
   let originalFetch: typeof global.fetch | undefined
+  const execaMock = jest.mocked(execa)
 
   beforeEach(() => {
+    jest.clearAllMocks()
     tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-all-agents-'))
     homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tempHome)
     originalAppData = process.env.APPDATA
@@ -60,5 +63,57 @@ describe('writeAllAgentsConfig', () => {
     expect(result.gemini).toBeDefined()
     expect(fs.existsSync(result.gemini!.envPath)).toBe(true)
     expect(fs.existsSync(result.gemini!.settingsPath)).toBe(true)
+  })
+
+  test('installs Claude and Codex in one pnpm command', async () => {
+    execaMock
+      .mockResolvedValueOnce({ failed: false } as never)
+      .mockResolvedValueOnce({} as never)
+
+    await installAllAgentsDeps()
+
+    expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
+      stdio: 'ignore',
+      reject: false,
+    })
+    expect(execaMock).toHaveBeenNthCalledWith(
+      2,
+      'pnpm',
+      ['add', '-g', '@anthropic-ai/claude-code', '@openai/codex'],
+      {
+        stdio: 'inherit',
+        env: {
+          PNPM_CONFIG_ENABLE_PRE_POST_SCRIPTS: 'true',
+        },
+      }
+    )
+    expect(execaMock).toHaveBeenCalledTimes(2)
+  })
+
+  test('installs all requested agents in one npm command when pnpm is unavailable', async () => {
+    execaMock
+      .mockRejectedValueOnce(new Error('pnpm not found'))
+      .mockResolvedValueOnce({} as never)
+
+    await installAllAgentsDeps({ full: true })
+
+    expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
+      stdio: 'ignore',
+      reject: false,
+    })
+    expect(execaMock).toHaveBeenNthCalledWith(
+      2,
+      'npm',
+      [
+        'install',
+        '-g',
+        '@anthropic-ai/claude-code',
+        '@openai/codex',
+        'opencode-ai',
+        '@google/gemini-cli',
+      ],
+      { stdio: 'inherit' }
+    )
+    expect(execaMock).toHaveBeenCalledTimes(2)
   })
 })
