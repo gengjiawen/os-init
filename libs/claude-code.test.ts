@@ -7,6 +7,8 @@ jest.mock('execa', () => ({
 }))
 
 import { writeClaudeConfig } from './claude-code'
+import { installDeps } from './claude-code'
+import { execa } from 'execa'
 
 function getVSCodeUserSettingsPath(homeDir: string): string {
   if (process.platform === 'darwin') {
@@ -102,5 +104,37 @@ describe('writeClaudeConfig', () => {
     expect(() => writeClaudeConfig('test-api-key')).toThrow(
       `VSCode settings is not valid JSONC: ${vscodeSettingsPath}. Please fix it and retry.`
     )
+  })
+
+  test('allows Claude postinstall build when installing with pnpm', async () => {
+    const execaMock = jest.mocked(execa)
+    execaMock
+      .mockResolvedValueOnce({ failed: false } as never)
+      .mockResolvedValueOnce({} as never)
+
+    await installDeps()
+
+    expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
+      stdio: 'ignore',
+      reject: false,
+    })
+    expect(execaMock).toHaveBeenNthCalledWith(
+      2,
+      'pnpm',
+      [
+        '--allow-build=@anthropic-ai/claude-code',
+        'add',
+        '-g',
+        '--force',
+        '@anthropic-ai/claude-code',
+      ],
+      {
+        stdio: 'inherit',
+        env: {
+          PNPM_CONFIG_ENABLE_PRE_POST_SCRIPTS: 'true',
+        },
+      }
+    )
+    expect(execaMock).toHaveBeenCalledTimes(2)
   })
 })

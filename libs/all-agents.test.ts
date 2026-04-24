@@ -79,7 +79,14 @@ describe('writeAllAgentsConfig', () => {
     expect(execaMock).toHaveBeenNthCalledWith(
       2,
       'pnpm',
-      ['add', '-g', '@anthropic-ai/claude-code', '@openai/codex'],
+      [
+        '--allow-build=@anthropic-ai/claude-code',
+        'add',
+        '-g',
+        '--force',
+        '@anthropic-ai/claude-code',
+        '@openai/codex',
+      ],
       {
         stdio: 'inherit',
         env: {
