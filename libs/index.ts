@@ -52,9 +52,6 @@ export { writeClaudeConfig, installDeps } from './claude-code'
 // Re-export codex functionality
 export { writeCodexConfig, installCodexDeps } from './codex'
 
-// Re-export gemini-cli functionality
-export { writeGeminiConfig, installGeminiDeps } from './gemini-cli'
-
 // Re-export opencode functionality
 export { writeOpencodeConfig, installOpencodeDeps } from './opencode'
 

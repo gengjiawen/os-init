@@ -7,8 +7,6 @@ const {
   installDeps,
   writeCodexConfig,
   installCodexDeps,
-  writeGeminiConfig,
-  installGeminiDeps,
   writeOpencodeConfig,
   installOpencodeDeps,
   writeAllAgentsConfig,
@@ -79,30 +77,6 @@ program
   })
 
 program
-  .command('set-gemini')
-  .description('setup Gemini CLI config and auth')
-  .argument('<apiKey>', 'API key to set for Gemini CLI')
-  .action(async (apiKey) => {
-    if (!apiKey || String(apiKey).trim().length === 0) {
-      console.error('Missing required argument: <apiKey>')
-      program.help({ error: true })
-      return
-    }
-    try {
-      const { envPath, settingsPath } = writeGeminiConfig(apiKey)
-      console.log(`Gemini CLI env written to: ${envPath}`)
-      console.log(`Gemini CLI settings written to: ${settingsPath}`)
-      await installGeminiDeps()
-    } catch (err) {
-      console.error('Failed to setup Gemini CLI:', err.message)
-      process.exit(1)
-    }
-    console.log(
-      'Gemini CLI is ready. use `gemini` in terminal to start building'
-    )
-  })
-
-program
   .command('set-opencode')
   .description('setup OpenCode CLI config and auth')
   .argument('<apiKey>', 'API key to set for OpenCode')
@@ -128,10 +102,10 @@ program
 program
   .command('set-agents')
   .description(
-    'setup Claude Code and Codex at once (use --full to include OpenCode and Gemini CLI)'
+    'setup Claude Code and Codex at once (use --full to include OpenCode)'
   )
   .argument('<apiKey>', 'API key to set for agents')
-  .option('--full', 'Also setup OpenCode and Gemini CLI')
+  .option('--full', 'Also setup OpenCode')
   .action(async (apiKey, options) => {
     if (!apiKey || String(apiKey).trim().length === 0) {
       console.error('Missing required argument: <apiKey>')
@@ -144,7 +118,7 @@ program
     try {
       console.log(
         full
-          ? 'Setting up Claude Code + Codex + OpenCode + Gemini CLI...\n'
+          ? 'Setting up Claude Code + Codex + OpenCode...\n'
           : 'Setting up Claude Code + Codex...\n'
       )
 
@@ -166,12 +140,6 @@ program
         console.log(`  Config written to: ${result.opencode.configPath}`)
       }
 
-      if (result.gemini) {
-        console.log('\nGemini CLI:')
-        console.log(`  Env written to: ${result.gemini.envPath}`)
-        console.log(`  Settings written to: ${result.gemini.settingsPath}`)
-      }
-
       console.log('\nInstalling dependencies...')
       await installAllAgentsDeps({ full })
     } catch (err) {
@@ -184,7 +152,6 @@ program
     console.log('  - Use `codex` for Codex')
     if (full) {
       console.log('  - Use `opencode` for OpenCode')
-      console.log('  - Use `gemini` for Gemini CLI')
     }
   })
 

@@ -64,9 +64,6 @@ describe('writeOpencodeConfig', () => {
     expect(config.provider.MyCustomProvider.models.deepseek).toEqual(
       expectedModelConfig('deepseek')
     )
-    expect(config.provider.MyCustomProvider.models['gemini-flash']).toEqual(
-      expectedModelConfig('gemini-flash')
-    )
     expect(config.model).toBe('MyCustomProvider/code')
     expect(config.small_model).toBe('MyCustomProvider/code')
   })

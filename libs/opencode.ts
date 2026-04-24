@@ -12,7 +12,6 @@ const OPENCODE_MODEL_IDS = [
   'kimi',
   'minimax',
   'deepseek',
-  'gemini-flash',
 ]
 const OPENCODE_BASE_URL = 'https://ai.gengjiawen.com/api/openai/v1'
 

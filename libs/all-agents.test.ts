@@ -52,17 +52,13 @@ describe('writeAllAgentsConfig', () => {
     expect(fs.existsSync(result.codex.authPath)).toBe(true)
     expect(fs.existsSync(result.codex.catalogPath)).toBe(true)
     expect(result.opencode).toBeUndefined()
-    expect(result.gemini).toBeUndefined()
   })
 
-  test('includes OpenCode and Gemini config when full option is enabled', async () => {
+  test('includes OpenCode config when full option is enabled', async () => {
     const result = await writeAllAgentsConfig('test-api-key', { full: true })
 
     expect(result.opencode).toBeDefined()
     expect(fs.existsSync(result.opencode!.configPath)).toBe(true)
-    expect(result.gemini).toBeDefined()
-    expect(fs.existsSync(result.gemini!.envPath)).toBe(true)
-    expect(fs.existsSync(result.gemini!.settingsPath)).toBe(true)
   })
 
   test('installs Claude and Codex in one pnpm command', async () => {
@@ -117,7 +113,6 @@ describe('writeAllAgentsConfig', () => {
         '@anthropic-ai/claude-code',
         '@openai/codex',
         'opencode-ai',
-        '@google/gemini-cli',
       ],
       { stdio: 'inherit' }
     )

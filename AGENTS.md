@@ -2,7 +2,7 @@
 
 ## Project Structure
 
-- `bin/`: Node CLI entrypoint (`bin/bin.js`) and command definitions (e.g., `set-codex`, `set-gemini`).
+- `bin/`: Node CLI entrypoint (`bin/bin.js`) and command definitions (e.g., `set-codex`, `set-opencode`).
 - `libs/`: TypeScript source for config writers/installers and setup utilities (main exports in `libs/index.ts`).
 - `build/`: Compiled JS + `.d.ts` output from `tsc` (`outDir`), consumed by the CLI and published to npm.
 - `dev-setup/`: Optional Docker-based dev environment (sshd + compose) for remote/portable workflows.
@@ -22,7 +22,7 @@ Use `pnpm` (CI uses it).
 
 - Formatting: Prettier (no semicolons, single quotes). Run `pnpm format` before pushing.
 - TypeScript: strict options are enabled; prefer explicit, typed helpers over `any`.
-- Naming: files are kebab-case in `libs/` (e.g., `gemini-cli.ts`); exported functions are `camelCase`.
+- Naming: files are kebab-case in `libs/` (e.g., `opencode.ts`); exported functions are `camelCase`.
 
 ## Testing Guidelines
 
