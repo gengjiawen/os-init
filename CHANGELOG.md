@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.23.0](https://github.com/gengjiawen/os-init/compare/v1.22.0...v1.23.0) (2026-04-24)
+
+
+### Features
+
+* bump default Codex model to gpt-5.5 ([7104f50](https://github.com/gengjiawen/os-init/commit/7104f50d2e3af71e48aa0e88306b36d686fffb42))
+
+
+### Bug Fixes
+
+* combine set-agents dependency installs ([5edbad1](https://github.com/gengjiawen/os-init/commit/5edbad1689d834cb8ead4cfc8e05a15e015c2c2f))
+
 ## [1.22.0](https://github.com/gengjiawen/os-init/compare/v1.21.0...v1.22.0) (2026-04-17)
 
 
