@@ -22,7 +22,7 @@ describe('writeCodexConfig', () => {
 
   function mockCatalogFetch(
     catalog: { models: Array<Record<string, unknown>> } = {
-      models: [{ id: 'gpt-5.4' }],
+      models: [{ id: 'gpt-5.5' }],
     }
   ): jest.Mock {
     const fetchMock = jest.fn().mockResolvedValue({
@@ -95,7 +95,7 @@ custom_model = "keep-me"
 
     expect(config).not.toHaveProperty('service_tier')
     expect(config.custom_flag).toBe(true)
-    expect(config.model).toBe('gpt-5.4')
+    expect(config.model).toBe('gpt-5.5')
     expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
     expect(config.preferred_auth_method).toBe('apikey')
     expect(config.model_providers.jw.base_url).toBe(
@@ -132,7 +132,7 @@ base_url = "https://example.com"
       }
     }
 
-    expect(config.model).toBe('gpt-5.4')
+    expect(config.model).toBe('gpt-5.5')
     expect(config.model_catalog_json).toBe(getExpectedModelCatalogConfigPath())
     expect(config.preferred_auth_method).toBe('apikey')
     expect(config.model_providers.jw.name).toBe('jw')
@@ -142,8 +142,8 @@ base_url = "https://example.com"
   test('refreshes remote model catalog after writing config', async () => {
     const fetchMock = mockCatalogFetch({
       models: [
-        { id: 'gpt-5.4' },
-        { id: 'gpt-5.4-mini' },
+        { id: 'gpt-5.5' },
+        { id: 'gpt-5.5-mini' },
         { id: 'gpt-5.3-codex' },
       ],
     })
@@ -167,8 +167,8 @@ base_url = "https://example.com"
 
     expect(catalog).toEqual({
       models: [
-        { id: 'gpt-5.4' },
-        { id: 'gpt-5.4-mini' },
+        { id: 'gpt-5.5' },
+        { id: 'gpt-5.5-mini' },
         { id: 'gpt-5.3-codex' },
       ],
     })

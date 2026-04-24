@@ -29,7 +29,7 @@ function getCodexModelCatalogConfigPath(): string {
 
 function getCodexConfigTomlTemplate(): string {
   return `model_provider = "jw"
-model = "gpt-5.4"
+model = "gpt-5.5"
 model_reasoning_effort = "xhigh"
 plan_mode_reasoning_effort = "xhigh"
 model_auto_compact_token_limit = 131072

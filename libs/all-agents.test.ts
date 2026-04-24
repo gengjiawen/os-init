@@ -25,7 +25,7 @@ describe('writeAllAgentsConfig', () => {
     process.env.APPDATA = path.join(tempHome, 'AppData', 'Roaming')
     global.fetch = jest.fn().mockResolvedValue({
       ok: true,
-      json: async () => ({ models: [{ id: 'gpt-5.4' }] }),
+      json: async () => ({ models: [{ id: 'gpt-5.5' }] }),
     }) as unknown as typeof global.fetch
   })
 
