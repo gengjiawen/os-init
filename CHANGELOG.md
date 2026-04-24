@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.23.1](https://github.com/gengjiawen/os-init/compare/v1.23.0...v1.23.1) (2026-04-24)
+
+
+### Bug Fixes
+
+* allow claude postinstall with pnpm ([f494b78](https://github.com/gengjiawen/os-init/commit/f494b78134025992863a2272432d64348fd4532e))
+
 ## [1.23.0](https://github.com/gengjiawen/os-init/compare/v1.22.0...v1.23.0) (2026-04-24)
 
 
