@@ -42,6 +42,7 @@ function getVSCodeUserSettingsPath(): string {
 const CLAUDE_SETTINGS_TEMPLATE = `{
   "env": {
     "DISABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "OTEL_METRICS_EXPORTER": "otlp",
     "ANTHROPIC_API_KEY": "API_KEY_PLACEHOLDER",
     "ANTHROPIC_BASE_URL": "${CLAUDE_BASE_URL}",
