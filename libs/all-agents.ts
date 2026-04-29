@@ -11,17 +11,17 @@ export interface AllAgentsOptions {
 
 export interface AllAgentsResult {
   claude: { settingsPath: string; vscodeSettingsPath: string }
-  codex: { configPath: string; authPath: string; catalogPath: string }
+  codex: { configPath: string; authPath: string }
   opencode?: { configPath: string }
 }
 
 /** Write configuration for the combined setup (Claude Code + Codex; optional OpenCode with --full). */
-export async function writeAllAgentsConfig(
+export function writeAllAgentsConfig(
   apiKey: string,
   options: AllAgentsOptions = {}
-): Promise<AllAgentsResult> {
+): AllAgentsResult {
   const claudeResult = writeClaudeConfig(apiKey)
-  const codexResult = await writeCodexConfig(apiKey)
+  const codexResult = writeCodexConfig(apiKey)
 
   const result: AllAgentsResult = {
     claude: claudeResult,

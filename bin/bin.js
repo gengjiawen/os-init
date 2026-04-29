@@ -63,11 +63,9 @@ program
       return
     }
     try {
-      const { configPath, authPath, catalogPath } =
-        await writeCodexConfig(apiKey)
+      const { configPath, authPath } = writeCodexConfig(apiKey)
       console.log(`Codex config written to: ${configPath}`)
       console.log(`Codex auth written to: ${authPath}`)
-      console.log(`Codex model catalog written to: ${catalogPath}`)
       await installCodexDeps()
     } catch (err) {
       console.error('Failed to setup Codex:', err.message)
@@ -122,7 +120,7 @@ program
           : 'Setting up Claude Code + Codex...\n'
       )
 
-      const result = await writeAllAgentsConfig(apiKey, { full })
+      const result = writeAllAgentsConfig(apiKey, { full })
 
       console.log('Claude Code:')
       console.log(`  Settings written to: ${result.claude.settingsPath}`)
@@ -133,7 +131,6 @@ program
       console.log('\nCodex:')
       console.log(`  Config written to: ${result.codex.configPath}`)
       console.log(`  Auth written to: ${result.codex.authPath}`)
-      console.log(`  Model catalog written to: ${result.codex.catalogPath}`)
 
       if (result.opencode) {
         console.log('\nOpenCode:')
