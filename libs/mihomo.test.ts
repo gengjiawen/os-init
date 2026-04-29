@@ -104,7 +104,7 @@ describe('writeMihomoConfig', () => {
     expect(content).toContain('- IP-CIDR6,fe80::/10,DIRECT')
     expect(content).toContain('- DOMAIN-SUFFIX,local,DIRECT')
     expect(content).toContain('- DOMAIN-SUFFIX,cn,DIRECT')
-    expect(content).toContain('- GEOIP,CN,DIRECT')
+    expect(content).toContain('# - GEOIP,CN,DIRECT')
     expect(content).toContain('- MATCH,PROXY')
   })
 
