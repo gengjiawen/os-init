@@ -125,7 +125,6 @@ describe('writeClaudeConfig', () => {
         '--allow-build=@anthropic-ai/claude-code',
         'add',
         '-g',
-        '--force',
         '@anthropic-ai/claude-code',
       ],
       {

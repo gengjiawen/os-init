@@ -50,13 +50,7 @@ export async function installAllAgentsDeps(
     console.log('pnpm detected. Installing agent dependencies with pnpm...')
     await execa(
       'pnpm',
-      [
-        '--allow-build=@anthropic-ai/claude-code',
-        'add',
-        '-g',
-        '--force',
-        ...packages,
-      ],
+      ['--allow-build=@anthropic-ai/claude-code', 'add', '-g', ...packages],
       {
         stdio: 'inherit',
         env: PNPM_INSTALL_ENV,

@@ -79,7 +79,6 @@ describe('writeAllAgentsConfig', () => {
         '--allow-build=@anthropic-ai/claude-code',
         'add',
         '-g',
-        '--force',
         '@anthropic-ai/claude-code',
         '@openai/codex',
       ],

@@ -154,13 +154,7 @@ export async function installDeps(): Promise<void> {
     console.log('pnpm detected. Installing dependencies with pnpm...')
     await execa(
       'pnpm',
-      [
-        '--allow-build=@anthropic-ai/claude-code',
-        'add',
-        '-g',
-        '--force',
-        ...packages,
-      ],
+      ['--allow-build=@anthropic-ai/claude-code', 'add', '-g', ...packages],
       {
         stdio: 'inherit',
         env: PNPM_INSTALL_ENV,
