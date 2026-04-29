@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.24.0](https://github.com/gengjiawen/os-init/compare/v1.23.1...v1.24.0) (2026-04-29)
+
+
+### Features
+
+* add CLAUDE_CODE_EFFORT_LEVEL setting to user settings template ([a32c352](https://github.com/gengjiawen/os-init/commit/a32c3520236bb5511a33ddc586107861ea6dfabb))
+
 ## [1.23.1](https://github.com/gengjiawen/os-init/compare/v1.23.0...v1.23.1) (2026-04-24)
 
 
