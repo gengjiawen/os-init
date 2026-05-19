@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.25.0](https://github.com/gengjiawen/os-init/compare/v1.24.0...v1.25.0) (2026-05-19)
+
+
+### Features
+
+* add disable-ts-extension command ([26c8d38](https://github.com/gengjiawen/os-init/commit/26c8d389f5524eebf27fb0e16f92f1a800d53b73))
+
+
+### Bug Fixes
+
+* **codex:** Windows TOML parse failure in model_catalog_json merge ([#38](https://github.com/gengjiawen/os-init/issues/38)) ([86375a8](https://github.com/gengjiawen/os-init/commit/86375a89aff460d3b367a4f2af9a5205abc0570e))
+
 ## [1.24.0](https://github.com/gengjiawen/os-init/compare/v1.23.1...v1.24.0) (2026-04-29)
 
 
