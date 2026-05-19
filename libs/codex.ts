@@ -57,8 +57,17 @@ function mergeTomlTables(
   return mergedConfig
 }
 
+/** Strip model_catalog_json before parse; Windows paths break TOML string escapes. */
+function stripModelCatalogJsonFromToml(content: string): string {
+  return content
+    .split('\n')
+    .filter((line) => !/^\s*model_catalog_json\s*=/.test(line))
+    .join('\n')
+}
+
 function getMergedCodexConfig(existingContent: string): string {
-  const existingConfig = TOML.parse(existingContent) as TomlTable
+  const sanitizedContent = stripModelCatalogJsonFromToml(existingContent)
+  const existingConfig = TOML.parse(sanitizedContent) as TomlTable
   const templateConfig = TOML.parse(getCodexConfigTomlTemplate()) as TomlTable
   delete existingConfig.service_tier
   delete existingConfig.model_catalog_json
