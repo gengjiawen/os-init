@@ -72,6 +72,24 @@ Example:
 pnpx @gengjiawen/os-init set-fish
 ```
 
+### Disable VS Code TypeScript Extension in Cursor
+
+```bash
+pnpx @gengjiawen/os-init disable-ts-extension
+```
+
+Disables `vscode.typescript-language-features`, the VS Code TypeScript language
+features extension bundled with Cursor, because it can consume too much memory.
+The command writes Cursor's UI disabled-extension state so it stays disabled
+across restarts, updates Cursor's `state.vscdb` with Node's built-in
+`node:sqlite` module, and preserves any other disabled extensions.
+
+Use a custom Cursor state database path when needed:
+
+```bash
+pnpx @gengjiawen/os-init disable-ts-extension --db "$HOME/Library/Application Support/Cursor/User/globalStorage/state.vscdb"
+```
+
 ### Generate Mihomo Config
 
 ```bash

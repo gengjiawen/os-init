@@ -66,3 +66,11 @@ export { setupAndroidEnvironment } from './android-setup'
 
 // Re-export mihomo functionality
 export { writeMihomoConfig, downloadMihomoBinary } from './mihomo'
+
+// Re-export Cursor functionality
+export {
+  CURSOR_TYPESCRIPT_EXTENSION_ID,
+  disableCursorTypescriptExtension,
+  getCursorStateDbPath,
+  mergeDisabledExtension,
+} from './cursor'

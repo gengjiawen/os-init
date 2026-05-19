@@ -16,6 +16,7 @@ const {
   setupAndroidEnvironment,
   writeMihomoConfig,
   downloadMihomoBinary,
+  disableCursorTypescriptExtension,
 } = require('../build')
 const { appendFishImportScript } = require('../build/fish-shell-utils')
 
@@ -229,6 +230,34 @@ program
       console.log('\n✅ Fish shell import script setup completed!')
     } catch (err) {
       console.error('Failed to setup Fish shell:', err.message)
+      process.exit(1)
+    }
+  })
+
+program
+  .command('disable-ts-extension')
+  .description(
+    'disable VS Code TypeScript extension in Cursor to avoid excessive memory use'
+  )
+  .option('--db <path>', 'Cursor state.vscdb path')
+  .action(async (options) => {
+    try {
+      const result = await disableCursorTypescriptExtension({
+        dbPath: options.db,
+      })
+
+      console.log(
+        result.changed
+          ? `Cursor extension disabled: ${result.extensionId}`
+          : `Cursor extension already disabled: ${result.extensionId}`
+      )
+      console.log(`Cursor state DB: ${result.dbPath}`)
+      console.log(`Cursor storage key: ${result.key}`)
+    } catch (err) {
+      console.error(
+        'Failed to disable VS Code TypeScript extension in Cursor:',
+        err.message
+      )
       process.exit(1)
     }
   })
