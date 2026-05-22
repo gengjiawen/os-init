@@ -15,6 +15,12 @@ dns:
     - 1.1.1.1
     - 223.5.5.5
     - 119.29.29.29
+  # Regular domain queries use these upstream DNS servers.
+  # system:// reads DNS servers from the operating system.
+  nameserver:
+    - 1.1.1.1
+    - 223.5.5.5
+    - system://
 sniffer:
   enable: true
   sniffing:
