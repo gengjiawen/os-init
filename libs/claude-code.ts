@@ -3,7 +3,13 @@ import * as path from 'path'
 import * as os from 'os'
 import { execa } from 'execa'
 import { ParseError, applyEdits, modify, parse } from 'jsonc-parser'
-import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
+import {
+  allowPnpmGlobalBuild,
+  ensureDir,
+  getCommandVersion,
+  pnpmSupportsAllowBuild,
+  PNPM_INSTALL_ENV,
+} from './utils'
 
 const CLAUDE_BASE_URL = 'https://ai.gengjiawen.com/api/claude/'
 const CLAUDE_AUTO_COMPACT_WINDOW = '128000'
@@ -149,13 +155,25 @@ export function writeClaudeConfig(apiKey: string): {
 /** Install global dependencies */
 export async function installDeps(): Promise<void> {
   const packages = ['@anthropic-ai/claude-code']
-  const usePnpm = await commandExists('pnpm')
+  const pnpmVersion = await getCommandVersion('pnpm')
 
-  if (usePnpm) {
+  if (pnpmVersion !== null) {
     console.log('pnpm detected. Installing dependencies with pnpm...')
+    const supportsAllowBuild = pnpmSupportsAllowBuild(pnpmVersion)
+    if (supportsAllowBuild) {
+      await allowPnpmGlobalBuild('@anthropic-ai/claude-code')
+    }
+
     await execa(
       'pnpm',
-      ['--allow-build=@anthropic-ai/claude-code', 'add', '-g', ...packages],
+      [
+        ...(supportsAllowBuild
+          ? ['--allow-build=@anthropic-ai/claude-code']
+          : []),
+        'add',
+        '-g',
+        ...packages,
+      ],
       {
         stdio: 'inherit',
         env: PNPM_INSTALL_ENV,

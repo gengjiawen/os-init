@@ -2,7 +2,12 @@ import { writeClaudeConfig } from './claude-code'
 import { writeCodexConfig } from './codex'
 import { writeOpencodeConfig } from './opencode'
 import { execa } from 'execa'
-import { commandExists, PNPM_INSTALL_ENV } from './utils'
+import {
+  allowPnpmGlobalBuild,
+  getCommandVersion,
+  pnpmSupportsAllowBuild,
+  PNPM_INSTALL_ENV,
+} from './utils'
 
 export interface AllAgentsOptions {
   /** When true, also include OpenCode in the combined setup. */
@@ -44,13 +49,25 @@ export async function installAllAgentsDeps(
     packages.push('opencode-ai')
   }
 
-  const usePnpm = await commandExists('pnpm')
+  const pnpmVersion = await getCommandVersion('pnpm')
 
-  if (usePnpm) {
+  if (pnpmVersion !== null) {
     console.log('pnpm detected. Installing agent dependencies with pnpm...')
+    const supportsAllowBuild = pnpmSupportsAllowBuild(pnpmVersion)
+    if (supportsAllowBuild) {
+      await allowPnpmGlobalBuild('@anthropic-ai/claude-code')
+    }
+
     await execa(
       'pnpm',
-      ['--allow-build=@anthropic-ai/claude-code', 'add', '-g', ...packages],
+      [
+        ...(supportsAllowBuild
+          ? ['--allow-build=@anthropic-ai/claude-code']
+          : []),
+        'add',
+        '-g',
+        ...packages,
+      ],
       {
         stdio: 'inherit',
         env: PNPM_INSTALL_ENV,

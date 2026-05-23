@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
+import * as yaml from 'yaml'
 
 jest.mock('execa', () => ({
   execa: jest.fn(),
@@ -37,6 +38,7 @@ describe('writeClaudeConfig', () => {
   let originalAppData: string | undefined
 
   beforeEach(() => {
+    jest.clearAllMocks()
     tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-claude-'))
     homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tempHome)
     originalAppData = process.env.APPDATA
@@ -108,18 +110,28 @@ describe('writeClaudeConfig', () => {
 
   test('allows Claude postinstall build when installing with pnpm', async () => {
     const execaMock = jest.mocked(execa)
+    const pnpmGlobalRoot = path.join(tempHome, 'pnpm-global')
+    const workspacePath = path.join(pnpmGlobalRoot, 'pnpm-workspace.yaml')
+    fs.mkdirSync(pnpmGlobalRoot, { recursive: true })
+    fs.writeFileSync(
+      workspacePath,
+      'allowBuilds:\n  "@anthropic-ai/claude-code": false\n'
+    )
+
     execaMock
-      .mockResolvedValueOnce({ failed: false } as never)
+      .mockResolvedValueOnce({ failed: false, stdout: '10.33.2' } as never)
+      .mockResolvedValueOnce({ stdout: pnpmGlobalRoot } as never)
       .mockResolvedValueOnce({} as never)
 
     await installDeps()
 
     expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
-      stdio: 'ignore',
+      stdio: 'pipe',
       reject: false,
     })
+    expect(execaMock).toHaveBeenNthCalledWith(2, 'pnpm', ['root', '-g'])
     expect(execaMock).toHaveBeenNthCalledWith(
-      2,
+      3,
       'pnpm',
       [
         '--allow-build=@anthropic-ai/claude-code',
@@ -127,6 +139,35 @@ describe('writeClaudeConfig', () => {
         '-g',
         '@anthropic-ai/claude-code',
       ],
+      {
+        stdio: 'inherit',
+        env: {
+          PNPM_CONFIG_ENABLE_PRE_POST_SCRIPTS: 'true',
+        },
+      }
+    )
+    expect(execaMock).toHaveBeenCalledTimes(3)
+
+    const workspace = yaml.parse(fs.readFileSync(workspacePath, 'utf8'))
+    expect(workspace.allowBuilds['@anthropic-ai/claude-code']).toBe(true)
+  })
+
+  test('does not pass allow-build to pnpm versions before 10', async () => {
+    const execaMock = jest.mocked(execa)
+    execaMock
+      .mockResolvedValueOnce({ failed: false, stdout: '9.15.9' } as never)
+      .mockResolvedValueOnce({} as never)
+
+    await installDeps()
+
+    expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
+      stdio: 'pipe',
+      reject: false,
+    })
+    expect(execaMock).toHaveBeenNthCalledWith(
+      2,
+      'pnpm',
+      ['add', '-g', '@anthropic-ai/claude-code'],
       {
         stdio: 'inherit',
         env: {

@@ -1,6 +1,7 @@
 import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
+import * as yaml from 'yaml'
 
 jest.mock('execa', () => ({
   execa: jest.fn(),
@@ -50,18 +51,23 @@ describe('writeAllAgentsConfig', () => {
   })
 
   test('installs Claude and Codex in one pnpm command', async () => {
+    const pnpmGlobalRoot = path.join(tempHome, 'pnpm-global')
+    const workspacePath = path.join(pnpmGlobalRoot, 'pnpm-workspace.yaml')
+
     execaMock
-      .mockResolvedValueOnce({ failed: false } as never)
+      .mockResolvedValueOnce({ failed: false, stdout: '10.33.2' } as never)
+      .mockResolvedValueOnce({ stdout: pnpmGlobalRoot } as never)
       .mockResolvedValueOnce({} as never)
 
     await installAllAgentsDeps()
 
     expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
-      stdio: 'ignore',
+      stdio: 'pipe',
       reject: false,
     })
+    expect(execaMock).toHaveBeenNthCalledWith(2, 'pnpm', ['root', '-g'])
     expect(execaMock).toHaveBeenNthCalledWith(
-      2,
+      3,
       'pnpm',
       [
         '--allow-build=@anthropic-ai/claude-code',
@@ -77,7 +83,10 @@ describe('writeAllAgentsConfig', () => {
         },
       }
     )
-    expect(execaMock).toHaveBeenCalledTimes(2)
+    expect(execaMock).toHaveBeenCalledTimes(3)
+
+    const workspace = yaml.parse(fs.readFileSync(workspacePath, 'utf8'))
+    expect(workspace.allowBuilds['@anthropic-ai/claude-code']).toBe(true)
   })
 
   test('installs all requested agents in one npm command when pnpm is unavailable', async () => {
@@ -88,7 +97,7 @@ describe('writeAllAgentsConfig', () => {
     await installAllAgentsDeps({ full: true })
 
     expect(execaMock).toHaveBeenNthCalledWith(1, 'pnpm', ['--version'], {
-      stdio: 'ignore',
+      stdio: 'pipe',
       reject: false,
     })
     expect(execaMock).toHaveBeenNthCalledWith(
