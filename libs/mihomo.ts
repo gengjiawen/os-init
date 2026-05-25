@@ -23,9 +23,9 @@ dns:
     - system://
 sniffer:
   enable: true
-  sniffing:
-    - tls
-    - http
+  sniff:
+    TLS:
+    HTTP:
 tun:
   enable: true
   stack: system
