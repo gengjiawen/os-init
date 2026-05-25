@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.26.0](https://github.com/gengjiawen/os-init/compare/v1.25.0...v1.26.0) (2026-05-25)
+
+
+### Features
+
+* disable claude attribution header ([143f161](https://github.com/gengjiawen/os-init/commit/143f161d71f5b1b4984f3a6513081c8b66b6aa4b))
+
+
+### Bug Fixes
+
+* add system DNS to mihomo template ([37c844e](https://github.com/gengjiawen/os-init/commit/37c844e36837b191af00092c1538b10351b87a37))
+* persist claude pnpm build approval ([dd10751](https://github.com/gengjiawen/os-init/commit/dd1075168f9e82a35b31049e2f61a64ba009812b))
+* update mihomo sniffer config ([54df04d](https://github.com/gengjiawen/os-init/commit/54df04d48219041c0b4ab867cb80150f81639396))
+
 ## [1.25.0](https://github.com/gengjiawen/os-init/compare/v1.24.0...v1.25.0) (2026-05-19)
 
 
