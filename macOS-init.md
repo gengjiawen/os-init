@@ -16,7 +16,7 @@ brew install fish
 brew install go
 brew install n
 brew install rustup-init
-brew install visual-studio-code
+brew install cursor
 brew install google-chrome
 brew install jetbrains-toolbox
 brew install omnidisksweeper
@@ -26,6 +26,7 @@ sudo n lts
 sudo git lfs install --system
 npm i -g pnpm yarn && pnpm setup && SHELL=fish pnpm setup && source ~/.bashrc
 pnpx @gengjiawen/os-init set-fish
+pnpx @gengjiawen/os-init disable-ts-extension
 pnpm i -g vite 7zip-bin-full
 sudo ln -s "$(NODE_PATH="$(pnpm root -g)" node -p "require('7zip-bin-full').path7z")" /usr/local/bin/7z
 ```
