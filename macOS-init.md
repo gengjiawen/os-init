@@ -23,6 +23,7 @@ brew install jetbrains-toolbox
 brew install omnidisksweeper
 brew install git-lfs
 brew install jordanbaird-ice
+brew install raycast
 sudo n lts
 sudo git lfs install --system
 npm i -g pnpm yarn && pnpm setup && SHELL=fish pnpm setup && source ~/.bashrc
