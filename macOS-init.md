@@ -16,7 +16,6 @@ brew install fish
 brew install go
 brew install n
 brew install rustup-init
-rustup-init -y
 brew install cursor
 brew install google-chrome
 brew install jetbrains-toolbox
@@ -25,6 +24,7 @@ brew install git-lfs
 brew install jordanbaird-ice
 brew install raycast
 sudo n lts
+rustup-init -y
 sudo git lfs install --system
 npm i -g pnpm yarn && pnpm setup && SHELL=fish pnpm setup && source ~/.bashrc
 pnpx @gengjiawen/os-init set-fish
