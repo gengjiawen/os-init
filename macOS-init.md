@@ -16,6 +16,7 @@ brew install fish
 brew install go
 brew install n
 brew install rustup-init
+rustup-init -y
 brew install cursor
 brew install google-chrome
 brew install jetbrains-toolbox
