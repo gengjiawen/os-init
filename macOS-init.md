@@ -29,6 +29,7 @@ sudo git lfs install --system
 npm i -g pnpm yarn && pnpm setup && SHELL=fish pnpm setup && source ~/.bashrc
 pnpx @gengjiawen/os-init set-fish
 pnpx @gengjiawen/os-init disable-ts-extension
+pnpx @gengjiawen/os-init setup-env
 pnpm i -g vite 7zip-bin-full
 sudo ln -s "$(NODE_PATH="$(pnpm root -g)" node -p "require('7zip-bin-full').path7z")" /usr/local/bin/7z
 ```

@@ -17,6 +17,7 @@ const {
   writeMihomoConfig,
   downloadMihomoBinary,
   disableCursorTypescriptExtension,
+  setupEnv,
 } = require('../build')
 const { appendFishImportScript } = require('../build/fish-shell-utils')
 
@@ -258,6 +259,25 @@ program
         'Failed to disable VS Code TypeScript extension in Cursor:',
         err.message
       )
+      process.exit(1)
+    }
+  })
+
+program
+  .command('setup-env')
+  .description(
+    'setup environment variables in .bashrc (PATH, PNPM_HOME, CARGO_HOME, RUSTUP_HOME)'
+  )
+  .action(async () => {
+    try {
+      const { bashrcPath, changed } = setupEnv()
+      console.log(
+        changed
+          ? `Environment variables written to: ${bashrcPath}`
+          : `Environment variables already configured in: ${bashrcPath}`
+      )
+    } catch (err) {
+      console.error('Failed to setup environment:', err.message)
       process.exit(1)
     }
   })
