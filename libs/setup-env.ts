@@ -35,6 +35,7 @@ function generateBashrcContent(): string {
     `${brewPrefix}/sbin`,
     pnpmHome,
     `${cargoHome}/bin`,
+    `${home}/.jsvu/bin`,
     `${home}/.local/bin`,
     `${home}/.yarn/bin`,
   ]
