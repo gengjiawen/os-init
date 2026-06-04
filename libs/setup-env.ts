@@ -23,6 +23,15 @@ function getPnpmHome(): string {
   return path.join(home, '.pnpm')
 }
 
+function getRustToolchainBin(): string | null {
+  const home = os.homedir()
+  const toolchainsDir = path.join(home, '.rustup', 'toolchains')
+  if (!fs.existsSync(toolchainsDir)) return null
+  const entries = fs.readdirSync(toolchainsDir)
+  const stable = entries.find((e) => e.startsWith('stable-'))
+  return stable ? path.join(toolchainsDir, stable, 'bin') : null
+}
+
 function generateBashrcContent(): string {
   const brewPrefix = getBrewPrefix()
   const home = os.homedir()
@@ -39,6 +48,11 @@ function generateBashrcContent(): string {
     `${home}/.local/bin`,
     `${home}/.yarn/bin`,
   ]
+
+  const toolchainBin = getRustToolchainBin()
+  if (toolchainBin) {
+    pathEntries.push(toolchainBin)
+  }
 
   return `${MARKER_START}
 export PNPM_HOME="${pnpmHome}"
