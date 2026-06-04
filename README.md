@@ -90,6 +90,14 @@ Use a custom Cursor state database path when needed:
 pnpx @gengjiawen/os-init disable-ts-extension --db "$HOME/Library/Application Support/Cursor/User/globalStorage/state.vscdb"
 ```
 
+### Setup Environment Variables
+
+```bash
+pnpx @gengjiawen/os-init setup-env
+```
+
+Writes PNPM_HOME, RUSTUP_HOME, CARGO_HOME, and PATH entries (brew, cargo, pnpm, jsvu, yarn) to `~/.bashrc`. Automatically detects brew prefix per platform and only adds the rustup stable toolchain bin on macOS. Idempotent — safe to run multiple times.
+
 ### Generate Mihomo Config
 
 ```bash
