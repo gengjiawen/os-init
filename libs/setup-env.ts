@@ -35,11 +35,14 @@ function generateBashrcContent(): string {
     `${brewPrefix}/sbin`,
     pnpmHome,
     `${cargoHome}/bin`,
-    `${rustupHome}/toolchains/stable-aarch64-apple-darwin/bin`,
     `${home}/.jsvu/bin`,
     `${home}/.local/bin`,
     `${home}/.yarn/bin`,
   ]
+
+  if (process.platform === 'darwin') {
+    pathEntries.push(`${rustupHome}/toolchains/stable-aarch64-apple-darwin/bin`)
+  }
 
   return `${MARKER_START}
 export PNPM_HOME="${pnpmHome}"
