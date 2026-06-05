@@ -15,11 +15,10 @@ dns:
     - 1.1.1.1
     - 223.5.5.5
     - 119.29.29.29
-  # Regular domain queries use these upstream DNS servers.
-  # system:// reads DNS servers from the operating system.
+  # Regular domain queries use these DoT upstream DNS servers plus system DNS.
   nameserver:
-    - 1.1.1.1
-    - 223.5.5.5
+    - tls://dns.alidns.com:853
+    - tls://dns.google:853
     - system://
 sniffer:
   enable: true

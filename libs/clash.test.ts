@@ -87,6 +87,8 @@ describe('writeClashConfig', () => {
     expect(content).toContain('mixed-port: 7890')
     expect(content).toContain('mode: rule')
     expect(content).toContain('nameserver:')
+    expect(content).toContain('- tls://dns.alidns.com:853')
+    expect(content).toContain('- tls://dns.google:853')
     expect(content).toContain('- system://')
     expect(content).toContain('sniff:')
     expect(content).toContain('TLS:')
