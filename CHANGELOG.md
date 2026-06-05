@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.26.1](https://github.com/gengjiawen/os-init/compare/v1.26.0...v1.26.1) (2026-06-05)
+
+
+### Bug Fixes
+
+* source bashrc from bash_profile on macOS ([8f5c9ae](https://github.com/gengjiawen/os-init/commit/8f5c9ae43e122766399d7a8584b91afabf5b9b7b))
+* update vulnerable dependencies ([88eb62b](https://github.com/gengjiawen/os-init/commit/88eb62b2ce5706823c87f1dd1d827b10461a42c1))
+* use dot nameservers for clash ([1b72d01](https://github.com/gengjiawen/os-init/commit/1b72d0138487173252d2b7ec295727317b4a8d34))
+
 ## [1.26.0](https://github.com/gengjiawen/os-init/compare/v1.25.0...v1.26.0) (2026-05-25)
 
 
