@@ -12,9 +12,9 @@ jest.mock('@gengjiawen/unzip-url', () => ({
 }))
 
 import { unzip } from '@gengjiawen/unzip-url'
-import { downloadMihomoBinary, writeMihomoConfig } from './mihomo'
+import { downloadClashBinary, writeClashConfig } from './clash'
 
-describe('writeMihomoConfig', () => {
+describe('writeClashConfig', () => {
   let tempHome: string
   let tempCwd: string
   let homedirSpy: jest.SpiedFunction<typeof os.homedir>
@@ -40,8 +40,8 @@ describe('writeMihomoConfig', () => {
   }
 
   beforeEach(() => {
-    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-mihomo-'))
-    tempCwd = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-mihomo-cwd-'))
+    tempHome = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-clash-'))
+    tempCwd = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-clash-cwd-'))
     homedirSpy = jest.spyOn(os, 'homedir').mockReturnValue(tempHome)
     cwdSpy = jest.spyOn(process, 'cwd').mockReturnValue(tempCwd)
     originalPlatformDescriptor = Object.getOwnPropertyDescriptor(
@@ -78,8 +78,8 @@ describe('writeMihomoConfig', () => {
     fs.rmSync(tempCwd, { recursive: true, force: true })
   })
 
-  test('writes default mihomo config.yml to current directory', () => {
-    const result = writeMihomoConfig()
+  test('writes default clash config.yml to current directory', () => {
+    const result = writeClashConfig()
 
     expect(result.configPath).toBe(path.join(tempCwd, 'config.yml'))
 
@@ -114,18 +114,18 @@ describe('writeMihomoConfig', () => {
     expect(content).toContain('- MATCH,PROXY')
   })
 
-  test('writes mihomo config to custom target path', () => {
-    const customPath = path.join(tempHome, 'custom', 'mihomo.yml')
-    const result = writeMihomoConfig(customPath)
+  test('writes clash config to custom target path', () => {
+    const customPath = path.join(tempHome, 'custom', 'clash.yml')
+    const result = writeClashConfig(customPath)
 
     expect(result.configPath).toBe(customPath)
     expect(fs.existsSync(customPath)).toBe(true)
   })
 
-  test('downloads linux mihomo binary and prefers v3 without go tag', async () => {
-    const targetDir = path.join(tempCwd, 'mihomo-bin')
+  test('downloads linux clash binary and prefers v3 without go tag', async () => {
+    const targetDir = path.join(tempCwd, 'clash-bin')
     const fetchMock = jest.fn()
-    const binaryContent = Buffer.from('#!/bin/sh\necho mihomo\n', 'utf8')
+    const binaryContent = Buffer.from('#!/bin/sh\necho clash\n', 'utf8')
 
     setProcessRuntime('linux', 'x64')
 
@@ -175,7 +175,7 @@ describe('writeMihomoConfig', () => {
 
     global.fetch = fetchMock as unknown as typeof global.fetch
 
-    const result = await downloadMihomoBinary(targetDir)
+    const result = await downloadClashBinary(targetDir)
 
     expect(result.version).toBe('v1.19.13')
     expect(result.binaryPath).toBe(path.join(targetDir, 'mihomo'))
@@ -187,10 +187,10 @@ describe('writeMihomoConfig', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 
-  test('downloads darwin mihomo binary and selects darwin asset', async () => {
-    const targetDir = path.join(tempCwd, 'mihomo-darwin-bin')
+  test('downloads darwin clash binary and selects darwin asset', async () => {
+    const targetDir = path.join(tempCwd, 'clash-darwin-bin')
     const fetchMock = jest.fn()
-    const binaryContent = Buffer.from('#!/bin/sh\necho mihomo-darwin\n', 'utf8')
+    const binaryContent = Buffer.from('#!/bin/sh\necho clash-darwin\n', 'utf8')
 
     setProcessRuntime('darwin', 'x64')
 
@@ -230,7 +230,7 @@ describe('writeMihomoConfig', () => {
 
     global.fetch = fetchMock as unknown as typeof global.fetch
 
-    const result = await downloadMihomoBinary(targetDir)
+    const result = await downloadClashBinary(targetDir)
 
     expect(result.version).toBe('v1.19.13')
     expect(result.binaryPath).toBe(path.join(targetDir, 'mihomo'))
@@ -242,10 +242,10 @@ describe('writeMihomoConfig', () => {
     expect(fetchMock).toHaveBeenCalledTimes(2)
   })
 
-  test('downloads windows mihomo binary and extracts zip asset', async () => {
-    const targetDir = path.join(tempCwd, 'mihomo-windows-bin')
+  test('downloads windows clash binary and extracts zip asset', async () => {
+    const targetDir = path.join(tempCwd, 'clash-windows-bin')
     const fetchMock = jest.fn()
-    const binaryContent = Buffer.from('windows-mihomo', 'utf8')
+    const binaryContent = Buffer.from('windows-clash', 'utf8')
 
     setProcessRuntime('win32', 'x64')
 
@@ -281,7 +281,7 @@ describe('writeMihomoConfig', () => {
 
     global.fetch = fetchMock as unknown as typeof global.fetch
 
-    const result = await downloadMihomoBinary(targetDir)
+    const result = await downloadClashBinary(targetDir)
 
     expect(result.version).toBe('v1.19.13')
     expect(result.binaryPath).toBe(path.join(targetDir, 'mihomo.exe'))

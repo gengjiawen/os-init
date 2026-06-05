@@ -14,8 +14,8 @@ const {
   writeRaycastConfig,
   setupDevEnvironment,
   setupAndroidEnvironment,
-  writeMihomoConfig,
-  downloadMihomoBinary,
+  writeClashConfig,
+  downloadClashBinary,
   disableCursorTypescriptExtension,
   setupEnv,
 } = require('../build')
@@ -284,28 +284,28 @@ program
 
 program
   .command('set-clash')
-  .description('generate clash/mihomo config.yml in current directory')
-  .option('-t, --target <path>', 'Target path for mihomo config.yml')
-  .option('--download', 'Download Mihomo binary to the config directory')
+  .description('generate clash config.yml in current directory')
+  .option('-t, --target <path>', 'Target path for clash config.yml')
+  .option('--download', 'Download Clash binary to the config directory')
   .action(async (options) => {
     try {
-      const { configPath } = writeMihomoConfig(options.target)
+      const { configPath } = writeClashConfig(options.target)
       const resolvedConfigPath = path.resolve(configPath)
       let mihomoCommand = 'mihomo'
 
       if (options.download) {
-        const { binaryPath, downloadUrl, version } = await downloadMihomoBinary(
+        const { binaryPath, downloadUrl, version } = await downloadClashBinary(
           path.dirname(resolvedConfigPath)
         )
         mihomoCommand = path.resolve(binaryPath)
-        console.log(`Mihomo download URL: ${downloadUrl}`)
-        console.log(`Mihomo version: ${version}`)
-        console.log(`Mihomo binary downloaded to: ${binaryPath}`)
+        console.log(`Clash download URL: ${downloadUrl}`)
+        console.log(`Clash version: ${version}`)
+        console.log(`Clash binary downloaded to: ${binaryPath}`)
       }
 
       const pm2Command = `pm2 start ${shellEscape(mihomoCommand)} --name mihomo -- -f ${shellEscape(resolvedConfigPath)} && pm2 save`
       console.log(`Clash config written to: ${configPath}`)
-      console.log('Run Mihomo with pm2:')
+      console.log('Run Clash with pm2:')
       console.log(`  ${pm2Command}`)
     } catch (err) {
       console.error('Failed to generate Clash config:', err.message)

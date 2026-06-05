@@ -64,8 +64,8 @@ export { setupDevEnvironment } from './dev-setup'
 // Re-export android-setup functionality
 export { setupAndroidEnvironment } from './android-setup'
 
-// Re-export mihomo functionality
-export { writeMihomoConfig, downloadMihomoBinary } from './mihomo'
+// Re-export clash functionality
+export { writeClashConfig, downloadClashBinary } from './clash'
 
 // Re-export setup-env functionality
 export { setupEnv } from './setup-env'

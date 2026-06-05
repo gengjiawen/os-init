@@ -5,7 +5,7 @@ import { gunzipSync } from 'zlib'
 import { unzip } from '@gengjiawen/unzip-url'
 import { ensureDir } from './utils'
 
-const MIHOMO_CONFIG_TEMPLATE = `mixed-port: 7890
+const CLASH_CONFIG_TEMPLATE = `mixed-port: 7890
 mode: rule
 log-level: info
 dns:
@@ -57,24 +57,24 @@ rules:
   - MATCH,PROXY
 `
 
-const MIHOMO_LATEST_RELEASE_API_URL =
+const CLASH_LATEST_RELEASE_API_URL =
   'https://api.github.com/repos/MetaCubeX/mihomo/releases/latest'
 
-interface MihomoReleaseAsset {
+interface ClashReleaseAsset {
   name: string
   browser_download_url: string
 }
 
-interface MihomoRelease {
+interface ClashRelease {
   tag_name: string
-  assets: MihomoReleaseAsset[]
+  assets: ClashReleaseAsset[]
 }
 
-function getMihomoBinaryFilename(platform = process.platform): string {
+function getClashBinaryFilename(platform = process.platform): string {
   return platform === 'win32' ? 'mihomo.exe' : 'mihomo'
 }
 
-function getMihomoPlatformToken(platform = process.platform): string {
+function getClashPlatformToken(platform = process.platform): string {
   switch (platform) {
     case 'linux':
       return 'linux'
@@ -83,11 +83,11 @@ function getMihomoPlatformToken(platform = process.platform): string {
     case 'win32':
       return 'windows'
     default:
-      throw new Error(`Unsupported platform for Mihomo download: ${platform}`)
+      throw new Error(`Unsupported platform for Clash download: ${platform}`)
   }
 }
 
-function getMihomoArchTokens(arch = process.arch): string[] {
+function getClashArchTokens(arch = process.arch): string[] {
   switch (arch) {
     case 'x64':
       return ['amd64']
@@ -98,11 +98,11 @@ function getMihomoArchTokens(arch = process.arch): string[] {
     case 'ia32':
       return ['386']
     default:
-      throw new Error(`Unsupported architecture for Mihomo download: ${arch}`)
+      throw new Error(`Unsupported architecture for Clash download: ${arch}`)
   }
 }
 
-function getMihomoCpuLevelTokens(
+function getClashCpuLevelTokens(
   platform = process.platform,
   arch = process.arch
 ): string[] {
@@ -117,14 +117,14 @@ function getMihomoCpuLevelTokens(
   return ['v3', 'v2', 'v1']
 }
 
-function findMihomoAsset(
-  assets: MihomoReleaseAsset[],
+function findClashAsset(
+  assets: ClashReleaseAsset[],
   platform = process.platform,
   arch = process.arch
-): MihomoReleaseAsset {
-  const platformToken = getMihomoPlatformToken(platform)
-  const archTokens = getMihomoArchTokens(arch)
-  const cpuLevelTokens = getMihomoCpuLevelTokens(platform, arch)
+): ClashReleaseAsset {
+  const platformToken = getClashPlatformToken(platform)
+  const archTokens = getClashArchTokens(arch)
+  const cpuLevelTokens = getClashCpuLevelTokens(platform, arch)
   const extension = platform === 'win32' ? '.zip' : '.gz'
 
   const candidates = assets.filter(
@@ -134,8 +134,8 @@ function findMihomoAsset(
   )
 
   const sortCandidates = (
-    left: MihomoReleaseAsset,
-    right: MihomoReleaseAsset
+    left: ClashReleaseAsset,
+    right: ClashReleaseAsset
   ): number => {
     const leftHasGoTag = left.name.includes('-go')
     const rightHasGoTag = right.name.includes('-go')
@@ -181,7 +181,7 @@ function findMihomoAsset(
   }
 
   throw new Error(
-    `No Mihomo binary found for platform ${platform} and architecture ${arch}.`
+    `No Clash binary found for platform ${platform} and architecture ${arch}.`
   )
 }
 
@@ -205,8 +205,8 @@ function findFileRecursively(rootDir: string, matcher: RegExp): string | null {
   return null
 }
 
-async function fetchMihomoLatestRelease(): Promise<MihomoRelease> {
-  const response = await fetch(MIHOMO_LATEST_RELEASE_API_URL, {
+async function fetchClashLatestRelease(): Promise<ClashRelease> {
+  const response = await fetch(CLASH_LATEST_RELEASE_API_URL, {
     headers: {
       Accept: 'application/vnd.github+json',
       'User-Agent': '@gengjiawen/os-init',
@@ -215,26 +215,26 @@ async function fetchMihomoLatestRelease(): Promise<MihomoRelease> {
 
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch Mihomo release metadata: ${response.status} ${response.statusText}`
+      `Failed to fetch Clash release metadata: ${response.status} ${response.statusText}`
     )
   }
 
-  return (await response.json()) as MihomoRelease
+  return (await response.json()) as ClashRelease
 }
 
-export async function downloadMihomoBinary(targetDir: string): Promise<{
+export async function downloadClashBinary(targetDir: string): Promise<{
   binaryPath: string
   downloadUrl: string
   version: string
 }> {
   ensureDir(targetDir)
 
-  const release = await fetchMihomoLatestRelease()
-  const asset = findMihomoAsset(release.assets)
-  const binaryPath = path.join(targetDir, getMihomoBinaryFilename())
+  const release = await fetchClashLatestRelease()
+  const asset = findClashAsset(release.assets)
+  const binaryPath = path.join(targetDir, getClashBinaryFilename())
 
   if (process.platform === 'win32') {
-    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-mihomo-'))
+    const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'os-init-clash-'))
 
     try {
       await unzip(asset.browser_download_url, tempDir)
@@ -242,7 +242,7 @@ export async function downloadMihomoBinary(targetDir: string): Promise<{
 
       if (!extractedBinary) {
         throw new Error(
-          `Mihomo executable was not found in asset ${asset.name}.`
+          `Clash executable was not found in asset ${asset.name}.`
         )
       }
 
@@ -260,7 +260,7 @@ export async function downloadMihomoBinary(targetDir: string): Promise<{
 
     if (!response.ok) {
       throw new Error(
-        `Failed to download Mihomo binary: ${response.status} ${response.statusText}`
+        `Failed to download Clash binary: ${response.status} ${response.statusText}`
       )
     }
 
@@ -276,11 +276,11 @@ export async function downloadMihomoBinary(targetDir: string): Promise<{
   }
 }
 
-/** Write Mihomo config.yml */
-export function writeMihomoConfig(targetPath?: string): { configPath: string } {
+/** Write Clash config.yml */
+export function writeClashConfig(targetPath?: string): { configPath: string } {
   const configPath = targetPath || path.join(process.cwd(), 'config.yml')
   ensureDir(path.dirname(configPath))
-  fs.writeFileSync(configPath, MIHOMO_CONFIG_TEMPLATE)
+  fs.writeFileSync(configPath, CLASH_CONFIG_TEMPLATE)
 
   return { configPath }
 }

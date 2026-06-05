@@ -98,21 +98,21 @@ pnpx @gengjiawen/os-init setup-env
 
 Writes PNPM_HOME, RUSTUP_HOME, CARGO_HOME, and PATH entries (brew, cargo, pnpm, jsvu, yarn) to `~/.bashrc`. Automatically detects brew prefix per platform and only adds the rustup stable toolchain bin on macOS. Idempotent — safe to run multiple times.
 
-### Generate Mihomo Config
+### Generate Clash Config
 
 ```bash
 pnpx @gengjiawen/os-init set-clash
 pnpx @gengjiawen/os-init set-clash --download
-pnpx @gengjiawen/os-init set-clash --target ~/mihomo/config.yml
+pnpx @gengjiawen/os-init set-clash --target ~/clash/config.yml
 ```
 
-Generates a Mihomo `config.yml` from the built-in template. This command will:
+Generates a Clash `config.yml` from the built-in template. This command will:
 
 - Write `./config.yml` in the current directory by default
-- Download the Mihomo binary to the config directory when `--download` is set
+- Download the Clash binary to the config directory when `--download` is set
 - Support a custom output path with `-t, --target <path>`
 
-After generating the config, you can keep Mihomo running with pm2:
+After generating the config, you can keep Clash running with pm2:
 
 ```bash
 pm2 start mihomo --name mihomo -- -f /absolute/path/to/config.yml && pm2 save
