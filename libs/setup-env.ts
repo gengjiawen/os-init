@@ -4,6 +4,10 @@ import * as os from 'os'
 
 const MARKER_START = '# ===== os-init setup-env - START ====='
 const MARKER_END = '# ===== os-init setup-env - END ====='
+const BASH_PROFILE_MARKER_START =
+  '# ===== os-init setup-env bash_profile - START ====='
+const BASH_PROFILE_MARKER_END =
+  '# ===== os-init setup-env bash_profile - END ====='
 
 function getBrewPrefix(): string {
   if (process.platform === 'darwin') {
@@ -53,7 +57,66 @@ ${MARKER_END}
 `
 }
 
-export function setupEnv(): { bashrcPath: string; changed: boolean } {
+function generateBashProfileContent(): string {
+  return `${BASH_PROFILE_MARKER_START}
+if [ -f "$HOME/.bashrc" ]; then
+  . "$HOME/.bashrc"
+fi
+${BASH_PROFILE_MARKER_END}
+`
+}
+
+function stripLeadingNewline(content: string): string {
+  if (content.startsWith('\r\n')) {
+    return content.slice(2)
+  }
+  if (content.startsWith('\n')) {
+    return content.slice(1)
+  }
+  return content
+}
+
+function bashProfileSourcesBashrc(content: string): boolean {
+  return content
+    .split(/\r?\n/)
+    .some((line) =>
+      /^\s*(?:source|\.)\s+(?:"\$HOME\/\.bashrc"|'\$HOME\/\.bashrc'|\$HOME\/\.bashrc|~\/\.bashrc)(?:\s|$)/.test(
+        line
+      )
+    )
+}
+
+function ensureMacBashProfileSourcesBashrc(home: string): {
+  bashProfilePath: string
+  changed: boolean
+} {
+  const bashProfilePath = path.join(home, '.bash_profile')
+  let currentContent = ''
+
+  if (fs.existsSync(bashProfilePath)) {
+    currentContent = fs.readFileSync(bashProfilePath, 'utf-8')
+  }
+
+  if (
+    currentContent.includes(BASH_PROFILE_MARKER_START) ||
+    bashProfileSourcesBashrc(currentContent)
+  ) {
+    return { bashProfilePath, changed: false }
+  }
+
+  const newBlock =
+    (currentContent && !currentContent.endsWith('\n') ? '\n' : '') +
+    generateBashProfileContent()
+  fs.appendFileSync(bashProfilePath, newBlock)
+
+  return { bashProfilePath, changed: true }
+}
+
+export function setupEnv(): {
+  bashrcPath: string
+  bashProfilePath?: string
+  changed: boolean
+} {
   const home = os.homedir()
   const bashrcPath = path.join(home, '.bashrc')
 
@@ -68,10 +131,25 @@ export function setupEnv(): { bashrcPath: string; changed: boolean } {
     const endIdx = currentContent.indexOf(MARKER_END, startIdx)
     if (endIdx !== -1) {
       const before = currentContent.slice(0, startIdx)
-      const after = currentContent.slice(endIdx + MARKER_END.length)
+      const after = stripLeadingNewline(
+        currentContent.slice(endIdx + MARKER_END.length)
+      )
       const newBlock = generateBashrcContent()
-      fs.writeFileSync(bashrcPath, before + newBlock + after)
-      return { bashrcPath, changed: true }
+      const nextContent = before + newBlock + after
+      const bashrcChanged = nextContent !== currentContent
+      if (bashrcChanged) {
+        fs.writeFileSync(bashrcPath, nextContent)
+      }
+
+      if (process.platform === 'darwin') {
+        const profileResult = ensureMacBashProfileSourcesBashrc(home)
+        return {
+          bashrcPath,
+          bashProfilePath: profileResult.bashProfilePath,
+          changed: bashrcChanged || profileResult.changed,
+        }
+      }
+      return { bashrcPath, changed: bashrcChanged }
     }
   }
 
@@ -80,5 +158,15 @@ export function setupEnv(): { bashrcPath: string; changed: boolean } {
     (currentContent && !currentContent.endsWith('\n') ? '\n' : '') +
     generateBashrcContent()
   fs.appendFileSync(bashrcPath, newBlock)
+
+  if (process.platform === 'darwin') {
+    const profileResult = ensureMacBashProfileSourcesBashrc(home)
+    return {
+      bashrcPath,
+      bashProfilePath: profileResult.bashProfilePath,
+      changed: true,
+    }
+  }
+
   return { bashrcPath, changed: true }
 }

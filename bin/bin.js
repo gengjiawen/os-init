@@ -266,16 +266,19 @@ program
 program
   .command('setup-env')
   .description(
-    'setup environment variables in .bashrc (PATH, PNPM_HOME, CARGO_HOME, RUSTUP_HOME)'
+    'setup environment variables in .bashrc (PATH, PNPM_HOME, CARGO_HOME, RUSTUP_HOME); on macOS ensure .bash_profile sources it'
   )
   .action(async () => {
     try {
-      const { bashrcPath, changed } = setupEnv()
+      const { bashrcPath, bashProfilePath, changed } = setupEnv()
       console.log(
         changed
           ? `Environment variables written to: ${bashrcPath}`
           : `Environment variables already configured in: ${bashrcPath}`
       )
+      if (bashProfilePath) {
+        console.log(`Bash profile configured at: ${bashProfilePath}`)
+      }
     } catch (err) {
       console.error('Failed to setup environment:', err.message)
       process.exit(1)

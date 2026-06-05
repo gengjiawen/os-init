@@ -96,7 +96,7 @@ pnpx @gengjiawen/os-init disable-ts-extension --db "$HOME/Library/Application Su
 pnpx @gengjiawen/os-init setup-env
 ```
 
-Writes PNPM_HOME, RUSTUP_HOME, CARGO_HOME, and PATH entries (brew, cargo, pnpm, jsvu, yarn) to `~/.bashrc`. Automatically detects brew prefix per platform and only adds the rustup stable toolchain bin on macOS. Idempotent — safe to run multiple times.
+Writes PNPM_HOME, RUSTUP_HOME, CARGO_HOME, and PATH entries (brew, cargo, pnpm, jsvu, yarn) to `~/.bashrc`. Automatically detects brew prefix per platform and only adds the rustup stable toolchain bin on macOS. On macOS, it also creates or updates `~/.bash_profile` so Bash login shells load `~/.bashrc`. Idempotent — safe to run multiple times.
 
 ### Generate Clash Config
 
