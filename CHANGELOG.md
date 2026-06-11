@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.26.2](https://github.com/gengjiawen/os-init/compare/v1.26.1...v1.26.2) (2026-06-11)
+
+
+### Bug Fixes
+
+* set codex reasoning effort to high ([0211fab](https://github.com/gengjiawen/os-init/commit/0211fab79a984ba7b12ead089ce80aa3cf1116d8))
+
 ## [1.26.1](https://github.com/gengjiawen/os-init/compare/v1.26.0...v1.26.1) (2026-06-05)
 
 
