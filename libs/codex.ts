@@ -17,8 +17,8 @@ function getCodexConfigDir(): string {
 function getCodexConfigTomlTemplate(): string {
   return `model_provider = "jw"
 model = "gpt-5.5"
-model_reasoning_effort = "xhigh"
-plan_mode_reasoning_effort = "xhigh"
+model_reasoning_effort = "high"
+plan_mode_reasoning_effort = "high"
 model_auto_compact_token_limit = 131072
 disable_response_storage = true
 preferred_auth_method = "apikey"

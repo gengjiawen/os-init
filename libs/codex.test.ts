@@ -34,6 +34,17 @@ describe('writeCodexConfig', () => {
     expect(fs.existsSync(result.authPath)).toBe(true)
   })
 
+  test('writes codex reasoning efforts as high', () => {
+    const result = writeCodexConfig('test-api-key')
+    const config = TOML.parse(fs.readFileSync(result.configPath, 'utf8')) as {
+      model_reasoning_effort: string
+      plan_mode_reasoning_effort: string
+    }
+
+    expect(config.model_reasoning_effort).toBe('high')
+    expect(config.plan_mode_reasoning_effort).toBe('high')
+  })
+
   test('merges template keys and keeps custom config', () => {
     const configDir = path.join(tempHome, '.codex')
     fs.mkdirSync(configDir, { recursive: true })
