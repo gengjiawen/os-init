@@ -22,6 +22,7 @@ plan_mode_reasoning_effort = "high"
 model_auto_compact_token_limit = 131072
 disable_response_storage = true
 preferred_auth_method = "apikey"
+check_for_update_on_startup = false
 
 [model_providers.jw]
 name = "jw"
