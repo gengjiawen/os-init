@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.26.3](https://github.com/gengjiawen/os-init/compare/v1.26.2...v1.26.3) (2026-06-18)
+
+
+### Bug Fixes
+
+* disable codex update check on startup ([43a4c68](https://github.com/gengjiawen/os-init/commit/43a4c68eede37d2b5d73ee199d8dded86f6a61b9))
+* use codex bearer token config ([38a49de](https://github.com/gengjiawen/os-init/commit/38a49de58af44040507ee87205f326a5fa5eeacb))
+
 ## [1.26.2](https://github.com/gengjiawen/os-init/compare/v1.26.1...v1.26.2) (2026-06-11)
 
 
