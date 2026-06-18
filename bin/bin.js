@@ -56,18 +56,17 @@ program
 
 program
   .command('set-codex')
-  .description('setup codex cli config and auth')
-  .argument('<apiKey>', 'API key to set for Codex')
-  .action(async (apiKey) => {
-    if (!apiKey || String(apiKey).trim().length === 0) {
-      console.error('Missing required argument: <apiKey>')
+  .description('setup codex cli config')
+  .argument('<bearerToken>', 'Bearer token to set for Codex')
+  .action(async (bearerToken) => {
+    if (!bearerToken || String(bearerToken).trim().length === 0) {
+      console.error('Missing required argument: <bearerToken>')
       program.help({ error: true })
       return
     }
     try {
-      const { configPath, authPath } = writeCodexConfig(apiKey)
+      const { configPath } = writeCodexConfig(bearerToken)
       console.log(`Codex config written to: ${configPath}`)
-      console.log(`Codex auth written to: ${authPath}`)
       await installCodexDeps()
     } catch (err) {
       console.error('Failed to setup Codex:', err.message)
@@ -132,7 +131,6 @@ program
 
       console.log('\nCodex:')
       console.log(`  Config written to: ${result.codex.configPath}`)
-      console.log(`  Auth written to: ${result.codex.authPath}`)
 
       if (result.opencode) {
         console.log('\nOpenCode:')

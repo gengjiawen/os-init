@@ -23,15 +23,26 @@ describe('writeCodexConfig', () => {
     fs.rmSync(tempHome, { recursive: true, force: true })
   })
 
-  test('writes config with 128k auto compact threshold', () => {
+  test('writes config with bearer token and 128k auto compact threshold', () => {
     const result = writeCodexConfig('test-api-key')
+    const configPath = path.join(tempHome, '.codex', 'config.toml')
+    const authPath = path.join(tempHome, '.codex', 'auth.json')
     const config = TOML.parse(fs.readFileSync(result.configPath, 'utf8')) as {
       model_auto_compact_token_limit: number
+      model_providers: {
+        jw: {
+          experimental_bearer_token: string
+        }
+      }
     }
 
+    expect(result.configPath).toBe(configPath)
     expect(config.model_auto_compact_token_limit).toBe(131072)
+    expect(config.model_providers.jw.experimental_bearer_token).toBe(
+      'test-api-key'
+    )
     expect(config).not.toHaveProperty('model_catalog_json')
-    expect(fs.existsSync(result.authPath)).toBe(true)
+    expect(fs.existsSync(authPath)).toBe(false)
   })
 
   test('writes codex reasoning efforts as high', () => {
@@ -65,11 +76,11 @@ custom_model = "keep-me"
     const config = TOML.parse(fs.readFileSync(configPath, 'utf8')) as {
       custom_flag: boolean
       model: string
-      preferred_auth_method: string
       model_providers: {
         jw: {
           base_url: string
           custom_model: string
+          experimental_bearer_token: string
           name: string
         }
       }
@@ -79,11 +90,14 @@ custom_model = "keep-me"
     expect(config).not.toHaveProperty('model_catalog_json')
     expect(config.custom_flag).toBe(true)
     expect(config.model).toBe('gpt-5.5')
-    expect(config.preferred_auth_method).toBe('apikey')
+    expect(config).not.toHaveProperty('preferred_auth_method')
     expect(config.model_providers.jw.base_url).toBe(
       'https://ai.gengjiawen.com/api/openai'
     )
     expect(config.model_providers.jw.custom_model).toBe('keep-me')
+    expect(config.model_providers.jw.experimental_bearer_token).toBe(
+      'test-api-key'
+    )
     expect(config.model_providers.jw.name).toBe('jw')
   })
 
@@ -95,6 +109,7 @@ custom_model = "keep-me"
     fs.writeFileSync(
       configPath,
       `service_tier = "slow"
+preferred_auth_method = "apikey"
 
 [model_providers.jw]
 base_url = "https://example.com"
@@ -104,19 +119,22 @@ base_url = "https://example.com"
     writeCodexConfig('test-api-key')
     const config = TOML.parse(fs.readFileSync(configPath, 'utf8')) as {
       model: string
-      preferred_auth_method: string
       model_providers: {
         jw: {
           name: string
           base_url: string
+          experimental_bearer_token: string
         }
       }
     }
 
     expect(config.model).toBe('gpt-5.5')
     expect(config).not.toHaveProperty('model_catalog_json')
-    expect(config.preferred_auth_method).toBe('apikey')
+    expect(config).not.toHaveProperty('preferred_auth_method')
     expect(config.model_providers.jw.name).toBe('jw')
+    expect(config.model_providers.jw.experimental_bearer_token).toBe(
+      'test-api-key'
+    )
     expect(config).not.toHaveProperty('service_tier')
   })
 

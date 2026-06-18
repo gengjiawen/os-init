@@ -135,13 +135,12 @@ Configures Claude Code with your API key. This command will:
 ### Configure Codex CLI
 
 ```bash
-pnpx @gengjiawen/os-init set-codex <API_KEY>
+pnpx @gengjiawen/os-init set-codex <BEARER_TOKEN>
 ```
 
-Configures Codex CLI with your API key. This command will:
+Configures Codex CLI with your bearer token. This command will:
 
-- Write `~/.codex/config.toml`
-- Write `~/.codex/auth.json`
+- Write `~/.codex/config.toml` with `experimental_bearer_token`
 - Install global tool: `@openai/codex`
 
 ### Configure OpenCode CLI

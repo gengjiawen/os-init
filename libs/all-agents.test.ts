@@ -39,7 +39,6 @@ describe('writeAllAgentsConfig', () => {
 
     expect(fs.existsSync(result.claude.settingsPath)).toBe(true)
     expect(fs.existsSync(result.codex.configPath)).toBe(true)
-    expect(fs.existsSync(result.codex.authPath)).toBe(true)
     expect(result.opencode).toBeUndefined()
   })
 

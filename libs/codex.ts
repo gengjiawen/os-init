@@ -14,20 +14,20 @@ function getCodexConfigDir(): string {
   return path.join(os.homedir(), '.codex')
 }
 
-function getCodexConfigTomlTemplate(): string {
+function getCodexConfigTomlTemplate(bearerToken: string): string {
   return `model_provider = "jw"
 model = "gpt-5.5"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "high"
 model_auto_compact_token_limit = 131072
 disable_response_storage = true
-preferred_auth_method = "apikey"
 check_for_update_on_startup = false
 
 [model_providers.jw]
 name = "jw"
 base_url = "${CODEX_BASE_URL}"
 wire_api = "responses"
+experimental_bearer_token = ${JSON.stringify(bearerToken)}
 `
 }
 
@@ -66,35 +66,36 @@ function stripModelCatalogJsonFromToml(content: string): string {
     .join('\n')
 }
 
-function getMergedCodexConfig(existingContent: string): string {
+function getMergedCodexConfig(
+  existingContent: string,
+  bearerToken: string
+): string {
   const sanitizedContent = stripModelCatalogJsonFromToml(existingContent)
   const existingConfig = TOML.parse(sanitizedContent) as TomlTable
-  const templateConfig = TOML.parse(getCodexConfigTomlTemplate()) as TomlTable
+  const templateConfig = TOML.parse(
+    getCodexConfigTomlTemplate(bearerToken)
+  ) as TomlTable
   delete existingConfig.service_tier
   delete existingConfig.model_catalog_json
+  delete existingConfig.preferred_auth_method
 
   return TOML.stringify(mergeTomlTables(existingConfig, templateConfig))
 }
 
-/** Write Codex config.toml and auth.json */
-export function writeCodexConfig(apiKey: string): {
+/** Write Codex config.toml */
+export function writeCodexConfig(bearerToken: string): {
   configPath: string
-  authPath: string
 } {
   const configDir = getCodexConfigDir()
   ensureDir(configDir)
 
   const configPath = path.join(configDir, 'config.toml')
   const configContent = fs.existsSync(configPath)
-    ? getMergedCodexConfig(fs.readFileSync(configPath, 'utf8'))
-    : getCodexConfigTomlTemplate()
+    ? getMergedCodexConfig(fs.readFileSync(configPath, 'utf8'), bearerToken)
+    : getCodexConfigTomlTemplate(bearerToken)
   fs.writeFileSync(configPath, configContent)
 
-  const authPath = path.join(configDir, 'auth.json')
-  const authContent = JSON.stringify({ OPENAI_API_KEY: apiKey }, null, 2)
-  fs.writeFileSync(authPath, authContent)
-
-  return { configPath, authPath }
+  return { configPath }
 }
 
 /** Install Codex dependency */

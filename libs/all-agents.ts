@@ -16,7 +16,7 @@ export interface AllAgentsOptions {
 
 export interface AllAgentsResult {
   claude: { settingsPath: string; vscodeSettingsPath: string }
-  codex: { configPath: string; authPath: string }
+  codex: { configPath: string }
   opencode?: { configPath: string }
 }
 
