@@ -16,7 +16,7 @@ function getCodexConfigDir(): string {
 
 function getCodexConfigTomlTemplate(bearerToken: string): string {
   return `model_provider = "jw"
-model = "gpt-5.5"
+model = "gpt-5.6-sol"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "high"
 model_auto_compact_token_limit = 131072
