@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.27.0](https://github.com/gengjiawen/os-init/compare/v1.26.3...v1.27.0) (2026-07-13)
+
+
+### Features
+
+* bump default Codex model to gpt-5.6-sol ([710f188](https://github.com/gengjiawen/os-init/commit/710f1887607b50027d653d2b910ed48d45d7353e))
+
 ## [1.26.3](https://github.com/gengjiawen/os-init/compare/v1.26.2...v1.26.3) (2026-06-18)
 
 
