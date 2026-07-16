@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.28.0](https://github.com/gengjiawen/os-init/compare/v1.27.0...v1.28.0) (2026-07-16)
+
+
+### Features
+
+* add actor authorization header to Codex config ([81d4bd1](https://github.com/gengjiawen/os-init/commit/81d4bd1aa621a6dd426772c11d3cb0a38e937e7e))
+
 ## [1.27.0](https://github.com/gengjiawen/os-init/compare/v1.26.3...v1.27.0) (2026-07-13)
 
 
