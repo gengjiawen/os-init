@@ -28,6 +28,7 @@ name = "jw"
 base_url = "${CODEX_BASE_URL}"
 wire_api = "responses"
 experimental_bearer_token = ${JSON.stringify(bearerToken)}
+http_headers = { "x-openai-actor-authorization" = "jw" }
 `
 }
 

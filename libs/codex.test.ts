@@ -32,6 +32,9 @@ describe('writeCodexConfig', () => {
       model_providers: {
         jw: {
           experimental_bearer_token: string
+          http_headers: {
+            'x-openai-actor-authorization': string
+          }
         }
       }
     }
@@ -41,6 +44,9 @@ describe('writeCodexConfig', () => {
     expect(config.model_providers.jw.experimental_bearer_token).toBe(
       'test-api-key'
     )
+    expect(
+      config.model_providers.jw.http_headers['x-openai-actor-authorization']
+    ).toBe('jw')
     expect(config).not.toHaveProperty('model_catalog_json')
     expect(fs.existsSync(authPath)).toBe(false)
   })
