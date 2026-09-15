@@ -42,7 +42,7 @@ describe('setupEnv', () => {
     expect(bashrc).toContain(
       `export PNPM_HOME="${path.join(tempHome, '.pnpm')}"`
     )
-    expect(bashrc).toContain(path.join(tempHome, '.pnpm', 'bin'))
+    expect(bashrc).toContain(`${path.join(tempHome, '.pnpm')}/bin`)
     expect(fs.existsSync(path.join(tempHome, '.bash_profile'))).toBe(false)
   })
 
@@ -52,7 +52,8 @@ describe('setupEnv', () => {
     setupEnv()
 
     const bashrc = fs.readFileSync(path.join(tempHome, '.bashrc'), 'utf-8')
-    expect(bashrc).toContain(path.join(tempHome, 'Library', 'pnpm', 'bin'))
+    // PATH entries are always joined with "/", even when path.join uses "\".
+    expect(bashrc).toContain(`${path.join(tempHome, 'Library', 'pnpm')}/bin`)
   })
 
   test('creates macOS bash profile that sources bashrc', () => {
