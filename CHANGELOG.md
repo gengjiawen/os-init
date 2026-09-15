@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.28.1](https://github.com/gengjiawen/os-init/compare/v1.28.0...v1.28.1) (2026-09-15)
+
+
+### Bug Fixes
+
+* add pnpm global bin dir to PATH ([#45](https://github.com/gengjiawen/os-init/issues/45)) ([cfc175a](https://github.com/gengjiawen/os-init/commit/cfc175ac1559ccfe1d00ce136378e0139c531802))
+* assert pnpm bin PATH entry with forward slash in tests ([#47](https://github.com/gengjiawen/os-init/issues/47)) ([1b10b41](https://github.com/gengjiawen/os-init/commit/1b10b419025fc1b7f5d7c1249b75653e013e37f6))
+
 ## [1.28.0](https://github.com/gengjiawen/os-init/compare/v1.27.0...v1.28.0) (2026-07-16)
 
 
