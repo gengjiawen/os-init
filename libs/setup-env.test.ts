@@ -38,8 +38,21 @@ describe('setupEnv', () => {
       bashrcPath,
       changed: true,
     })
-    expect(fs.readFileSync(bashrcPath, 'utf-8')).toContain('export PNPM_HOME=')
+    const bashrc = fs.readFileSync(bashrcPath, 'utf-8')
+    expect(bashrc).toContain(
+      `export PNPM_HOME="${path.join(tempHome, '.pnpm')}"`
+    )
+    expect(bashrc).toContain(path.join(tempHome, '.pnpm', 'bin'))
     expect(fs.existsSync(path.join(tempHome, '.bash_profile'))).toBe(false)
+  })
+
+  test('adds the pnpm global bin dir to PATH on macOS', () => {
+    mockPlatform('darwin')
+
+    setupEnv()
+
+    const bashrc = fs.readFileSync(path.join(tempHome, '.bashrc'), 'utf-8')
+    expect(bashrc).toContain(path.join(tempHome, 'Library', 'pnpm', 'bin'))
   })
 
   test('creates macOS bash profile that sources bashrc', () => {

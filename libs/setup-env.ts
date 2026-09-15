@@ -37,6 +37,9 @@ function generateBashrcContent(): string {
   const pathEntries = [
     `${brewPrefix}/bin`,
     `${brewPrefix}/sbin`,
+    // pnpm 11+ resolves the global bin dir to $PNPM_HOME/bin; older versions
+    // placed binaries directly in $PNPM_HOME.
+    `${pnpmHome}/bin`,
     pnpmHome,
     `${cargoHome}/bin`,
     `${home}/.jsvu/bin`,
