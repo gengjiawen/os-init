@@ -12,6 +12,7 @@ const {
   writeAllAgentsConfig,
   installAllAgentsDeps,
   writeRaycastConfig,
+  writeTinycastConfig,
   setupDevEnvironment,
   setupAndroidEnvironment,
   writeClashConfig,
@@ -170,6 +171,26 @@ program
       process.exit(1)
     }
     console.log('Raycast AI is ready to use')
+  })
+
+program
+  .command('set-tinycast')
+  .description('setup Tinycast AI Chat provider')
+  .argument('<apiKey>', 'API key to set for Tinycast')
+  .action(async (apiKey) => {
+    if (!apiKey || String(apiKey).trim().length === 0) {
+      console.error('Missing required argument: <apiKey>')
+      program.help({ error: true })
+      return
+    }
+    try {
+      const { baseURL } = await writeTinycastConfig(apiKey)
+      console.log(`Tinycast AI connection written for: ${baseURL}`)
+    } catch (err) {
+      console.error('Failed to setup Tinycast:', err.message)
+      process.exit(1)
+    }
+    console.log('Tinycast AI Chat is ready to use')
   })
 
 program

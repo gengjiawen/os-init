@@ -77,3 +77,6 @@ export {
   getCursorStateDbPath,
   mergeDisabledExtension,
 } from './cursor'
+
+// Re-export Tinycast functionality
+export { writeTinycastConfig } from './tinycast'
