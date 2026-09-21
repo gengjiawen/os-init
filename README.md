@@ -154,16 +154,6 @@ Configures OpenCode CLI with your API key. This command will:
 - Write `~/.config/opencode/opencode.json`
 - Install global tool: `opencode-ai` (provides `opencode` command)
 
-### Configure Raycast AI
-
-```bash
-pnpx @gengjiawen/os-init set-raycast-ai <API_KEY>
-```
-
-Configures Raycast AI providers with your API key. This command will:
-
-- Write `~/.config/raycast/ai/providers.yaml`
-
 ### Configure Tinycast AI Chat
 
 ```bash

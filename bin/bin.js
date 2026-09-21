@@ -11,7 +11,6 @@ const {
   installOpencodeDeps,
   writeAllAgentsConfig,
   installAllAgentsDeps,
-  writeRaycastConfig,
   writeTinycastConfig,
   setupDevEnvironment,
   setupAndroidEnvironment,
@@ -151,26 +150,6 @@ program
     if (full) {
       console.log('  - Use `opencode` for OpenCode')
     }
-  })
-
-program
-  .command('set-raycast-ai')
-  .description('setup Raycast AI providers config')
-  .argument('<apiKey>', 'API key to set for Raycast AI')
-  .action(async (apiKey) => {
-    if (!apiKey || String(apiKey).trim().length === 0) {
-      console.error('Missing required argument: <apiKey>')
-      program.help({ error: true })
-      return
-    }
-    try {
-      const { configPath } = writeRaycastConfig(apiKey)
-      console.log(`Raycast AI config written to: ${configPath}`)
-    } catch (err) {
-      console.error('Failed to setup Raycast AI:', err.message)
-      process.exit(1)
-    }
-    console.log('Raycast AI is ready to use')
   })
 
 program

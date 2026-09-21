@@ -22,7 +22,11 @@ brew install jetbrains-toolbox
 brew install omnidisksweeper
 brew install git-lfs
 brew install jordanbaird-ice
-brew install raycast
+# Tinycast ships from its own tap. Apple silicon + macOS 26 or newer;
+# on Intel install `tinycast-universal` instead.
+brew trust --tap abue-ammar/tinycast
+brew tap abue-ammar/tinycast
+brew install --cask tinycast
 sudo n lts
 rustup-init -y
 sudo git lfs install --system

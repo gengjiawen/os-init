@@ -3,8 +3,8 @@ import { execa } from 'execa'
 /**
  * Tinycast keeps AI connections in `UserDefaults` and the key in the login
  * Keychain, and excludes both from its settings import on purpose, so there is
- * no config file to write the way Raycast has one. These are the two stores it
- * reads at launch; see the app's `AppSettingsKey` and `KeychainSecretStore`.
+ * no config file to write. These are the two stores it reads at launch; see the
+ * app's `AppSettingsKey` and `KeychainSecretStore`.
  */
 const TINYCAST_BUNDLE_ID = 'com.tinycast.app'
 const TINYCAST_KEYCHAIN_SERVICE = `${TINYCAST_BUNDLE_ID}.ai-api-keys`
