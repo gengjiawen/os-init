@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.0.0](https://github.com/gengjiawen/os-init/compare/v1.28.1...v2.0.0) (2026-09-29)
+
+
+### ⚠ BREAKING CHANGES
+
+* replace set-raycast-ai with set-tinycast ([#48](https://github.com/gengjiawen/os-init/issues/48))
+
+### Features
+
+* enable Claude 1M context and stop forcing max effort level ([#50](https://github.com/gengjiawen/os-init/issues/50)) ([123f044](https://github.com/gengjiawen/os-init/commit/123f0446abff37f0b38b629159011b66d9847910))
+* replace set-raycast-ai with set-tinycast ([#48](https://github.com/gengjiawen/os-init/issues/48)) ([2c4bc52](https://github.com/gengjiawen/os-init/commit/2c4bc52983dfbe3035721da5bdb62b01ec536a85))
+
 ## [1.28.1](https://github.com/gengjiawen/os-init/compare/v1.28.0...v1.28.1) (2026-09-15)
 
 
