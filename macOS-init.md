@@ -21,7 +21,6 @@ brew install google-chrome
 brew install jetbrains-toolbox
 brew install omnidisksweeper
 brew install git-lfs
-brew install jordanbaird-ice
 # Tinycast ships from its own tap. Apple silicon + macOS 26 or newer;
 # on Intel install `tinycast-universal` instead.
 brew trust --tap abue-ammar/tinycast
