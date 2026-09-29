@@ -81,7 +81,8 @@ describe('writeClaudeConfig', () => {
     expect(claudeSettings).toContain(
       '"CLAUDE_CODE_AUTO_COMPACT_WINDOW": "128000"'
     )
-    expect(claudeSettings).toContain('"CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"')
+    expect(claudeSettings).not.toContain('CLAUDE_CODE_DISABLE_1M_CONTEXT')
+    expect(claudeSettings).not.toContain('CLAUDE_CODE_EFFORT_LEVEL')
     expect(claudeSettings).toContain('"CLAUDE_CODE_ATTRIBUTION_HEADER": "0"')
 
     const vscodeSettings = fs.readFileSync(result.vscodeSettingsPath, 'utf8')
@@ -94,7 +95,7 @@ describe('writeClaudeConfig', () => {
     )
     expect(vscodeSettings).toContain('"CLAUDE_CODE_AUTO_COMPACT_WINDOW"')
     expect(vscodeSettings).toContain('"128000"')
-    expect(vscodeSettings).toContain('"CLAUDE_CODE_DISABLE_1M_CONTEXT"')
+    expect(vscodeSettings).not.toContain('CLAUDE_CODE_DISABLE_1M_CONTEXT')
     expect(vscodeSettings).toContain('"CLAUDE_CODE_ATTRIBUTION_HEADER"')
     expect(vscodeSettings).toContain('"0"')
     expect(vscodeSettings).toContain('"1"')

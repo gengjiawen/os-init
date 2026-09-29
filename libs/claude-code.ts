@@ -13,7 +13,6 @@ import {
 
 const CLAUDE_BASE_URL = 'https://ai.gengjiawen.com/api/claude/'
 const CLAUDE_AUTO_COMPACT_WINDOW = '128000'
-const CLAUDE_DISABLE_1M_CONTEXT = '1'
 const CLAUDE_ATTRIBUTION_HEADER = '0'
 
 /** Return Claude settings directory path */
@@ -49,13 +48,11 @@ function getVSCodeUserSettingsPath(): string {
 const CLAUDE_SETTINGS_TEMPLATE = `{
   "env": {
     "DISABLE_TELEMETRY": "1",
-    "CLAUDE_CODE_EFFORT_LEVEL": "max",
     "OTEL_METRICS_EXPORTER": "otlp",
     "ANTHROPIC_API_KEY": "API_KEY_PLACEHOLDER",
     "ANTHROPIC_BASE_URL": "${CLAUDE_BASE_URL}",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "${CLAUDE_AUTO_COMPACT_WINDOW}",
-    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "${CLAUDE_DISABLE_1M_CONTEXT}",
     "CLAUDE_CODE_ATTRIBUTION_HEADER": "${CLAUDE_ATTRIBUTION_HEADER}"
   },
   "includeCoAuthoredBy": false,
@@ -111,10 +108,6 @@ function writeVSCodeClaudePluginConfig(apiKey: string): {
       {
         name: 'CLAUDE_CODE_AUTO_COMPACT_WINDOW',
         value: CLAUDE_AUTO_COMPACT_WINDOW,
-      },
-      {
-        name: 'CLAUDE_CODE_DISABLE_1M_CONTEXT',
-        value: CLAUDE_DISABLE_1M_CONTEXT,
       },
       {
         name: 'CLAUDE_CODE_ATTRIBUTION_HEADER',
