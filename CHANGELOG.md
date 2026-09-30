@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/gengjiawen/os-init/compare/v2.0.0...v2.1.0) (2026-09-30)
+
+
+### Features
+
+* raise Codex auto-compact limit to 156k ([#54](https://github.com/gengjiawen/os-init/issues/54)) ([0656770](https://github.com/gengjiawen/os-init/commit/06567700c397a6161801a50f007c5cadc888b852))
+* switch Codex default model to gpt-6.1-sol ([#52](https://github.com/gengjiawen/os-init/issues/52)) ([befd1a8](https://github.com/gengjiawen/os-init/commit/befd1a8ab1f1c9ced7aa7e6315357f81ed20f7d0))
+
 ## [2.0.0](https://github.com/gengjiawen/os-init/compare/v1.28.1...v2.0.0) (2026-09-29)
 
 
