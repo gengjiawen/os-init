@@ -23,7 +23,7 @@ describe('writeCodexConfig', () => {
     fs.rmSync(tempHome, { recursive: true, force: true })
   })
 
-  test('writes config with bearer token and 128k auto compact threshold', () => {
+  test('writes config with bearer token and 156k auto compact threshold', () => {
     const result = writeCodexConfig('test-api-key')
     const configPath = path.join(tempHome, '.codex', 'config.toml')
     const authPath = path.join(tempHome, '.codex', 'auth.json')
@@ -40,7 +40,7 @@ describe('writeCodexConfig', () => {
     }
 
     expect(result.configPath).toBe(configPath)
-    expect(config.model_auto_compact_token_limit).toBe(131072)
+    expect(config.model_auto_compact_token_limit).toBe(159744)
     expect(config.model_providers.jw.experimental_bearer_token).toBe(
       'test-api-key'
     )
