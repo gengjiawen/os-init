@@ -95,7 +95,7 @@ custom_model = "keep-me"
     expect(config).not.toHaveProperty('service_tier')
     expect(config).not.toHaveProperty('model_catalog_json')
     expect(config.custom_flag).toBe(true)
-    expect(config.model).toBe('gpt-5.6-sol')
+    expect(config.model).toBe('gpt-6.1-sol')
     expect(config).not.toHaveProperty('preferred_auth_method')
     expect(config.model_providers.jw.base_url).toBe(
       'https://ai.gengjiawen.com/api/openai'
@@ -134,7 +134,7 @@ base_url = "https://example.com"
       }
     }
 
-    expect(config.model).toBe('gpt-5.6-sol')
+    expect(config.model).toBe('gpt-6.1-sol')
     expect(config).not.toHaveProperty('model_catalog_json')
     expect(config).not.toHaveProperty('preferred_auth_method')
     expect(config.model_providers.jw.name).toBe('jw')
@@ -166,6 +166,6 @@ base_url = "https://example.com"
     >
 
     expect(config).not.toHaveProperty('model_catalog_json')
-    expect(config.model).toBe('gpt-5.6-sol')
+    expect(config.model).toBe('gpt-6.1-sol')
   })
 })
