@@ -19,7 +19,7 @@ function getCodexConfigTomlTemplate(bearerToken: string): string {
 model = "gpt-6.1-sol"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "high"
-model_auto_compact_token_limit = 131072
+model_auto_compact_token_limit = 159744
 disable_response_storage = true
 check_for_update_on_startup = false
 
