@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.1](https://github.com/gengjiawen/os-init/compare/v2.1.0...v2.1.1) (2026-10-08)
+
+
+### Bug Fixes
+
+* stop Claude Code auto-mode classifier warning on the gateway ([#55](https://github.com/gengjiawen/os-init/issues/55)) ([8f2470f](https://github.com/gengjiawen/os-init/commit/8f2470fbbfeb5d0e369b491285d2f97d70294dc6))
+
 ## [2.1.0](https://github.com/gengjiawen/os-init/compare/v2.0.0...v2.1.0) (2026-09-30)
 
 
