@@ -14,6 +14,9 @@ import {
 const CLAUDE_BASE_URL = 'https://ai.gengjiawen.com/api/claude/'
 const CLAUDE_AUTO_COMPACT_WINDOW = '128000'
 const CLAUDE_ATTRIBUTION_HEADER = '0'
+// The gateway does not pass auto-mode server classifier checks through.
+// Leave them off so Claude Code does not warn on every session.
+const CLAUDE_AUTO_MODE_SERVER = '0'
 
 /** Return Claude settings directory path */
 function getClaudeSettingsDir(): string {
@@ -53,7 +56,8 @@ const CLAUDE_SETTINGS_TEMPLATE = `{
     "ANTHROPIC_BASE_URL": "${CLAUDE_BASE_URL}",
     "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "${CLAUDE_AUTO_COMPACT_WINDOW}",
-    "CLAUDE_CODE_ATTRIBUTION_HEADER": "${CLAUDE_ATTRIBUTION_HEADER}"
+    "CLAUDE_CODE_ATTRIBUTION_HEADER": "${CLAUDE_ATTRIBUTION_HEADER}",
+    "CLAUDE_CODE_AUTO_MODE_SERVER": "${CLAUDE_AUTO_MODE_SERVER}"
   },
   "includeCoAuthoredBy": false,
   "apiKeyHelper": "echo 'API_KEY_PLACEHOLDER'",
@@ -112,6 +116,10 @@ function writeVSCodeClaudePluginConfig(apiKey: string): {
       {
         name: 'CLAUDE_CODE_ATTRIBUTION_HEADER',
         value: CLAUDE_ATTRIBUTION_HEADER,
+      },
+      {
+        name: 'CLAUDE_CODE_AUTO_MODE_SERVER',
+        value: CLAUDE_AUTO_MODE_SERVER,
       },
     ],
     {
