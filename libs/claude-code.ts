@@ -12,11 +12,13 @@ import {
 } from './utils'
 
 const CLAUDE_BASE_URL = 'https://ai.gengjiawen.com/api/claude/'
-const CLAUDE_AUTO_COMPACT_WINDOW = '128000'
+const CLAUDE_AUTO_COMPACT_WINDOW = '178000'
 const CLAUDE_ATTRIBUTION_HEADER = '0'
 // The gateway does not pass auto-mode server classifier checks through.
 // Leave them off so Claude Code does not warn on every session.
 const CLAUDE_AUTO_MODE_SERVER = '0'
+// Claude Code deletes session transcripts older than this on its cleanup sweep.
+const CLAUDE_CLEANUP_PERIOD_DAYS = 370
 
 /** Return Claude settings directory path */
 function getClaudeSettingsDir(): string {
@@ -60,6 +62,7 @@ const CLAUDE_SETTINGS_TEMPLATE = `{
     "CLAUDE_CODE_AUTO_MODE_SERVER": "${CLAUDE_AUTO_MODE_SERVER}"
   },
   "includeCoAuthoredBy": false,
+  "cleanupPeriodDays": ${CLAUDE_CLEANUP_PERIOD_DAYS},
   "apiKeyHelper": "echo 'API_KEY_PLACEHOLDER'",
   "permissions": {
     "allow": [],
