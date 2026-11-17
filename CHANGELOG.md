@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.2.0](https://github.com/gengjiawen/os-init/compare/v2.1.1...v2.2.0) (2026-11-17)
+
+
+### Features
+
+* keep Claude sessions for 370 days and compact at 178k ([#57](https://github.com/gengjiawen/os-init/issues/57)) ([757f75b](https://github.com/gengjiawen/os-init/commit/757f75bf02063dc43ee7c0565e6e620820532ece))
+
 ## [2.1.1](https://github.com/gengjiawen/os-init/compare/v2.1.0...v2.1.1) (2026-10-08)
 
 
