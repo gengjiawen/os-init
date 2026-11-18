@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.3.0](https://github.com/gengjiawen/os-init/compare/v2.2.0...v2.3.0) (2026-11-18)
+
+
+### Features
+
+* point Codex at the gateway model catalog and default to gpt-6.2-sol ([3098c21](https://github.com/gengjiawen/os-init/commit/3098c2140f5974bc74b3f686d8ceedf301ab5af1))
+
 ## [2.2.0](https://github.com/gengjiawen/os-init/compare/v2.1.1...v2.2.0) (2026-11-17)
 
 
