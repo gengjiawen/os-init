@@ -8,6 +8,13 @@ import { ensureDir, commandExists, PNPM_INSTALL_ENV } from './utils'
 type TomlTable = ReturnType<typeof TOML.parse>
 
 const CODEX_BASE_URL = 'https://ai.gengjiawen.com/api/openai'
+/**
+ * Codex falls back to synthetic model metadata (and warns every turn) when it
+ * cannot find the selected model. Point it at the gateway's catalog so per-model
+ * details such as context window and speed tiers come from the gateway.
+ * Codex rejects a catalog whose scheme, host, or port differs from base_url.
+ */
+const CODEX_MODEL_CATALOG_URL = `${CODEX_BASE_URL}/models`
 
 /** Return Codex configuration directory path */
 function getCodexConfigDir(): string {
@@ -16,17 +23,17 @@ function getCodexConfigDir(): string {
 
 function getCodexConfigTomlTemplate(bearerToken: string): string {
   return `model_provider = "jw"
-model = "gpt-6.1-sol"
+model = "gpt-6.2-sol"
 model_reasoning_effort = "high"
 plan_mode_reasoning_effort = "high"
 model_auto_compact_token_limit = 159744
-disable_response_storage = true
 check_for_update_on_startup = false
 
 [model_providers.jw]
 name = "jw"
 base_url = "${CODEX_BASE_URL}"
 wire_api = "responses"
+model_catalog_url = "${CODEX_MODEL_CATALOG_URL}"
 experimental_bearer_token = ${JSON.stringify(bearerToken)}
 http_headers = { "x-openai-actor-authorization" = "jw" }
 `
@@ -79,6 +86,8 @@ function getMergedCodexConfig(
   delete existingConfig.service_tier
   delete existingConfig.model_catalog_json
   delete existingConfig.preferred_auth_method
+  // Codex 0.169 warns on every start that it ignores this retired key.
+  delete existingConfig.disable_response_storage
 
   return TOML.stringify(mergeTomlTables(existingConfig, templateConfig))
 }

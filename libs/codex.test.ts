@@ -28,10 +28,12 @@ describe('writeCodexConfig', () => {
     const configPath = path.join(tempHome, '.codex', 'config.toml')
     const authPath = path.join(tempHome, '.codex', 'auth.json')
     const config = TOML.parse(fs.readFileSync(result.configPath, 'utf8')) as {
+      model: string
       model_auto_compact_token_limit: number
       model_providers: {
         jw: {
           experimental_bearer_token: string
+          model_catalog_url: string
           http_headers: {
             'x-openai-actor-authorization': string
           }
@@ -40,14 +42,19 @@ describe('writeCodexConfig', () => {
     }
 
     expect(result.configPath).toBe(configPath)
+    expect(config.model).toBe('gpt-6.2-sol')
     expect(config.model_auto_compact_token_limit).toBe(159744)
     expect(config.model_providers.jw.experimental_bearer_token).toBe(
       'test-api-key'
+    )
+    expect(config.model_providers.jw.model_catalog_url).toBe(
+      'https://ai.gengjiawen.com/api/openai/models'
     )
     expect(
       config.model_providers.jw.http_headers['x-openai-actor-authorization']
     ).toBe('jw')
     expect(config).not.toHaveProperty('model_catalog_json')
+    expect(config).not.toHaveProperty('disable_response_storage')
     expect(fs.existsSync(authPath)).toBe(false)
   })
 
@@ -95,7 +102,7 @@ custom_model = "keep-me"
     expect(config).not.toHaveProperty('service_tier')
     expect(config).not.toHaveProperty('model_catalog_json')
     expect(config.custom_flag).toBe(true)
-    expect(config.model).toBe('gpt-6.1-sol')
+    expect(config.model).toBe('gpt-6.2-sol')
     expect(config).not.toHaveProperty('preferred_auth_method')
     expect(config.model_providers.jw.base_url).toBe(
       'https://ai.gengjiawen.com/api/openai'
@@ -134,7 +141,7 @@ base_url = "https://example.com"
       }
     }
 
-    expect(config.model).toBe('gpt-6.1-sol')
+    expect(config.model).toBe('gpt-6.2-sol')
     expect(config).not.toHaveProperty('model_catalog_json')
     expect(config).not.toHaveProperty('preferred_auth_method')
     expect(config.model_providers.jw.name).toBe('jw')
@@ -166,6 +173,34 @@ base_url = "https://example.com"
     >
 
     expect(config).not.toHaveProperty('model_catalog_json')
-    expect(config.model).toBe('gpt-6.1-sol')
+    expect(config.model).toBe('gpt-6.2-sol')
+  })
+
+  test('drops retired keys and points the provider at the gateway catalog', () => {
+    const configDir = path.join(tempHome, '.codex')
+    fs.mkdirSync(configDir, { recursive: true })
+    const configPath = path.join(configDir, 'config.toml')
+
+    fs.writeFileSync(
+      configPath,
+      `disable_response_storage = true
+check_for_update_on_startup = true
+
+[model_providers.jw]
+model_catalog_url = "https://example.com/models"
+`
+    )
+
+    writeCodexConfig('test-api-key')
+    const config = TOML.parse(fs.readFileSync(configPath, 'utf8')) as {
+      check_for_update_on_startup: boolean
+      model_providers: { jw: { model_catalog_url: string } }
+    }
+
+    expect(config).not.toHaveProperty('disable_response_storage')
+    expect(config.check_for_update_on_startup).toBe(false)
+    expect(config.model_providers.jw.model_catalog_url).toBe(
+      'https://ai.gengjiawen.com/api/openai/models'
+    )
   })
 })
