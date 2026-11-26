@@ -18,9 +18,9 @@ The `set-android` command:
 4. **Installs essential components**:
    - Platform tools (adb, fastboot, etc.)
    - Android 36 platform
-   - Build tools 36.0.0
-   - CMake 3.30.5
-   - NDK 29.0.14206865
+   - Build tools 36.1.0
+   - CMake 4.1.2
+   - NDK 30.0.16248370
 5. **Configures environment variables** in your shell configuration file (~/.bashrc, ~/.zshrc, or ~/.config/fish/config.fish)
 
 ## Options
@@ -67,7 +67,7 @@ After installation, the following environment variables will be set:
 ```bash
 export ANDROID_HOME=~/Android
 export ANDROID_SDK_ROOT=${ANDROID_HOME}
-export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/29.0.14206865
+export ANDROID_NDK_HOME=${ANDROID_HOME}/ndk/30.0.16248370
 export PATH=${ANDROID_HOME}/cmdline-tools/latest/bin:${ANDROID_HOME}/emulator:${ANDROID_HOME}/platform-tools:${ANDROID_HOME}/tools:${ANDROID_HOME}/tools/bin:${PATH}
 ```
 
@@ -123,6 +123,6 @@ If the Android SDK download fails, check your internet connection and try again.
 - **Android SDK Command-line Tools** (version 11076708)
 - **Platform Tools** - adb, fastboot, etc.
 - **Android Platform 36** - Latest Android API level
-- **Build Tools 36.0.0** - Tools for building Android apps
-- **CMake 3.30.5** - For native code compilation
-- **NDK 29.0.14206865** - Native Development Kit for C/C++ code
+- **Build Tools 36.1.0** - Tools for building Android apps
+- **CMake 4.1.2** - For native code compilation
+- **NDK 30.0.16248370** - Native Development Kit for C/C++ code

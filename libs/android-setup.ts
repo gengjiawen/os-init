@@ -11,7 +11,7 @@ const ANDROID_CONFIG = {
   platformVersion: 'android-36',
   buildToolsVersion: '36.1.0',
   cmakeVersion: '4.1.2',
-  ndkVersion: '29.0.14206865',
+  ndkVersion: '30.0.16248370',
 } as const
 
 /** Get default Android home directory */
