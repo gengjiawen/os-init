@@ -45,8 +45,10 @@ export async function installAllAgentsDeps(
   options: AllAgentsOptions = {}
 ): Promise<void> {
   const packages = ['@anthropic-ai/claude-code', '@openai/codex']
+  const buildPackages = ['@anthropic-ai/claude-code']
   if (options.full) {
-    packages.push('opencode-ai')
+    packages.push('@opencode/cli')
+    buildPackages.push('@opencode/cli')
   }
 
   const pnpmVersion = await getCommandVersion('pnpm')
@@ -55,14 +57,16 @@ export async function installAllAgentsDeps(
     console.log('pnpm detected. Installing agent dependencies with pnpm...')
     const supportsAllowBuild = pnpmSupportsAllowBuild(pnpmVersion)
     if (supportsAllowBuild) {
-      await allowPnpmGlobalBuild('@anthropic-ai/claude-code')
+      for (const packageName of buildPackages) {
+        await allowPnpmGlobalBuild(packageName)
+      }
     }
 
     await execa(
       'pnpm',
       [
         ...(supportsAllowBuild
-          ? ['--allow-build=@anthropic-ai/claude-code']
+          ? buildPackages.map((packageName) => `--allow-build=${packageName}`)
           : []),
         'add',
         '-g',

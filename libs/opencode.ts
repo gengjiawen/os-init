@@ -2,7 +2,13 @@ import * as fs from 'fs'
 import * as os from 'os'
 import * as path from 'path'
 import { execa } from 'execa'
-import { commandExists, ensureDir, PNPM_INSTALL_ENV } from './utils'
+import {
+  allowPnpmGlobalBuild,
+  ensureDir,
+  getCommandVersion,
+  pnpmSupportsAllowBuild,
+  PNPM_INSTALL_ENV,
+} from './utils'
 
 const OPENCODE_PROVIDER_ID = 'MyCustomProvider'
 const OPENCODE_MODEL_ID = 'code'
@@ -15,14 +21,34 @@ const OPENCODE_MODEL_IDS = [
 ]
 const OPENCODE_BASE_URL = 'https://ai.gengjiawen.com/api/openai/v1'
 
+/** USD per million tokens, matching DeepSeek's published pricing for Flash. */
+const OPENCODE_MODEL_COSTS: Record<
+  string,
+  { input: number; output: number; cache: { read: number } }
+> = {
+  code: {
+    input: 0.15,
+    output: 0.6,
+    cache: {
+      read: 0.003,
+    },
+  },
+}
+
 function createOpencodeModelConfig(modelId: string) {
+  const cost = OPENCODE_MODEL_COSTS[modelId]
+  const settings =
+    modelId === OPENCODE_MODEL_ID ? { reasoningEffort: 'high' } : undefined
+
   return {
     name: modelId,
-    attachment: true,
-    modalities: {
+    capabilities: {
+      tools: true,
       input: ['text', 'image'],
       output: ['text'],
     },
+    ...(settings ? { settings } : {}),
+    ...(cost ? { cost } : {}),
   }
 }
 
@@ -47,11 +73,11 @@ export function writeOpencodeConfig(apiKey: string): { configPath: string } {
 
   const configContent = {
     $schema: 'https://opencode.ai/config.json',
-    provider: {
+    providers: {
       [OPENCODE_PROVIDER_ID]: {
-        npm: '@ai-sdk/openai-compatible',
         name: 'JWProvider',
-        options: {
+        package: '@opencode/ai/providers/openai-compatible',
+        settings: {
           baseURL: OPENCODE_BASE_URL,
           apiKey,
         },
@@ -59,7 +85,11 @@ export function writeOpencodeConfig(apiKey: string): { configPath: string } {
       },
     },
     model: `${OPENCODE_PROVIDER_ID}/${OPENCODE_MODEL_ID}`,
-    small_model: `${OPENCODE_PROVIDER_ID}/${OPENCODE_MODEL_ID}`,
+    agents: {
+      title: {
+        model: `${OPENCODE_PROVIDER_ID}/${OPENCODE_MODEL_ID}`,
+      },
+    },
   }
 
   const configPath = path.join(configDir, 'opencode.json')
@@ -70,15 +100,29 @@ export function writeOpencodeConfig(apiKey: string): { configPath: string } {
 
 /** Install OpenCode dependency */
 export async function installOpencodeDeps(): Promise<void> {
-  const packages = ['opencode-ai']
-  const usePnpm = await commandExists('pnpm')
+  const packages = ['@opencode/cli']
+  const pnpmVersion = await getCommandVersion('pnpm')
 
-  if (usePnpm) {
+  if (pnpmVersion !== null) {
     console.log('pnpm detected. Installing OpenCode dependency with pnpm...')
-    await execa('pnpm', ['add', '-g', ...packages], {
-      stdio: 'inherit',
-      env: PNPM_INSTALL_ENV,
-    })
+    const supportsAllowBuild = pnpmSupportsAllowBuild(pnpmVersion)
+    if (supportsAllowBuild) {
+      await allowPnpmGlobalBuild('@opencode/cli')
+    }
+
+    await execa(
+      'pnpm',
+      [
+        ...(supportsAllowBuild ? ['--allow-build=@opencode/cli'] : []),
+        'add',
+        '-g',
+        ...packages,
+      ],
+      {
+        stdio: 'inherit',
+        env: PNPM_INSTALL_ENV,
+      }
+    )
   } else {
     console.log('pnpm not found. Falling back to npm...')
     await execa('npm', ['install', '-g', ...packages], { stdio: 'inherit' })

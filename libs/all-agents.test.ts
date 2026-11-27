@@ -88,6 +88,44 @@ describe('writeAllAgentsConfig', () => {
     expect(workspace.allowBuilds['@anthropic-ai/claude-code']).toBe(true)
   })
 
+  test('installs OpenCode with pnpm when full option is enabled', async () => {
+    const pnpmGlobalRoot = path.join(tempHome, 'pnpm-global')
+    const workspacePath = path.join(pnpmGlobalRoot, 'pnpm-workspace.yaml')
+
+    execaMock
+      .mockResolvedValueOnce({ failed: false, stdout: '10.33.2' } as never)
+      .mockResolvedValueOnce({ stdout: pnpmGlobalRoot } as never)
+      .mockResolvedValueOnce({ stdout: pnpmGlobalRoot } as never)
+      .mockResolvedValueOnce({} as never)
+
+    await installAllAgentsDeps({ full: true })
+
+    expect(execaMock).toHaveBeenNthCalledWith(
+      4,
+      'pnpm',
+      [
+        '--allow-build=@anthropic-ai/claude-code',
+        '--allow-build=@opencode/cli',
+        'add',
+        '-g',
+        '@anthropic-ai/claude-code',
+        '@openai/codex',
+        '@opencode/cli',
+      ],
+      {
+        stdio: 'inherit',
+        env: {
+          PNPM_CONFIG_ENABLE_PRE_POST_SCRIPTS: 'true',
+        },
+      }
+    )
+    expect(execaMock).toHaveBeenCalledTimes(4)
+
+    const workspace = yaml.parse(fs.readFileSync(workspacePath, 'utf8'))
+    expect(workspace.allowBuilds['@anthropic-ai/claude-code']).toBe(true)
+    expect(workspace.allowBuilds['@opencode/cli']).toBe(true)
+  })
+
   test('installs all requested agents in one npm command when pnpm is unavailable', async () => {
     execaMock
       .mockRejectedValueOnce(new Error('pnpm not found'))
@@ -107,7 +145,7 @@ describe('writeAllAgentsConfig', () => {
         '-g',
         '@anthropic-ai/claude-code',
         '@openai/codex',
-        'opencode-ai',
+        '@opencode/cli',
       ],
       { stdio: 'inherit' }
     )

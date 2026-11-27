@@ -152,7 +152,7 @@ pnpx @gengjiawen/os-init set-opencode <API_KEY>
 Configures OpenCode CLI with your API key. This command will:
 
 - Write `~/.config/opencode/opencode.json`
-- Install global tool: `opencode-ai` (provides `opencode` command)
+- Install global tool: `@opencode/cli` (provides `opencode` command)
 
 ### Configure Tinycast AI Chat
 
