@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.4.0](https://github.com/gengjiawen/os-init/compare/v2.3.0...v2.4.0) (2026-11-27)
+
+
+### Features
+
+* migrate OpenCode config to v2 and install @opencode/cli ([0e1c9e6](https://github.com/gengjiawen/os-init/commit/0e1c9e635017891e20c247af1cedc06a7eed6b7c))
+
 ## [2.3.0](https://github.com/gengjiawen/os-init/compare/v2.2.0...v2.3.0) (2026-11-18)
 
 
